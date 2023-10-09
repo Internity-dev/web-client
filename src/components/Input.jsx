@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 
-const Input = ({ label, icon, showEye }) => {
-  const [isFocus, setIsFocus] = useState(false);
+const Input = ({ label, icon, showeye, name, innerRef }) => {
+  const [isFocus, setIsFocus] = useState(false); 
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [inputValue, setInputValue] = useState("");
-  const [inputType, setInputType] = useState(showEye ? 'password' : 'text')
+  const [inputType, setInputType] = useState(showeye ? 'password' : 'text')
 
   const handleFocus = () => {
     setIsFocus(true);
@@ -29,6 +29,8 @@ const Input = ({ label, icon, showEye }) => {
       <div className='div col-span-8'>
         <h5>{label}</h5>
         <input
+          name={name}
+          ref={innerRef}
           type={inputType}
           className='input'
           onFocus={handleFocus}
@@ -38,7 +40,7 @@ const Input = ({ label, icon, showEye }) => {
         />
       </div>
       <div className='col-span-1 flex justify-center items-center'>
-        {showEye && (
+        {showeye && (
           <button type='button' onClick={togglePasswordVisibility}>
             <img src={isPasswordVisible ? "images/eye-open.svg" : "images/eye-close.svg"} alt='' width='20' />
           </button>
