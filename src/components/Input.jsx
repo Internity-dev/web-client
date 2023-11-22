@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Icon } from '@iconify/react';
 
 const Input = ({ label, icon, showeye, name, innerRef }) => {
   const [isFocus, setIsFocus] = useState(false); 
@@ -25,14 +26,13 @@ const Input = ({ label, icon, showeye, name, innerRef }) => {
 
   return (
     <div className={`input-div mt-0 grid-cols-10 ${isFocus ? "focus" : ""}`}>
-      <div className='col-span-1 flex justify-center items-center text-gray transition duration-300'>{icon}</div>
+      <div className='col-span-1 flex justify-center items-center text-gray dark:text-lightOne transition duration-300'><Icon icon={icon} width={30} /></div>
       <div className='div col-span-8'>
-        <h5>{label}</h5>
+        <h5 className="text-gray dark:text-lightOne">{label}</h5>
         <input
           name={name}
           ref={innerRef}
           type={inputType}
-          className='input'
           onFocus={handleFocus}
           onBlur={handleBlur}
           onChange={handleInputChange}
@@ -42,7 +42,7 @@ const Input = ({ label, icon, showeye, name, innerRef }) => {
       <div className='col-span-1 flex justify-center items-center'>
         {showeye && (
           <button type='button' onClick={togglePasswordVisibility}>
-            <img src={isPasswordVisible ? "images/eye-open.svg" : "images/eye-close.svg"} alt='' width='20' />
+            <Icon className="text-gray dark:text-lightOne" icon={isPasswordVisible ? "radix-icons:eye-open" : "eva:eye-off-2-fill"} width={25} />
           </button>
         )}
       </div>

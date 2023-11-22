@@ -1,9 +1,8 @@
 import {React, createRef, useState} from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEnvelope, faLock } from "@fortawesome/free-solid-svg-icons";
 import { LoginBtn, Input, LoginBanner } from "../components";
 import axiosClient from "../axios-client.js";
 import {useStateContext} from "../context/ContextProvider.jsx";
+import { Icon } from '@iconify/react';
 
 const Login = () => {
   const emailRef = createRef()
@@ -21,11 +20,11 @@ const Login = () => {
     axiosClient.post('/login', payload)
       .then(({data}) => {
         setUser(data.user)
-        setToken(data.access_token);
+        setToken(data.access_token)
       })
       .catch((err) => {
         const response = err.response;
-        if (response && response.status === 422) {
+        if (response && response.status === 401 || response && response.status === 422) {
           setMessage(response.data.message)
         }
       })
@@ -42,14 +41,15 @@ const Login = () => {
           <div className='w-full lg:w-1/2 py-10 px-12'>
             <h2 className='text-3xl mb-4'>Sign In</h2>
             <p className='mb-4'>Sign in to your account</p>
-            {message &&
-            <div className="alert">
-              <p>{message}</p>
-            </div>
-            }
+            {message && (
+              <div className='alert alert-error'>
+                <Icon icon="mingcute:alert-fill" width={30} />
+                <p>{message}</p>
+              </div>
+            )}
             <form onSubmit={onSubmit} method="POST">
-              <Input innerRef={emailRef} name='email' label='Email' icon={<FontAwesomeIcon icon={faEnvelope} showeye='false' />} />
-              <Input innerRef={passwordRef} name='password' label='Password' icon={<FontAwesomeIcon icon={faLock} />} showeye />
+              <Input innerRef={emailRef} name='email' label='Email' icon='tabler:mail' />
+              <Input innerRef={passwordRef} name='password' label='Password' icon='mdi:lock-outline' showeye />
               <div className='mt-5'>
                 <a href='#' className='text-dark underline'>
                   Forgot Password?

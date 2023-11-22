@@ -1,42 +1,42 @@
-import {React, createRef, useState} from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEnvelope, faUser, faLock, faHashtag } from "@fortawesome/free-solid-svg-icons";
+import { React, createRef, useState } from "react";
 import { LoginBtn, Input, LoginBanner } from "../components";
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 import axiosClient from "../axios-client.js";
-import {useStateContext} from "../context/ContextProvider.jsx";
+import { useStateContext } from "../context/ContextProvider.jsx";
+import { Icon } from "@iconify/react";
 
 const Register = () => {
-  const nameRef = createRef()
-  const emailRef = createRef()
-  const passwordRef = createRef()
-  const passwordConfirmationRef = createRef()
-  const courseCodeRef = createRef()
-  const {setUser, setToken} = useStateContext()
-  const [errors, setErrors] = useState(null)
+  const nameRef = createRef();
+  const emailRef = createRef();
+  const passwordRef = createRef();
+  const passwordConfirmationRef = createRef();
+  const courseCodeRef = createRef();
+  const { setUser, setToken } = useStateContext();
+  const [errors, setErrors] = useState(null);
 
-  const onSubmit = ev => {
-    ev.preventDefault()
+  const onSubmit = (ev) => {
+    ev.preventDefault();
 
     const payload = {
       name: nameRef.current.value,
       email: emailRef.current.value,
       password: passwordRef.current.value,
       password_confirmation: passwordConfirmationRef.current.value,
-      course_code: courseCodeRef.current.value
-    }
-    axiosClient.post('/register', payload)
-      .then(({data}) => {
-        setUser(data.user)
+      course_code: courseCodeRef.current.value,
+    };
+    axiosClient
+      .post("/register", payload)
+      .then(({ data }) => {
+        setUser(data.user);
         setToken(data.access_token);
       })
-      .catch(err => {
+      .catch((err) => {
         const response = err.response;
         if (response && response.status === 422) {
-          setErrors(response.data.errors)
+          setErrors(response.data.errors);
         }
-      })
-  }
+      });
+  };
 
   return (
     <div
@@ -45,50 +45,53 @@ const Register = () => {
     >
       <div className='w-10/12 lg:w-8/12 bg-white rounded-xl shadow-lg overflow-hidden'>
         <div className='flex flex-col lg:flex-row'>
-          <LoginBanner header='Welcome to Internity!' text='Ayo mulai karirmu!' />
+          <LoginBanner
+            header='Welcome to Internity!'
+            text='Ayo mulai karirmu!'
+          />
           <div className='w-full lg:w-1/2 py-10 px-12'>
             <h2 className='text-3xl mb-4'>Sign Up</h2>
             <p className='mb-4'>Create your account</p>
             {errors &&
-            <div className="text-red-600 font-bold">
-              {Object.keys(errors).map(key => (
-                <p key={key}>{errors[key][0]}</p>
+              Object.keys(errors).map((key) => (
+                <div className='alert alert-error mb-3' key={key}>
+                  <Icon icon='mingcute:alert-fill' width={30} />
+                  <p>{errors[key][0]}</p>
+                </div>
               ))}
-            </div>
-            }
-            <form onSubmit={onSubmit} method="POST">
+            <form onSubmit={onSubmit} method='POST'>
               <Input
                 innerRef={nameRef}
                 name='name'
                 label='Name'
-                icon={<FontAwesomeIcon icon={faUser} showeye='false' />}
+                icon='mdi:user'
               />
               <Input
                 type='email'
                 innerRef={emailRef}
                 name='email'
                 label='Email'
-                icon={<FontAwesomeIcon icon={faEnvelope} showeye='false' />}
+                icon='tabler:mail'
               />
               <Input
                 innerRef={passwordRef}
                 name='password'
                 label='Password'
-                icon={<FontAwesomeIcon icon={faLock} />}
+                icon='mdi:lock-outline'
                 showeye
               />
               <Input
                 innerRef={passwordConfirmationRef}
                 name='password_confirmation'
                 label='Confirm Password'
-                icon={<FontAwesomeIcon icon={faLock} />}
+                icon='mdi:lock-outline'
                 showeye
               />
               <Input
                 innerRef={courseCodeRef}
                 name='course_code'
                 label='Course Code'
-                icon={<FontAwesomeIcon icon={faHashtag} showeye='false' />}
+                icon='tabler:code'
               />
               <div className='mt-5'>
                 <input
@@ -112,7 +115,9 @@ const Register = () => {
               <div className='mt-5'>
                 <p className='text-center'>
                   Already have an account?{" "}
-                  <Link to="/login" className="text-main underline font-bold">Sign In</Link>
+                  <Link to='/login' className='text-main underline font-bold'>
+                    Sign In
+                  </Link>
                 </p>
               </div>
             </form>
