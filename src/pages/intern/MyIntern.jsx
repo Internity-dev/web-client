@@ -1,33 +1,18 @@
 import React, { useEffect, useState } from "react";
-import { Title } from "../../components";
+import { InternDetails, Title } from "../../components";
 import axiosClient from "../../axios-client";
+import { useStateContext } from "../../context/ContextProvider";
 
 const MyIntern = () => {
-  const [isLoading, setIsLoading] = useState(true);
-  const [appliance, setAppliance] = useState([]);
+  const { appliances } = useStateContext();
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axiosClient.get("/appliances/accepted");
-        setAppliance(response.data.appliances);
-        setIsLoading(false);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-
-    fetchData();
-  }, []);
   return (
     <div className='flex flex-col justify-center items-center lg:my-15 my-20  '>
       <Title title='magangku' />
-      {isLoading ? (
-        <div className='flex items-center justify-center h-72 m-7'>
-          <span className='loading loading-spinner loading-lg'></span>
+      {appliances ? (
+        <div className='m-2 md:m-10 mt-24 shadow-xl transition duration-300 dark:bg-secondary-dark-bg bg-white rounded-3xl'>
+            <InternDetails key={appliances.id} vacancy={appliances.vacancy} />
         </div>
-      ) : appliance.length !== 0 ? (
-        <div></div>
       ) : (
         <div className='flex justify-center items-center h-72 m-7'>
           <h1 className='text-dark transition duration-300 dark:text-lightOne text-xl first-letter:capitalize'>

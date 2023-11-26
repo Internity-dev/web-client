@@ -7,7 +7,6 @@ import {
   NotFound,
   Register,
   Intern,
-  Landing,
   News,
   Home,
   Activity,
@@ -43,7 +42,7 @@ const App = () => {
     <div className={currentMode === "Dark" ? "dark" : ""}>
       <Router>
         <Routes>
-          <Route path='/' element={<Landing />} />
+          <Route path='/' element={<Login />} />
           <Route path='/' element={<DefaultLayout />}>
             <Route path='/home' element={<Home />} />
             <Route path='/activity' element={<Activity />} />
@@ -62,7 +61,6 @@ const App = () => {
             <Route path='/test' element={<MyComponent />} />
           </Route>
           <Route path='/' element={<GuestLayout />}>
-            <Route path='/login' element={<Login />} />
             <Route path='/register' element={<Register />} />
           </Route>
           <Route path='*' element={<NotFound />} />

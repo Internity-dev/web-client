@@ -51,7 +51,7 @@ const Sidebar = () => {
               handler={handleCloseSideBar}
             />
             {isLoading ? (
-              <></>
+              null
             ) : (
               user.in_internship && (
                 <Sidelink

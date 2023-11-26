@@ -62,7 +62,7 @@ const ChangeProfile = () => {
 
         if (imageInputRef.current.files[0]) {
           const payload = {
-            avatar: imageInputRef.current.files[0]
+            avatar: imageInputRef.current.files[0],
           };
 
           axiosClient
@@ -72,8 +72,11 @@ const ChangeProfile = () => {
               },
             })
             .then(({ data }) => {
-              setUser(data.user.avatar);
-              setUser(data.user.avatar_url);
+              const newUser = {
+                ...user,
+                avatar_url: "http://localhost:8000/" + data.avatar,
+              };
+              setUser(newUser);
             })
             .catch((err) => {
               const response = err.response;

@@ -17,7 +17,6 @@ const InternDetail = () => {
         const response = await axiosClient.get(`/vacancies/${id}`);
         setVacancy(response.data.vacancy);
         setIsLoading(false);
-        console.log(response.data.vacancy);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -54,7 +53,6 @@ const InternDetail = () => {
         const response = err.response;
         if (response && (response.status === 401 || response.status === 500)) {
           setMessage(response.data.message);
-          console.log(response.data.message);
         }
       });
   };

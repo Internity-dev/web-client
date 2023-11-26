@@ -13,7 +13,7 @@ const ActivityNotification = ({ title, date, to }) => {
           {title}
         </h1>
         <p className='text-neutral-700 transition duration-300 dark:text-neutral-200'>
-          Sampai {date}
+          {date}
         </p>
       </div>
       <Icon

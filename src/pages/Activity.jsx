@@ -4,10 +4,10 @@ import { ActivityButton, ActivityCard, Title } from "../components";
 import Isotope from "isotope-layout";
 
 const Activity = () => {
-  const { user } = useStateContext();
+  const { user, activity } = useStateContext();
   const [isotope, setIsotope] = useState(null);
   const [filterKey, setFilterKey] = useState(
-    user.resume_url && !user.in_internship ? "registrasi" : "absensi"
+    user.resume && !user.in_internship ? "registrasi" : "absensi"
   );
   useEffect(() => {
     setIsotope(
@@ -53,44 +53,52 @@ const Activity = () => {
         </div>
         {user.in_internship ? (
           <div className='w-full lg:my-8 my-3 filter-container'>
-            <ActivityCard
-              filterKey='absensi'
-              title='masuk'
-              date='17 September 2006 07:30'
-              icon='ph:sign-in-bold'
-              to='/masuk'
-              bg='#a3f0d0'
-              color='#0fb782'
-            />
-            <ActivityCard
-              filterKey='absensi'
-              title='keluar'
-              date='17 September 2006 07:30'
-              icon='ph:sign-out-bold'
-              to='/keluar'
-              bg='#f9cad1'
-              color='#F03E61'
-            />
-            <ActivityCard
-              filterKey='absensi'
-              title='izin'
-              date='17 September 2006 07:30'
-              icon='basil:clipboard-alt-outline'
-              to='/izin'
-              bg='#FFFACD'
-              color='#E9B207'
-            />
-            <ActivityCard
-              filterKey='laporan'
-              title='laporan harian'
-              date='17 September 2006 07:30'
-              icon='basil:clipboard-alt-outline'
-              to='/report'
-              bg='#BABABA'
-              color='#5B5B5B'
-            />
+            {activity.presence && activity.presence.check_in == null ? (
+              <>
+                <ActivityCard
+                  filterKey='absensi'
+                  title='masuk'
+                  date='17 September 2006 07:30'
+                  icon='ph:sign-in-bold'
+                  to='/home#presence'
+                  bg='#a3f0d0'
+                  color='#0fb782'
+                />
+                <ActivityCard
+                  filterKey='absensi'
+                  title='izin'
+                  date='17 September 2006 07:30'
+                  icon='basil:clipboard-alt-outline'
+                  to='/izin'
+                  bg='#FFFACD'
+                  color='#E9B207'
+                />
+              </>
+            ) : (
+              <ActivityCard
+                filterKey='absensi'
+                title='keluar'
+                date='17 September 2006 07:30'
+                icon='ph:sign-out-bold'
+                to='/keluar'
+                bg='#f9cad1'
+                color='#F03E61'
+              />
+            )}
+
+            {activity.journal && activity.journal == null ? (
+              <ActivityCard
+                filterKey='laporan'
+                title='laporan harian'
+                date='17 September 2006 07:30'
+                icon='basil:clipboard-alt-outline'
+                to='/report'
+                bg='#BABABA'
+                color='#5B5B5B'
+              />
+            ) : null}
           </div>
-        ) : user.resume_url ? (
+        ) : user.resume ? (
           <div className='w-full lg:my-8 my-3 filter-container'>
             <ActivityCard
               filterKey='registrasi'

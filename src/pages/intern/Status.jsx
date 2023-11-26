@@ -11,7 +11,6 @@ const Status = () => {
       try {
         const response = await axiosClient.get("/appliances");
         setAppliances(response.data.appliances);
-        console.log("API Data:", response.data.appliances);
         setIsLoading(false);
       } catch (error) {
         console.error("Error fetching data:", error);

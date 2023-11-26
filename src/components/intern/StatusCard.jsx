@@ -27,24 +27,24 @@ const StatusCard = ({ appliance }) => {
           backgroundColor:
             appliance.status == "rejected"
               ? "#F9CAD1"
-              : appliance.status == "processed" || "pending"
-              ? "#F5ED8D"
-              : "#A3F0D0",
+              : appliance.status == "accepted"
+              ? "#A3F0D0"
+              : "#F5ED8D",
           color:
             appliance.status == "rejected"
               ? "#F03E61"
-              : appliance.status == "processed" || "pending"
-              ? "#E9B207"
-              : "#0FB782",
+              : appliance.status == "accepted"
+              ? "#0FB782"
+              : "#E9B207",
         }}
         className='py-1 px-2 rounded-lg capitalize w-20 text-center mr-5 font-semibold'
       >
         <h1>
           {appliance.status == "rejected"
             ? "ditolak"
-            : appliance.status == "processed" || "pending"
-            ? "diproses"
-            : "diterima"}
+            : appliance.status == "accepted"
+            ? "diterima"
+            : "diproses"}
         </h1>
       </div>
     </Link>

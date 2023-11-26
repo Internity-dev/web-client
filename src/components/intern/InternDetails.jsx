@@ -38,25 +38,9 @@ const InternDetails = ({ vacancy }) => {
           </h1>
         </div>
       </div>
-      <div className='mx-10 text-dark transition duration-300 dark:text-lightOne md:text-lg text-base'>
+      <div className='mx-10 mb-10 text-dark transition duration-300 dark:text-lightOne md:text-lg text-base'>
         <h1 className='text-2xl font-medium capitalize'>deskripsi pekerjaan</h1>
         <h1 className='first-letter:uppercase mt-5'>{vacancy.description}</h1>
-        <div className='my-10'>
-          <h1 className='capitalize'>minimum qualifications</h1>
-          <ul className='list-disc ml-5 mt-2 first-letter:uppercase'>
-            <li>mampu membuat rangkaian desain website atau aplikasi</li>
-            <li>mampu bekerja cepat</li>
-            <li>memiliki kemampuan organisir yang baik</li>
-          </ul>
-        </div>
-        <div className='my-10'>
-          <h1 className='capitalize'>perks and benefits</h1>
-          <ul className='list-disc ml-5 mt-2 first-letter:uppercase'>
-            <li>flexitime</li>
-            <li>employee discounts</li>
-            <li>work from home</li>
-          </ul>
-        </div>
       </div>
     </div>
   );

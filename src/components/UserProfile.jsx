@@ -7,7 +7,7 @@ import { useStateContext } from "../context/ContextProvider";
 import { NavLink } from "react-router-dom";
 
 const UserProfile = () => {
-  const { user, setUser, setToken } = useStateContext();
+  const { user, setUser, setToken, setIsClicked, initialState } = useStateContext();
 
   const onLogout = (ev) => {
     ev.preventDefault();
@@ -56,6 +56,7 @@ const UserProfile = () => {
       <div>
         <NavLink
           to='/profile'
+          onClick={() => setIsClicked(initialState)}
           className='flex gap-5 border-b-1 border-color p-4 hover:bg-light-gray cursor-pointer  transition duration-300 dark:hover:bg-[#42464D]'
         >
           <button

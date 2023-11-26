@@ -12,7 +12,6 @@ const NewsDetail = () => {
         const response = await axiosClient.get(`/news/${id}`);
         setNews(response.data.news);
         setIsLoading(false);
-        console.log(response.data.news);
       } catch (error) {
         console.error("Error fetching data:", error);
       }

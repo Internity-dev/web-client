@@ -1,16 +1,13 @@
 import React from "react";
 import { Title, UploadCv, InternCard, InternLink } from "../../components";
 import { useStateContext } from "../../context/ContextProvider";
-import { Navigate } from "react-router-dom";
 
 const Intern = () => {
   const { user, vacancies } = useStateContext();
-  if (user.in_internship) {
-    return <Navigate to='/myintern' />;
-  }
+
   return (
     <div>
-      {user.resume_url ? (
+      {user.resume ? (
         <div className='lg:my-15 my-20'>
           <div className='flex flex-col justify-center items-center'>
             <Title title='intern' />

@@ -20,8 +20,9 @@ export default function DefaultLayout() {
     setNotifications,
     setNews,
     setVacancies,
-    setRecommendations,
     setActivity,
+    setAppliances,
+    setReports
   } = useStateContext();
 
   if (!token) {
@@ -38,7 +39,6 @@ export default function DefaultLayout() {
   useEffect(() => {
     axiosClient.get("/me").then(({ data }) => {
       setUser(data);
-      console.log(data)
     });
   }, []);
 
@@ -70,21 +70,25 @@ export default function DefaultLayout() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axiosClient.get("/vacancies/recommended");
-        setRecommendations(response.data.vacancies);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
+        const response = await axiosClient.get("/appliances/accepted");
+        const firstAppliance = response.data.appliances[0];
 
-    fetchData();
-  }, []);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axiosClient.get("/today-activities");
-        setActivity(response.data);
+        if (
+          firstAppliance &&
+          firstAppliance.intern_date &&
+          firstAppliance.intern_date.company_id
+        ) {
+          const todayActivitiesResponse = await axiosClient.get(
+            `/today-activities?company=${firstAppliance.intern_date.company_id}`
+          );
+          const journalsResponse = await axiosClient.get(
+            `/journals?company=${firstAppliance.intern_date.company_id}`
+          );
+          setAppliances(firstAppliance);
+          setActivity(todayActivitiesResponse.data);
+          setReports(journalsResponse.data.journals)
+          console.log(todayActivitiesResponse.data)
+        }
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -98,7 +102,6 @@ export default function DefaultLayout() {
       try {
         const response = await axiosClient.get("/vacancies");
         setVacancies(response.data.vacancies);
-        console.log("API Data:", response.data);
         setIsLoading(false);
       } catch (error) {
         console.error("Error fetching data:", error);

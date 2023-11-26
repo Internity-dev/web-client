@@ -11,7 +11,6 @@ function MyComponent() {
         setData(response.data.news.data);
 
         // Log the data to the console
-        console.log('API Data:', response.data.news.data);
       } catch (error) {
         console.error('Error fetching data:', error);
       }

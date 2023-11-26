@@ -17,9 +17,11 @@ export const ContextProvider = ({ children }) => {
   const [user, setUser] = useState({});
   const [news, setNews] = useState([]);
   const [notifications, setNotifications] = useState([]);
-  const [recommendations, setRecommendations] = useState([]);
   const [vacancies, setVacancies] = useState([]);
+  const [appliances, setAppliances] = useState([]);
   const [activity, setActivity] = useState([]);
+  const [presence, setPresence] = useState([]);
+  const [reports, setReports] = useState([]);
   const [avatar, setAvatar] = useState({});
   const [token, _setToken] = useState(localStorage.getItem("ACCESS_TOKEN"));
   const [screenSize, setScreenSize] = useState(undefined);
@@ -75,14 +77,18 @@ export const ContextProvider = ({ children }) => {
         setNews,
         notifications,
         setNotifications,
-        recommendations,
-        setRecommendations,
         vacancies,
         setVacancies,
         activity,
         setActivity,
         saved,
         setSaved,
+        appliances,
+        setAppliances,
+        reports,
+        setReports,
+        presence,
+        setPresence
       }}
     >
       {children}
