@@ -8,7 +8,7 @@ const UploadCv = () => {
     if (message) {
       const timeoutId = setTimeout(() => {
         setMessage(null);
-      }, 1000);
+      }, 1500);
       return () => clearTimeout(timeoutId);
     }
   }, [message, setMessage]);

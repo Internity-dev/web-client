@@ -4,12 +4,12 @@ import axiosClient from "../../axios-client";
 import { useStateContext } from "../../context/ContextProvider";
 
 const MyIntern = () => {
-  const { appliances } = useStateContext();
+  const { appliances, user } = useStateContext();
 
   return (
     <div className='flex flex-col justify-center items-center lg:my-15 my-20  '>
       <Title title='magangku' />
-      {appliances ? (
+      {user.in_internship ? (
         <div className='m-2 md:m-10 mt-24 shadow-xl transition duration-300 dark:bg-secondary-dark-bg bg-white rounded-3xl'>
             <InternDetails key={appliances.id} vacancy={appliances.vacancy} />
         </div>

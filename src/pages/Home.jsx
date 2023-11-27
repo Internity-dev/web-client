@@ -13,7 +13,8 @@ import { Link } from "react-router-dom";
 import { Icon } from "@iconify/react";
 
 const Home = () => {
-  const { user, activity, setActivity, presence, setPresence } = useStateContext();
+  const { user, activity, setActivity, presence, setPresence, presences } =
+    useStateContext();
   const [message, setMessage] = useState(null);
   const now = new Date();
   const formattedTime = now.toLocaleTimeString("en-US", {
@@ -29,7 +30,7 @@ const Home = () => {
       presence_status_id: 1,
     };
     axiosClient
-      .put(`/presences/${activity.presence.id}`, payload)
+      .put(`/presences/${presences[0].id}`, payload)
       .then((response) => {
         const newActivity = {
           ...activity,
@@ -75,7 +76,7 @@ const Home = () => {
     if (message) {
       const timeoutId = setTimeout(() => {
         setMessage(null);
-      }, 1000);
+      }, 1500);
       return () => clearTimeout(timeoutId);
     }
   }, [message, setMessage]);
@@ -84,14 +85,17 @@ const Home = () => {
     <div>
       {user.in_internship ? (
         <div className='lg:my-15 my-20'>
-          <div className='flex flex-col justify-center items-center' id="presence">
+          <div
+            className='flex flex-col justify-center items-center'
+            id='presence'
+          >
             <Title title='presensi' />
             <div className='flex m-3 mb-9 flex-wrap justify-center gap-1 items-center'>
               <PresenceButton
                 name='masuk'
                 icon='ph:sign-in-bold'
                 onClick={() => onMasuk()}
-                presence={presence}
+                disabled={activity.presence == null ? true : false}
               />
               <PresenceButton
                 name='keluar'

@@ -44,11 +44,13 @@ const Sidebar = () => {
               name='home'
               icon='octicon:home-16'
               handler={handleCloseSideBar}
+              to=''
             />
             <Sidelink
               name='activity'
               icon='mdi:recent'
               handler={handleCloseSideBar}
+              to='activity'
             />
             {isLoading ? (
               null
@@ -58,6 +60,7 @@ const Sidebar = () => {
                   name='report'
                   icon='tabler:news'
                   handler={handleCloseSideBar}
+                  to='report'
                 />
               )
             )}
@@ -65,11 +68,13 @@ const Sidebar = () => {
               name='intern'
               icon='ci:suitcase'
               handler={handleCloseSideBar}
+              to='intern'
             />
             <Sidelink
               name='profile'
               icon='mdi:user-outline'
               handler={handleCloseSideBar}
+              to='profile'
             />
           </div>
         </>

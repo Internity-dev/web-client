@@ -102,7 +102,7 @@ const ChangeProfile = () => {
     if (message) {
       const timeoutId = setTimeout(() => {
         navigate("/profile");
-      }, 1000);
+      }, 1500);
       return () => clearTimeout(timeoutId);
     }
   }, [message, navigate]);

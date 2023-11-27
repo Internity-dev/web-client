@@ -14,13 +14,16 @@ const initialState = {
 };
 
 export const ContextProvider = ({ children }) => {
+  const [isLoading, setIsLoading] = useState(true);
   const [user, setUser] = useState({});
   const [news, setNews] = useState([]);
   const [notifications, setNotifications] = useState([]);
   const [vacancies, setVacancies] = useState([]);
+  const [recommendations, setRecommendations] = useState([]);
   const [appliances, setAppliances] = useState([]);
   const [activity, setActivity] = useState([]);
   const [presence, setPresence] = useState([]);
+  const [presences, setPresences] = useState([]);
   const [reports, setReports] = useState([]);
   const [avatar, setAvatar] = useState({});
   const [token, _setToken] = useState(localStorage.getItem("ACCESS_TOKEN"));
@@ -30,7 +33,6 @@ export const ContextProvider = ({ children }) => {
   const [activeMenu, setActiveMenu] = useState(true);
   const [saved, setSaved] = useState(true);
   const [isClicked, setIsClicked] = useState(initialState);
-  const [isLoading, setIsLoading] = useState(true);
 
   const setMode = (e) => {
     const newMode = e.target.checked ? "Dark" : "Light";
@@ -88,7 +90,11 @@ export const ContextProvider = ({ children }) => {
         reports,
         setReports,
         presence,
-        setPresence
+        setPresence,
+        presences,
+        setPresences,
+        recommendations,
+        setRecommendations
       }}
     >
       {children}

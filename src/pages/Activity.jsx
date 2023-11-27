@@ -60,7 +60,7 @@ const Activity = () => {
                   title='masuk'
                   date='17 September 2006 07:30'
                   icon='ph:sign-in-bold'
-                  to='/home#presence'
+                  to='/'
                   bg='#a3f0d0'
                   color='#0fb782'
                 />

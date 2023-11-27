@@ -94,13 +94,6 @@ const Navbar = () => {
                   : user?.name?.split(" ")[0] || "Guest"}
               </span>
             </p>
-            {/* <ul>
-                {Object.keys(user).map((key) => (
-                  <li key={key}>
-                    <strong>{key}:</strong> {user[key]}
-                  </li>
-                ))}
-              </ul> */}
             <MdKeyboardArrowDown className='text-neutral-400 text-14' />
           </div>
         </TooltipComponent>

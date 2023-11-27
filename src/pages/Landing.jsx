@@ -6,7 +6,7 @@ const Landing = () => {
   const { user, token } = useStateContext();
 
   if (token) {
-    return <Navigate to="/home" />;
+    return <Navigate to="/" />;
   }
   return (
     <div>Landing</div>

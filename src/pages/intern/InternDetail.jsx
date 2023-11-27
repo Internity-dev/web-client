@@ -28,8 +28,9 @@ const InternDetail = () => {
   const onBatal = () => {
     axiosClient
       .put(`/appliances/${vacancy.id}/cancel`)
-      .then(response => {
+      .then((response) => {
         setMessage(response.data.message);
+        console.log(response.data)
       })
       .catch((err) => {
         const response = err.response;
@@ -61,7 +62,7 @@ const InternDetail = () => {
     if (message) {
       const timeoutId = setTimeout(() => {
         navigate("/intern");
-      }, 1000);
+      }, 1500);
       return () => clearTimeout(timeoutId);
     }
   }, [message, navigate]);

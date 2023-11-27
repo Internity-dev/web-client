@@ -22,11 +22,13 @@ export default function DefaultLayout() {
     setVacancies,
     setActivity,
     setAppliances,
-    setReports
+    setReports,
+    setPresences,
+    setRecommendations,
   } = useStateContext();
 
   if (!token) {
-    return <Navigate to='/' />;
+    window.location.href = "https://internity.smkn1cibinong.sch.id";
   }
 
   useEffect(() => {
@@ -84,10 +86,15 @@ export default function DefaultLayout() {
           const journalsResponse = await axiosClient.get(
             `/journals?company=${firstAppliance.intern_date.company_id}`
           );
+          const presencesResponse = await axiosClient.get(
+            `/presences?company=${firstAppliance.intern_date.company_id}`
+          );
           setAppliances(firstAppliance);
           setActivity(todayActivitiesResponse.data);
-          setReports(journalsResponse.data.journals)
-          console.log(todayActivitiesResponse.data)
+          console.log(todayActivitiesResponse.data);
+          setReports(journalsResponse.data.journals);
+          setPresences(presencesResponse.data.presences);
+          console.log(presencesResponse.data.presences);
         }
       } catch (error) {
         console.error("Error fetching data:", error);

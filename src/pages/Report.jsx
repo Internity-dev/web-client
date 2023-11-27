@@ -5,7 +5,7 @@ import ReactPaginate from "react-paginate";
 import axiosClient from "../axios-client";
 
 const Report = () => {
-  const { reports, setReports, activity, setActivity } = useStateContext();
+  const { reports, setReports, activity } = useStateContext();
   const workTypeRef = createRef();
   const descriptionRef = createRef();
   const [message, setMessage] = useState(null);
@@ -46,7 +46,7 @@ const Report = () => {
     if (message) {
       const timeoutId = setTimeout(() => {
         setMessage(null);
-      }, 1000);
+      }, 1500);
       return () => clearTimeout(timeoutId);
     }
   }, [message]);
