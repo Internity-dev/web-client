@@ -17,14 +17,12 @@ export default function DefaultLayout() {
     isLoading,
     setUser,
     setIsLoading,
-    setNotifications,
     setNews,
     setVacancies,
     setActivity,
     setAppliances,
     setReports,
     setPresences,
-    setRecommendations,
   } = useStateContext();
 
   if (!token) {
@@ -41,19 +39,8 @@ export default function DefaultLayout() {
   useEffect(() => {
     axiosClient.get("/me").then(({ data }) => {
       setUser(data);
+      console.log(data)
     });
-  }, []);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axiosClient.get("/notifications");
-        setNotifications(response.data.notifications);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-    fetchData();
   }, []);
 
   useEffect(() => {
@@ -91,10 +78,9 @@ export default function DefaultLayout() {
           );
           setAppliances(firstAppliance);
           setActivity(todayActivitiesResponse.data);
-          console.log(todayActivitiesResponse.data);
           setReports(journalsResponse.data.journals);
+          console.log(journalsResponse.data.journals)
           setPresences(presencesResponse.data.presences);
-          console.log(presencesResponse.data.presences);
         }
       } catch (error) {
         console.error("Error fetching data:", error);

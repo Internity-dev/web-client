@@ -14,7 +14,7 @@ export { default as Saved } from "./intern/Saved";
 export { default as Status } from "./intern/Status";
 export { default as Activity } from "./Activity";
 export { default as Report } from "./Report";
-export { default as Messages } from "./Messages";
+export { default as Notifications } from "./Notifications";
 export { default as Profile } from "./profile/Profile";
 export { default as ChangeProfile } from "./profile/ChangeProfile";
 export { default as ChangePassword } from "./profile/ChangePassword";

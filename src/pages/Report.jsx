@@ -3,6 +3,7 @@ import { Header, InputText } from "../components";
 import { useStateContext } from "../context/ContextProvider";
 import ReactPaginate from "react-paginate";
 import axiosClient from "../axios-client";
+import { Icon } from "@iconify/react";
 
 const Report = () => {
   const { reports, setReports, activity } = useStateContext();
@@ -29,9 +30,8 @@ const Report = () => {
       description: descriptionRef.current.value,
     };
     axiosClient
-      .put(`/journals/${activity.journal.id}`, payload)
-      .then((response) => {
-        setReports(response.data);
+      .put(`/journals/${activity.journal.id}`, payload) 
+      .then(() => {
         setMessage("Berhasil mengupdate journal");
       })
       .catch((err) => {
@@ -120,11 +120,20 @@ const Report = () => {
           pageLinkClassName={"pagination__link"}
           activeLinkClassName={"pagination__link--active"}
           breakClassName={"pagination__break"}
+          marginPagesDisplayed={1}
+          pageRangeDisplayed={2}
         />
       </div>
       <dialog id='add' className='modal'>
         <div className='modal-box bg-lightOne dark:bg-dark'>
-          <h3 className='font-bold text-lg'>Add journal</h3>
+          <div className='flex justify-between items-center'>
+            <h3 className='font-bold text-lg'>Add journal</h3>
+            <form method='dialog'>
+              <button className='text-2xl p-3 hover:drop-shadow-xl hover:bg-light-gray rounded-full'>
+                <Icon icon='ic:round-close' color='#99abb4' />
+              </button>
+            </form>
+          </div>
           <form onSubmit={onSubmit}>
             <InputText
               label='Bidang Pekerjaan'
@@ -154,6 +163,7 @@ const Report = () => {
               type='submit'
               onClick={(e) => {
                 e.stopPropagation();
+                document.getElementById("notifications").close();
               }}
               className='bg-main text-lightOne p-2 hover:drop-shadow-xl rounded-md capitalize'
             >

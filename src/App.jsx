@@ -20,12 +20,11 @@ import {
   ChangePassword,
   NewsDetail,
   Presence,
-  Landing,
+  Notifications,
 } from "./pages";
 import "./index.css";
 
 import { useStateContext } from "./context/ContextProvider";
-import MyComponent from "./pages/MyComponent";
 
 const App = () => {
   const { setCurrentColor, setCurrentMode, currentMode } = useStateContext();
@@ -58,7 +57,7 @@ const App = () => {
             <Route path='/news/:id' element={<NewsDetail />} />
             <Route path='/saved' element={<Saved />} />
             <Route path='/status' element={<Status />} />
-            <Route path='/test' element={<MyComponent />} />
+            <Route path='/notifications' element={<Notifications />} />
           </Route>
           <Route path='/' element={<GuestLayout />}>
             <Route path='/login' element={<Login />} />

@@ -27,7 +27,7 @@ const Status = () => {
         <div className='flex items-center justify-center h-72 m-7'>
           <span className='loading loading-spinner loading-lg'></span>
         </div>
-      ) : (
+      ) : appliances.length != 0 ? (
         <>
           {appliances.map((appliance) => (
             <StatusCard
@@ -38,6 +38,12 @@ const Status = () => {
             />
           ))}
         </>
+      ) : (
+        <div className='flex justify-center items-center h-72 m-7'>
+          <h1 className='text-dark transition duration-300 dark:text-lightOne text-xl first-letter:capitalize'>
+            belum ada tempat magang terdaftar
+          </h1>
+        </div>
       )}
     </div>
   );

@@ -19,7 +19,7 @@ const NewsCard = ({ news }) => {
           <div className='flex flex-wrap mb-1'>
             <h5 className='text-main text-xs font-medium mr-auto'>{formattedDate}</h5>
           </div>
-          <h3 className='lg:text-2xl text-2xl leading-none text-dark transition duration-300 dark:text-lightOne font-semibold'>
+          <h3 className='lg:text-2xl text-2xl leading-none text-dark transition duration-300 dark:text-lightOne font-semibold two-line'>
             {news.title}
           </h3>
         </div>

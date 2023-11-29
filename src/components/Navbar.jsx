@@ -28,8 +28,6 @@ const Navbar = () => {
     currentColor,
     activeMenu,
     setActiveMenu,
-    handleClick,
-    isClicked,
     setScreenSize,
     screenSize,
     user,
@@ -54,7 +52,6 @@ const Navbar = () => {
     }
   }, [screenSize]);
 
- 
   const handleActiveMenu = () => setActiveMenu(!activeMenu);
 
   return (
@@ -70,14 +67,14 @@ const Navbar = () => {
         <NavButton
           title='Notification'
           dotColor='rgb(254, 201, 15)'
-          customFunc={() => handleClick("notification")}
+          customFunc={() => document.getElementById("notifications").showModal()}
           color={currentColor}
           icon={<RiNotification3Line />}
         />
         <TooltipComponent content='Profile' position='BottomCenter'>
           <div
             className='flex items-center gap-2 cursor-pointer p-1 hover:bg-light-gray rounded-lg'
-            onClick={() => handleClick("userProfile")}
+            onClick={() => document.getElementById("profile").showModal()}
           >
             <img
               className='rounded-full w-8 h-8'
@@ -97,9 +94,8 @@ const Navbar = () => {
             <MdKeyboardArrowDown className='text-neutral-400 text-14' />
           </div>
         </TooltipComponent>
-
-        {isClicked.notification && <Notification />}
-        {isClicked.userProfile && <UserProfile />}
+        <Notification />
+        <UserProfile />
       </div>
     </div>
   );

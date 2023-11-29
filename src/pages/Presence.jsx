@@ -6,7 +6,7 @@ import ReactPaginate from "react-paginate";
 const Presence = () => {
   const { presences } = useStateContext();
   const [currentPage, setCurrentPage] = useState(0);
-  const presencesPerPage = 5;
+  const presencesPerPage = 6;
   const pageCount = Math.ceil(presences.length / presencesPerPage);
   const handlePageClick = ({ selected }) => {
     setCurrentPage(selected);
@@ -88,6 +88,8 @@ const Presence = () => {
           pageLinkClassName={"pagination__link"}
           activeLinkClassName={"pagination__link--active"}
           breakClassName={"pagination__break"}
+          marginPagesDisplayed={1}
+          pageRangeDisplayed={2}
         />
       </div>
     </div>

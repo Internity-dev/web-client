@@ -18,6 +18,7 @@ export const ContextProvider = ({ children }) => {
   const [user, setUser] = useState({});
   const [news, setNews] = useState([]);
   const [notifications, setNotifications] = useState([]);
+  const [read, setRead] = useState([]);
   const [vacancies, setVacancies] = useState([]);
   const [recommendations, setRecommendations] = useState([]);
   const [appliances, setAppliances] = useState([]);
@@ -94,7 +95,9 @@ export const ContextProvider = ({ children }) => {
         presences,
         setPresences,
         recommendations,
-        setRecommendations
+        setRecommendations,
+        read,
+        setRead
       }}
     >
       {children}

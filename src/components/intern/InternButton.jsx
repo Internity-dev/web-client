@@ -23,7 +23,7 @@ const InternButton = ({ text, left, vacancy, onClick }) => {
   } else {
     className = vacancy.in_pending ? activeRight : normalRight;
   }
-  return <button className={className} onClick={handleClick}>{text}</button>;
+  return <button className={className} onClick={handleClick} disabled={text == "Processing" ? true : false}>{text}</button>;
 };
 
 export default InternButton;

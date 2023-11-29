@@ -6,6 +6,7 @@ import {
   Recommendation,
   Title,
   News,
+  PresenceModal,
 } from "../components";
 import { useStateContext } from "../context/ContextProvider";
 import axiosClient from "../axios-client";
@@ -13,7 +14,7 @@ import { Link } from "react-router-dom";
 import { Icon } from "@iconify/react";
 
 const Home = () => {
-  const { user, activity, setActivity, presence, setPresence, presences } =
+  const { user, activity, presence, setPresence, presences, setPresences } =
     useStateContext();
   const [message, setMessage] = useState(null);
   const now = new Date();
@@ -32,12 +33,12 @@ const Home = () => {
     axiosClient
       .put(`/presences/${presences[0].id}`, payload)
       .then((response) => {
-        const newActivity = {
-          ...activity,
-          presence: response.data.presence,
+        const newPresences = {
+          ...presences[0],
+          check_out: formattedTime,
         };
         setPresence(response.data.presence);
-        setActivity(newActivity);
+        setPresences(newPresences);
         setMessage("Berhasil absen keluar");
       })
       .catch((err) => {
@@ -56,12 +57,12 @@ const Home = () => {
     axiosClient
       .put(`/presences/${activity.presence.id}`, payload)
       .then((response) => {
-        const newActivity = {
-          ...activity,
-          presence: response.data.presence,
+        const newPresences = {
+          ...presences[0],
+          check_in: formattedTime,
         };
         setPresence(response.data.presence);
-        setActivity(newActivity);
+        setPresences(newPresences);
         setMessage("Berhasil absen masuk");
       })
       .catch((err) => {
@@ -94,23 +95,37 @@ const Home = () => {
               <PresenceButton
                 name='masuk'
                 icon='ph:sign-in-bold'
-                onClick={() => onMasuk()}
-                disabled={activity.presence == null ? true : false}
+                onClick={() =>
+                  activity.presence == null
+                    ? document.getElementById("absen").showModal()
+                    : onMasuk()
+                }
               />
               <PresenceButton
                 name='keluar'
                 icon='ph:sign-out-bold'
-                onClick={() => onKeluar()}
+                onClick={() =>
+                  activity.presence == null && presences[0].check_out == null
+                    ? onKeluar()
+                    : document.getElementById("keluar").showModal()
+                }
               />
               <PresenceButton
                 name='izin'
                 icon='basil:clipboard-alt-outline'
                 presence={presence}
+                onClick={() =>
+                  activity.presence == null
+                    ? document.getElementById("absen").showModal()
+                    : onMasuk()
+                }
               />
               <Link to='/presence'>
                 <PresenceButton name='kehadiran' icon='ic:round-list' />
               </Link>
             </div>
+            <PresenceModal id='absen' message='Anda sudah absen hari ini!' />
+            <PresenceModal id='keluar' message='Anda sudah absen keluar hari ini!' />
           </div>
           <Activity />
           <News />

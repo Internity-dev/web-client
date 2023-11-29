@@ -3,6 +3,7 @@ import { InternButton, InternDetails } from "../../components";
 import { useNavigate, useParams } from "react-router-dom";
 import axiosClient from "../../axios-client";
 import { Icon } from "@iconify/react";
+import { useStateContext } from "../../context/ContextProvider";
 
 const InternDetail = () => {
   const { id } = useParams();
@@ -10,6 +11,7 @@ const InternDetail = () => {
   const [vacancy, setVacancy] = useState([]);
   const [message, setMessage] = useState(null);
   const navigate = useNavigate();
+  const { user } = useStateContext();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -30,7 +32,6 @@ const InternDetail = () => {
       .put(`/appliances/${vacancy.id}/cancel`)
       .then((response) => {
         setMessage(response.data.message);
-        console.log(response.data)
       })
       .catch((err) => {
         const response = err.response;
@@ -93,6 +94,7 @@ const InternDetail = () => {
                   vacancy={vacancy}
                   text='batal daftar'
                   onClick={() => onBatal()}
+
                 />
               ) : vacancy.in_processed ? (
                 <InternButton vacancy={vacancy} text='Processing' />
@@ -100,13 +102,30 @@ const InternDetail = () => {
                 <InternButton
                   vacancy={vacancy}
                   text='daftar'
-                  onClick={() => onDaftar()}
+                  onClick={() =>
+                    user.in_pending || user.in_processed || user.in_internship
+                      ? document.getElementById("warning").showModal()
+                      : onBatal()
+                  }
                 />
               )}
             </div>
           </div>
         </>
       )}
+      <dialog id='warning' className='modal'>
+        <div className='modal-box'>
+          <h3 className='font-bold text-lg'>Warning!</h3>
+          <p className='py-4'>
+            Batalkan pendaftaran magang anda sebelum mendaftar ke tempat magang lain
+          </p>
+          <div className='modal-action'>
+            <form method='dialog'>
+              <button className='btn'>Close</button>
+            </form>
+          </div>
+        </div>
+      </dialog>
     </div>
   );
 };
