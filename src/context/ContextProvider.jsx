@@ -1,15 +1,11 @@
 import React, { createContext, useContext, useState } from "react";
 
 const StateContext = createContext({
-  currentUser: null,
   token: null,
-  setUser: () => {},
   setToken: () => {},
 });
 
 const initialState = {
-  chat: false,
-  cart: false,
   userProfile: false,
 };
 
