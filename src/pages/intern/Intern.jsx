@@ -1,13 +1,20 @@
 import React from "react";
 import { Title, UploadCv, InternCard, InternLink } from "../../components";
-import { useStateContext } from "../../context/ContextProvider";
+import { useQuery } from "react-query";
+import axiosClient from "../../axios-client";
 
 const Intern = () => {
-  const { user, vacancies } = useStateContext();
+  const { data: user } = useQuery("user", () =>
+    axiosClient.get("/me").then(({ data }) => data)
+  );
+
+  const { data: vacanciesData } = useQuery("vacancies", () =>
+    axiosClient.get("/vacancies").then(({ data }) => data.vacancies)
+  );
 
   return (
     <div>
-      {user.resume ? (
+      {user?.resume ? (
         <div className='lg:my-15 my-20'>
           <div className='flex flex-col justify-center items-center'>
             <Title title='intern' />
@@ -28,7 +35,7 @@ const Intern = () => {
             </div>
           </div>
           <div className='flex flex-col justify-center items-center lg:my-5 my-10  '>
-            {vacancies.map((vacancy) => (
+            {vacanciesData?.map((vacancy) => (
               <InternCard
                 key={vacancy.id}
                 vacancy={vacancy}

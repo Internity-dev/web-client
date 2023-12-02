@@ -1,12 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { useStateContext } from "../../context/ContextProvider";
+import { useQuery } from "react-query";
 import { Icon } from "@iconify/react";
 import { NavLink } from "react-router-dom";
 import Modal from "../Modal";
+import axiosClient from "../../axios-client";
 
 const ProfileHeader = () => {
-  const { user } = useStateContext();
+  const { data: user} = useQuery("user", () =>
+    axiosClient.get("/me").then(({ data }) => data)
+  );
+
   const [message, setMessage] = useState(null);
+
   useEffect(() => {
     if (message) {
       const timeoutId = setTimeout(() => {
@@ -15,17 +20,18 @@ const ProfileHeader = () => {
       return () => clearTimeout(timeoutId);
     }
   }, [message, setMessage]);
+
   return (
     <div className='w-full bg-main rounded-3xl flex flex-col'>
       <div className='my-10 flex flex-col justify-center items-center'>
         <div className='avatar static'>
           <div className='w-36 rounded-full'>
-            <img src={user.avatar_url} />
+            <img src={user?.avatar_url ? user.avatar_url : '/images/placeholder-profile.png'} alt={`Avatar of ${user?.name}`} />
           </div>
         </div>
         <div className='text-lightOne mt-5 text-center'>
-          <h1 className='capitalize text-2xl font-bold'>{user.name}</h1>
-          <h1 className='text-lg'>{user.email}</h1>
+          <h1 className='capitalize text-2xl font-bold'>{user?.name}</h1>
+          <h1 className='text-lg'>{user?.email}</h1>
         </div>
         <div className='flex mt-5 gap-5'>
           <NavLink
@@ -46,7 +52,7 @@ const ProfileHeader = () => {
           {message && (
             <div
               role='alert'
-              className='alert alert-success fixed w-auto top-16 right-10 z-50'
+              className='alert alert-success fixed w-auto top-16 right-10 z-50 flex'
             >
               <Icon icon='icon-park-solid:success' width={30} />
               <span>{message}</span>

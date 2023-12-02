@@ -9,14 +9,16 @@ import {
   PresenceModal,
 } from "../components";
 import { useStateContext } from "../context/ContextProvider";
-import axiosClient from "../axios-client";
 import { Link } from "react-router-dom";
 import { Icon } from "@iconify/react";
+import { useQuery, useQueryClient, useMutation } from "react-query";
+import axiosClient from "../axios-client";
 
 const Home = () => {
-  const { user, activity, presence, setPresence, presences, setPresences } =
-    useStateContext();
+  const { setPresence } = useStateContext();
+  const queryClient = useQueryClient();
   const [message, setMessage] = useState(null);
+  const [companyDetails, setCompanyDetails] = useState(null);
   const now = new Date();
   const formattedTime = now.toLocaleTimeString("en-US", {
     hour12: false,
@@ -25,28 +27,102 @@ const Home = () => {
     second: "2-digit",
   });
 
+  const userQueryKey = "user";
+  const companyDetailsQueryKey = "companyDetails";
+  const activityQueryKey = ["activity", companyDetails?.intern_date.company_id];
+  const presencesQueryKey = [
+    "presences",
+    companyDetails?.intern_date.company_id,
+  ];
+
+  const { data: user } = useQuery(userQueryKey, () =>
+    axiosClient.get("/me").then(({ data }) => data)
+  );
+
+  const { data: fetchedCompanyDetails } = useQuery(
+    companyDetailsQueryKey,
+    async () => {
+      const response = await axiosClient.get("/appliances/accepted");
+      return response.data.appliances[0];
+    }
+  );
+
+  useEffect(() => {
+    if (fetchedCompanyDetails) {
+      setCompanyDetails(fetchedCompanyDetails);
+    }
+  }, [fetchedCompanyDetails]);
+
+  const { data: activity } = useQuery(
+    activityQueryKey,
+    async () => {
+      const response = await axiosClient.get(
+        `/today-activities?company=${fetchedCompanyDetails?.intern_date.company_id}`
+      );
+      return response.data;
+    },
+    { enabled: !!fetchedCompanyDetails?.intern_date.company_id }
+  );
+
+  const { data: presences } = useQuery(
+    presencesQueryKey,
+    async () => {
+      const response = await axiosClient.get(
+        `/presences?company=${fetchedCompanyDetails?.intern_date.company_id}`
+      );
+      return response.data.presences;
+    },
+    { enabled: !!fetchedCompanyDetails?.intern_date.company_id }
+  );
+
+  const presenceMutation = useMutation(
+    (payload) => axiosClient.put(`/presences/${activity.presence.id}`, payload),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries("activity");
+        queryClient.invalidateQueries(presencesQueryKey);
+      },
+      onError: (err) => {
+        const response = err.response;
+        if (response && response.status === 422) {
+          setPresence(null);
+        }
+      },
+    }
+  );
+
+  const keluarMutation = useMutation(
+    (payload) => axiosClient.put(`/presences/${presences[0].id}`, payload),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries("activity");
+        queryClient.invalidateQueries(presencesQueryKey);
+      },
+      onError: (err) => {
+        const response = err.response;
+        if (response && response.status === 422) {
+          setPresence(null);
+        }
+      },
+    }
+  );
+
   const onKeluar = () => {
     const payload = {
       check_out: formattedTime,
       presence_status_id: 1,
     };
-    axiosClient
-      .put(`/presences/${presences[0].id}`, payload)
-      .then((response) => {
-        const newPresences = {
-          ...presences[0],
-          check_out: formattedTime,
-        };
-        setPresence(response.data.presence);
-        setPresences(newPresences);
-        setMessage("Berhasil absen keluar");
-      })
-      .catch((err) => {
-        const response = err.response;
-        if (response && response.status === 422) {
-          setPresence(null);
-        }
-      });
+    keluarMutation.mutate(payload);
+    setMessage("Berhasil absen keluar!");
+  };
+
+  const onIzin = () => {
+    const payload = {
+      check_in: formattedTime,
+      presence_status_id: 3,
+    };
+    presenceMutation.mutate(payload);
+    setMessage("Berhasil izin!");
   };
 
   const onMasuk = () => {
@@ -54,23 +130,8 @@ const Home = () => {
       check_in: formattedTime,
       presence_status_id: 1,
     };
-    axiosClient
-      .put(`/presences/${activity.presence.id}`, payload)
-      .then((response) => {
-        const newPresences = {
-          ...presences[0],
-          check_in: formattedTime,
-        };
-        setPresence(response.data.presence);
-        setPresences(newPresences);
-        setMessage("Berhasil absen masuk");
-      })
-      .catch((err) => {
-        const response = err.response;
-        if (response && response.status === 422) {
-          setPresence(null);
-        }
-      });
+    presenceMutation.mutate(payload);
+    setMessage("Berhasil absen!");
   };
 
   useEffect(() => {
@@ -84,7 +145,7 @@ const Home = () => {
 
   return (
     <div>
-      {user.in_internship ? (
+      {user?.in_internship ? (
         <div className='lg:my-15 my-20'>
           <div
             className='flex flex-col justify-center items-center'
@@ -96,7 +157,7 @@ const Home = () => {
                 name='masuk'
                 icon='ph:sign-in-bold'
                 onClick={() =>
-                  activity.presence == null
+                  activity?.presence == null
                     ? document.getElementById("absen").showModal()
                     : onMasuk()
                 }
@@ -105,19 +166,20 @@ const Home = () => {
                 name='keluar'
                 icon='ph:sign-out-bold'
                 onClick={() =>
-                  activity.presence == null && presences[0].check_out == null
+                  activity?.presence == null && presences[0].check_out == null
                     ? onKeluar()
+                    : activity.presence
+                    ? document.getElementById("masuk").showModal()
                     : document.getElementById("keluar").showModal()
                 }
               />
               <PresenceButton
                 name='izin'
                 icon='basil:clipboard-alt-outline'
-                presence={presence}
                 onClick={() =>
                   activity.presence == null
                     ? document.getElementById("absen").showModal()
-                    : onMasuk()
+                    : onIzin()
                 }
               />
               <Link to='/presence'>
@@ -125,21 +187,26 @@ const Home = () => {
               </Link>
             </div>
             <PresenceModal id='absen' message='Anda sudah absen hari ini!' />
-            <PresenceModal id='keluar' message='Anda sudah absen keluar hari ini!' />
+            <PresenceModal id='masuk' message='Silakan absen masuk dahulu' />
+            <PresenceModal
+              id='keluar'
+              message='Anda sudah absen keluar hari ini!'
+            />
           </div>
           <Activity />
           <News />
           {message && (
             <div
               role='alert'
-              className='alert alert-success fixed w-auto top-16 right-10 z-50'
+              className='alert alert-success fixed w-auto top-16 right-10 z-50 flex'
             >
               <Icon icon='icon-park-solid:success' width={30} />
               <span>{message}</span>
             </div>
           )}
+          {/* <ExcuseModal setMessage={setMessage} /> */}
         </div>
-      ) : user.resume ? (
+      ) : user?.resume ? (
         <div>
           <News />
           <Recommendation />

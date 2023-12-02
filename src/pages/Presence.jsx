@@ -2,16 +2,36 @@ import React, { useState } from "react";
 import { Header } from "../components";
 import { useStateContext } from "../context/ContextProvider";
 import ReactPaginate from "react-paginate";
+import axiosClient from "../axios-client";
+import { useQuery } from "react-query";
 
 const Presence = () => {
-  const { presences } = useStateContext();
+  const { data: companyDetails } = useQuery("companyDetails", async () => {
+    const response = await axiosClient.get("/appliances/accepted");
+    return response.data.appliances[0];
+  });
+
+  const { data: presences } = useQuery(
+    ["presences", companyDetails?.intern_date.company_id],
+    async () => {
+      const response = await axiosClient.get(
+        `/presences?company=${companyDetails?.intern_date.company_id}`
+      );
+      return response.data.presences;
+    },
+    { enabled: !!companyDetails?.intern_date.company_id }
+  );
   const [currentPage, setCurrentPage] = useState(0);
   const presencesPerPage = 6;
-  const pageCount = Math.ceil(presences.length / presencesPerPage);
+  const pageCount = Math.ceil(
+    presences?.length
+      ? presences.length / presencesPerPage
+      : 6 / presencesPerPage
+  );
   const handlePageClick = ({ selected }) => {
     setCurrentPage(selected);
   };
-  const slicedPresences = presences.slice(
+  const slicedPresences = presences?.slice(
     currentPage * presencesPerPage,
     (currentPage + 1) * presencesPerPage
   );
@@ -32,7 +52,7 @@ const Presence = () => {
             </tr>
           </thead>
           <tbody>
-            {slicedPresences.map((presence) => (
+            {slicedPresences?.map((presence) => (
               <tr
                 className='border-b-dark dark:border-b-lightOne'
                 key={presence.id}
@@ -71,7 +91,7 @@ const Presence = () => {
       </div>
       <div className='flex justify-between items-center'>
         <div className='flex flex-col items-start justify-center'>
-          <p>Total Presences: {presences.length}</p>
+          <p>Total Presences: {presences?.length}</p>
           <p>
             Page: {currentPage + 1} of {pageCount}
           </p>

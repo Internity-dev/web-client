@@ -3,18 +3,23 @@ import axiosClient from "../axios-client.js";
 import { Icon } from "@iconify/react";
 import { useStateContext } from "../context/ContextProvider";
 import { NavLink } from "react-router-dom";
+import { useQuery, useQueryClient } from "react-query";
 
 const UserProfile = () => {
-  const { user, setUser, setToken } =
-    useStateContext();
+  const { setToken, setCurrentMode } = useStateContext();
+  const queryClient = useQueryClient();
+
+  const { data: user, isLoading } = useQuery("user", () =>
+    axiosClient.get("/me").then(({ data }) => data)
+  );
 
   const onLogout = (ev) => {
     ev.preventDefault();
-
     axiosClient.post("/logout").then(() => {
-      setUser({});
+      queryClient.invalidateQueries("user");
       setToken(null);
-    });
+      setCurrentMode("Light");
+    });                 
   };
 
   return (
@@ -25,34 +30,41 @@ const UserProfile = () => {
             User Profile
           </p>
           <form method='dialog'>
-            <button
-              className='text-2xl p-3 hover:drop-shadow-xl hover:bg-light-gray rounded-full'
-            >
+            <button className='text-2xl p-3 hover:drop-shadow-xl hover:bg-light-gray rounded-full'>
               <Icon icon='ic:round-close' color='#99abb4' />
             </button>
           </form>
         </div>
-        <div className='flex gap-5 items-center mt-6 border-color border-b-1 pb-6'>
-          <img
-            className='rounded-full h-24 w-24'
-            src={user.avatar_url}
-            alt='user-profile'
-          />
-          <div>
-            <p className='font-semibold text-xl transition duration-300 dark:text-neutral-200'>
-              {" "}
-              {user.name}{" "}
-            </p>
-            <p className='text-neutral-500 text-sm transition duration-300 dark:text-neutral-400'>
-              {" "}
-              {user.in_internship ? "Intern" : "Pre Intern"}{" "}
-            </p>
-            <p className='text-neutral-500 text-sm font-semibold transition duration-300 dark:text-neutral-400'>
-              {" "}
-              rafie0917@gmail.com{" "}
-            </p>
+        {isLoading ? (
+          <div className='flex items-center justify-center h-screen'>
+            <span className='loading loading-spinner loading-lg'></span>
           </div>
-        </div>
+        ) : (
+          <div className='flex gap-5 items-center mt-6 border-color border-b-1 pb-6'>
+            <div className='avatar static'>
+              <div className='w-24 h-24 rounded-full'>
+                <img
+                  src={user?.avatar_url || "/images/placeholder-profile.png"}
+                  alt='user-profile'
+                />
+              </div>
+            </div>
+            <div>
+              <p className='font-semibold text-xl transition duration-300 dark:text-neutral-200'>
+                {" "}
+                {user?.name || "Loading..."}{" "}
+              </p>
+              <p className='text-neutral-500 text-sm transition duration-300 dark:text-neutral-400'>
+                {" "}
+                {user?.in_internship ? "Intern" : "Pre Intern"}{" "}
+              </p>
+              <p className='text-neutral-500 text-sm font-semibold transition duration-300 dark:text-neutral-400'>
+                {" "}
+                {user?.email || ""}{" "}
+              </p>
+            </div>
+          </div>
+        )}
         <div>
           <NavLink
             to='/profile'

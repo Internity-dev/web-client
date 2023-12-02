@@ -2,10 +2,8 @@ import { Navigate, Outlet } from "react-router-dom";
 import { useStateContext } from "../../context/ContextProvider";
 import { useEffect } from "react";
 import { Icon } from "@iconify/react";
-
 import { Navbar, Footer, Sidebar } from "..";
 import "../../index.css";
-import axiosClient from "../../axios-client";
 
 export default function DefaultLayout() {
   const {
@@ -13,20 +11,11 @@ export default function DefaultLayout() {
     setMode,
     setCurrentMode,
     currentMode,
-    activeMenu,
-    isLoading,
-    setUser,
-    setIsLoading,
-    setNews,
-    setVacancies,
-    setActivity,
-    setAppliances,
-    setReports,
-    setPresences,
+    activeMenu
   } = useStateContext();
 
   if (!token) {
-    window.location.href = "https://internity.smkn1cibinong.sch.id";
+    return <Navigate to='/login' />;
   }
 
   useEffect(() => {
@@ -34,74 +23,6 @@ export default function DefaultLayout() {
     if (storedMode) {
       setCurrentMode(storedMode);
     }
-  }, []);
-
-  useEffect(() => {
-    axiosClient.get("/me").then(({ data }) => {
-      setUser(data);
-      console.log(data)
-    });
-  }, []);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axiosClient.get("/news");
-        setNews(response.data.news.data);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-
-    fetchData();
-  }, []);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axiosClient.get("/appliances/accepted");
-        const firstAppliance = response.data.appliances[0];
-
-        if (
-          firstAppliance &&
-          firstAppliance.intern_date &&
-          firstAppliance.intern_date.company_id
-        ) {
-          const todayActivitiesResponse = await axiosClient.get(
-            `/today-activities?company=${firstAppliance.intern_date.company_id}`
-          );
-          const journalsResponse = await axiosClient.get(
-            `/journals?company=${firstAppliance.intern_date.company_id}`
-          );
-          const presencesResponse = await axiosClient.get(
-            `/presences?company=${firstAppliance.intern_date.company_id}`
-          );
-          setAppliances(firstAppliance);
-          setActivity(todayActivitiesResponse.data);
-          setReports(journalsResponse.data.journals);
-          console.log(journalsResponse.data.journals)
-          setPresences(presencesResponse.data.presences);
-        }
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-
-    fetchData();
-  }, []);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axiosClient.get("/vacancies");
-        setVacancies(response.data.vacancies);
-        setIsLoading(false);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-
-    fetchData();
   }, []);
 
   return (
@@ -142,13 +63,7 @@ export default function DefaultLayout() {
             <Navbar />
           </div>
           <div>
-            {isLoading ? (
-              <div className='flex items-center justify-center h-screen'>
-                <span className='loading loading-spinner loading-lg'></span>
-              </div>
-            ) : (
-              <Outlet />
-            )}
+            <Outlet />
           </div>
           <Footer />
         </div>

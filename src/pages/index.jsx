@@ -1,6 +1,4 @@
 export { default as Home } from "./Home";
-export { default as Journals } from "./Journals";
-export { default as Landing } from "./Landing";
 export { default as Login } from "./Login";
 export { default as News } from "./news/News";
 export { default as NewsDetail } from "./news/NewsDetail";

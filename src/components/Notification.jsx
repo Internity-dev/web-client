@@ -1,25 +1,21 @@
-import React, { useEffect } from "react";
-
-import { useStateContext } from "../context/ContextProvider";
+import React from "react";
+import { useQuery } from "react-query";
 import { Icon } from "@iconify/react";
 import { Link } from "react-router-dom";
 import axiosClient from "../axios-client";
 
 const Notification = () => {
-  const { notifications, setNotifications } = useStateContext();
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axiosClient.get("/notifications");
-        setNotifications(response.data.notifications);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-
-    fetchData();
-  }, []);
+  const { data: unreads = [] } = useQuery(
+    "unreads",
+    async () => {
+      const response = await axiosClient.get("/notifications");
+      const filteredNotifications = response.data.notifications.filter(
+        (notification) => notification.read_at === null
+      );
+      return filteredNotifications;
+    }
+  );
 
   return (
     <dialog id='notifications' className='modal'>
@@ -34,10 +30,10 @@ const Notification = () => {
               className='text-dark dark:text-lightOne text-xs rounded p-1 px-2 bg-orange-theme '
               onClick={() => document.getElementById("notifications").close()}
             >
-              {notifications.length > 99 ? (
+              {unreads.length > 99 ? (
                 <p>99+ Unread Message</p>
               ) : (
-                <p>{notifications.length} Unread Message</p>
+                <p>{unreads.length} Unread Message</p>
               )}
             </Link>
           </div>
@@ -48,7 +44,7 @@ const Notification = () => {
           </form>
         </div>
         <div className='mt-5 '>
-          {notifications.slice(0, 3).map((notification) => (
+          {unreads.slice(0, 3).map((notification) => (
             <div
               key={notification.id}
               className='flex items-center leading-8 gap-4 border-b-1 border-color p-3'

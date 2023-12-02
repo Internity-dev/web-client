@@ -1,12 +1,32 @@
 import React, { createRef, useEffect, useState } from "react";
-import { useStateContext } from "../../context/ContextProvider";
-import { InputText, LoginBtn, SkillsInput } from "../../components";
+import { InputText, LoginBtn } from "../../components";
 import axiosClient from "../../axios-client";
 import { Icon } from "@iconify/react";
+import { useMutation, useQuery } from "react-query";
 import { useNavigate } from "react-router-dom";
 
 const ChangeProfile = () => {
-  const { user, setUser } = useStateContext();
+  const navigate = useNavigate();
+  const { data: user, refetch: refetchUser } = useQuery("user", () =>
+    axiosClient.get("/me").then(({ data }) => data)
+  );
+
+  const { mutate } = useMutation(
+    (payload) => axiosClient.put("/change-profile", payload),
+    {
+      onSuccess: () => {
+        setMessage("Profil berhasil diubah");
+        refetchUser();
+      },
+      onError: (err) => {
+        const response = err.response;
+        if (response && (response.status === 401 || response.status === 422)) {
+          setError(response.data.message);
+        }
+      },
+    }
+  );
+
   const nameRef = createRef();
   const emailRef = createRef();
   const addressRef = createRef();
@@ -18,19 +38,28 @@ const ChangeProfile = () => {
   const imageInputRef = createRef();
   const [message, setMessage] = useState(null);
   const [error, setError] = useState(null);
-  const [name, setName] = useState(user.name || "");
-  const [email, setEmail] = useState(user.email || "");
-  const [address, setAddress] = useState(user.address || "");
-  const [phone, setPhone] = useState(user.phone || "");
-  const [gender, setGender] = useState(user.gender || "");
-  const [dateOfBirth, setDateOfBirth] = useState(user.date_of_birth || "");
-  const [bio, setBio] = useState(user.bio || "");
-  const [skills, setSkills] = useState(user.skills || "");
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [address, setAddress] = useState("");
+  const [phone, setPhone] = useState("");
+  const [gender, setGender] = useState("male");
+  const [dateOfBirth, setDateOfBirth] = useState("");
+  const [bio, setBio] = useState("");
+  const [skills, setSkills] = useState("");
   const [selectedImage, setSelectedImage] = useState(null);
-  const navigate = useNavigate();
-  const selectedTags = (tags) => {
-    console.log(tags);
-  };
+
+  useEffect(() => {
+    if (user) {
+      setName(user.name || "");
+      setEmail(user.email || "");
+      setAddress(user.address || "");
+      setPhone(user.phone || "");
+      setGender(user.gender || "male");
+      setDateOfBirth(user.date_of_birth || "");
+      setBio(user.bio || "");
+      setSkills(user.skills || "");
+    }
+  }, [user]);
 
   const handleImageChange = (event) => {
     const file = event.target.files[0];
@@ -41,61 +70,39 @@ const ChangeProfile = () => {
     }
   };
 
-  const onSubmit = (ev) => {
+  const onSubmit = async (ev) => {
     ev.preventDefault();
 
     const payload = {
-      name: nameRef.current.value,
-      email: emailRef.current.value,
-      address: addressRef.current.value,
-      phone: phoneRef.current.value,
-      gender: genderRef.current.value,
-      date_of_birth: dateOfBirthRef.current.value,
-      bio: bioRef.current.value,
-      skills: skillsRef.current.value,
+      name,
+      email,
+      address,
+      phone,
+      gender,
+      date_of_birth: dateOfBirth,
+      bio,
+      skills,
     };
 
-    axiosClient
-      .put("/change-profile", payload)
-      .then(({ data }) => {
-        setUser(data.user);
+    try {
+      await mutate(payload);
 
-        if (imageInputRef.current.files[0]) {
-          const payload = {
-            avatar: imageInputRef.current.files[0],
-          };
+      if (imageInputRef.current.files[0]) {
+        const formData = new FormData();
+        formData.append("avatar", imageInputRef.current.files[0]);
 
-          axiosClient
-            .post("/avatars", payload, {
-              headers: {
-                "Content-Type": "multipart/form-data",
-              },
-            })
-            .then(({ data }) => {
-              const newUser = {
-                ...user,
-                avatar_url: "http://localhost:8000/" + data.avatar,
-              };
-              setUser(newUser);
-            })
-            .catch((err) => {
-              const response = err.response;
-              if (
-                response &&
-                (response.status === 401 || response.status === 422)
-              ) {
-                setError(response.data.message);
-              }
-            });
-        }
-        setMessage("Profil berhasil diubah");
-      })
-      .catch((err) => {
-        const response = err.response;
-        if (response && (response.status === 401 || response.status === 422)) {
-          setError(response.data.message);
-        }
-      });
+        await axiosClient.post("/avatars", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
+      }
+    } catch (err) {
+      const response = err.response;
+      if (response && (response.status === 401 || response.status === 422)) {
+        setError(response.data.message);
+      }
+    }
   };
 
   useEffect(() => {
@@ -113,10 +120,14 @@ const ChangeProfile = () => {
         <div className='w-full flex flex-col'>
           <div className='my-10 flex flex-col justify-center items-center'>
             <div className='relative'>
-              <img
-                src={selectedImage ? selectedImage : user.avatar_url}
-                className='rounded-full w-36 h-36 min-w-full min-h-full max-w-36 max-h-36 object-fill'
-              />
+              <div className='avatar static'>
+                <div className='w-36 rounded-full'>
+                  <img
+                    src={selectedImage ? selectedImage : user?.avatar_url}
+                    className='rounded-full w-36 h-36 min-w-full min-h-full max-w-36 max-h-36 object-fill'
+                  />
+                </div>
+              </div>
               <div className='absolute bottom-0 right-0 flex justify-center items-center bg-main overflow-hidden rounded-full w-11 h-11'>
                 <input
                   type='file'
@@ -140,7 +151,7 @@ const ChangeProfile = () => {
             {message && (
               <div
                 role='alert'
-                className='alert alert-success fixed w-auto top-16 right-10'
+                className='alert alert-success fixed w-auto top-16 right-10 flex'
               >
                 <Icon icon='icon-park-solid:success' width={30} />
                 <span>{message}</span>
@@ -149,7 +160,7 @@ const ChangeProfile = () => {
             {error && (
               <div
                 role='alert'
-                className='alert alert-error fixed w-auto top-16 right-10'
+                className='alert alert-error fixed w-auto top-16 right-10 flex'
               >
                 <Icon icon='mingcute:alert-fill' width={30} />
                 <span>{error}</span>
@@ -160,7 +171,7 @@ const ChangeProfile = () => {
               name='name'
               type='text'
               innerRef={nameRef}
-              placeholder={user.name ? user.name : "Masukkan Nama"}
+              placeholder={user?.name ? user.name : "Masukkan Nama"}
               value={name}
               onChange={(e) => setName(e.target.value)}
             />
@@ -170,7 +181,7 @@ const ChangeProfile = () => {
               name='email'
               type='email'
               innerRef={emailRef}
-              placeholder={user.email ? user.email : "Masukkan Email"}
+              placeholder={user?.email ? user.email : "Masukkan Email"}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
@@ -180,7 +191,7 @@ const ChangeProfile = () => {
               name='address'
               type='text'
               innerRef={addressRef}
-              placeholder={user.address ? user.address : "Masukkan Alamat"}
+              placeholder={user?.address ? user.address : "Masukkan Alamat"}
               value={address}
               onChange={(e) => setAddress(e.target.value)}
             />
@@ -190,7 +201,7 @@ const ChangeProfile = () => {
               name='phone'
               type='text'
               innerRef={phoneRef}
-              placeholder={user.phone ? user.phone : "Masukkan Nomor Telepon"}
+              placeholder={user?.phone ? user.phone : "Masukkan Nomor Telepon"}
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
             />
@@ -208,9 +219,7 @@ const ChangeProfile = () => {
                 value={gender}
                 onChange={(e) => setGender(e.target.value)}
               >
-                <option disabled defaultValue>
-                  Pilih jenis kelamin anda
-                </option>
+                <option disabled>Pilih jenis kelamin anda</option>
                 <option value='male'>Laki-Laki</option>
                 <option value='female'>Perempuan</option>
               </select>
@@ -228,7 +237,7 @@ const ChangeProfile = () => {
                 className='input input-bordered bg-main-bg transition duration-300 dark:bg-main-dark-bg text-base'
                 ref={dateOfBirthRef}
                 placeholder={
-                  user.date_of_birth ? user.date_of_birth : "17/09/2006"
+                  user?.date_of_birth ? user.date_of_birth : "17/09/2006"
                 }
                 value={dateOfBirth}
                 onChange={(e) => setDateOfBirth(e.target.value)}
@@ -245,23 +254,18 @@ const ChangeProfile = () => {
                 name='bio'
                 className='textarea textarea-bordered h-24 bg-main-bg transition duration-300 dark:bg-main-dark-bg text-base'
                 ref={bioRef}
-                placeholder={user.bio ? user.bio : "Masukkan Bio"}
+                placeholder={user?.bio ? user.bio : "Masukkan Bio"}
                 value={bio}
                 onChange={(e) => setBio(e.target.value)}
               ></textarea>
             </div>
-            {/* <SkillsInput
-              name='skills'
-              innerRef={skillsRef}
-              selectedTags={selectedTags}
-              tags={user.skills}
-            /> */}
+
             <InputText
               label='Skills'
               name='skills'
               type='text'
               innerRef={skillsRef}
-              placeholder={user.skills ? user.skills : "Masukkan Skills"}
+              placeholder={user?.skills ? user.skills : "Masukkan Skills"}
               value={skills}
               onChange={(e) => setSkills(e.target.value)}
             />

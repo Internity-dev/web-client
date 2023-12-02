@@ -4,9 +4,20 @@ import { useStateContext } from "../context/ContextProvider";
 import ReactPaginate from "react-paginate";
 import axiosClient from "../axios-client";
 import { Icon } from "@iconify/react";
+import { useQuery } from "react-query";
 
 const Notifications = () => {
-  const { notifications } = useStateContext();
+  const { setNotifications } = useStateContext();
+
+  const {
+    data: notifications = [],
+    isLoading,
+    isError,
+  } = useQuery("notifications", async () => {
+    const response = await axiosClient.get("/notifications");
+    return response.data.notifications;
+  });
+
   const [message, setMessage] = useState();
   const [currentPage, setCurrentPage] = useState(0);
   const notificationsPerPage = 7;
@@ -18,6 +29,7 @@ const Notifications = () => {
     currentPage * notificationsPerPage,
     (currentPage + 1) * notificationsPerPage
   );
+
   const getCurrentTime = () => {
     const now = new Date();
     const year = now.getFullYear();
@@ -43,7 +55,7 @@ const Notifications = () => {
           read_at: getCurrentTime(),
         }));
         setMessage(response.data.message);
-        setPresences(newNotifications);
+        setNotifications(newNotifications);
       })
       .catch((err) => {
         const response = err.response;
@@ -75,6 +87,7 @@ const Notifications = () => {
           </button>
         </div>
       </div>
+
       <div className='overflow-x-auto'>
         <table className='table'>
           <tbody>
@@ -109,12 +122,14 @@ const Notifications = () => {
           </tbody>
         </table>
       </div>
+
       <div className='flex flex-col items-start justify-center'>
         <p>Total Messages: {notifications.length}</p>
         <p>
           Page: {currentPage + 1} of {pageCount}
         </p>
       </div>
+
       <div className='flex justify-end items-center'>
         <ReactPaginate
           previousLabel={"<"}
@@ -132,10 +147,11 @@ const Notifications = () => {
           pageRangeDisplayed={2}
         />
       </div>
+
       {message && (
         <div
           role='alert'
-          className='alert alert-success fixed w-auto top-16 right-10 z-50'
+          className='alert alert-success fixed w-auto top-16 right-10 z-50 flex'
         >
           <Icon icon='icon-park-solid:success' width={30} />
           <span>{message}</span>

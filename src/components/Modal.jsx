@@ -1,45 +1,48 @@
 import React, { createRef, useState } from "react";
+import { useMutation } from "react-query";
+import { useQueryClient } from "react-query";
 import { Icon } from "@iconify/react";
 import axiosClient from "../axios-client";
-import { useStateContext } from "../context/ContextProvider";
 
 const Modal = ({ setMessage }) => {
-  const { user, setUser } = useStateContext();
+  const queryClient = useQueryClient();
   const resumeRef = createRef();
   const [filename, setFileName] = useState("No selected file");
+
+  const uploadResumeMutation = useMutation(
+    (file) =>
+      axiosClient.post("/resumes", file, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries("user");
+        document.querySelector("#my_modal_2").close();
+        setMessage("Berhasil mengupload CV");
+      },
+    }
+  );
 
   const handleInputClick = () => {
     document.querySelector(".input-field").click();
   };
 
-  const onSubmit = (ev) => {
+  const onSubmit = async (ev) => {
     ev.preventDefault();
 
-    const payload = {
-      resume: resumeRef.current.files[0],
-    };
+    const payload = new FormData();
+    payload.append("resume", resumeRef.current.files[0]);
 
-    axiosClient
-      .post("/resumes", payload, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      })
-      .then(response => {
-        const newUser = {
-          ...user,
-          resume: response.data.resume
-        };
-        setUser(newUser);
-        document.querySelector("#my_modal_2").close();
-        setMessage("Berhasil mengupload CV");
-      })
-      .catch((err) => {
-        const response = err.response;
-        if (response && (response.status === 401 || response.status === 500)) {
-          setMessage(response.data.message);
-        }
-      });
+    try {
+      await uploadResumeMutation.mutateAsync(payload);
+    } catch (error) {
+      const response = error.response;
+      if (response && (response.status === 401 || response.status === 500)) {
+        setMessage(response.data.message);
+      }
+    }
   };
 
   return (
@@ -62,14 +65,15 @@ const Modal = ({ setMessage }) => {
               files[0] && setFileName(files[0].name);
             }}
           />
-          {filename == "No selected file" ? (
+          {filename === "No selected file" ? (
             <>
               <Icon icon='ic:round-cloud-upload' color='#1191ff' width='60' />
-              <p className='text-main'>Browse files to upload</p>
+              <p className='text-main'>Click here to upload</p>
             </>
           ) : (
             <h1>{filename}</h1>
           )}
+
           <button
             type='submit'
             onClick={(e) => {
@@ -82,7 +86,9 @@ const Modal = ({ setMessage }) => {
         </form>
         <section className='my-3 flex items-center py-4 px-5 rounded-md bg-slate-300 dark:bg-main-dark-bg w-400'>
           <Icon icon='pepicons-print:cv' color='#1191ff' width={30} />
-          <h1 className='text-dark dark:text-lightOne'> - {filename}</h1>
+          <h1 className='text-dark dark:text-lightOne'>
+            - {filename ?? "No selected file"}
+          </h1>
         </section>
       </div>
 

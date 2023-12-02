@@ -5,6 +5,8 @@ import { MdKeyboardArrowDown } from "react-icons/md";
 import { TooltipComponent } from "@syncfusion/ej2-react-popups";
 import { Notification, Searchbar, UserProfile } from ".";
 import { useStateContext } from "../context/ContextProvider";
+import { useQuery } from "react-query";
+import axiosClient from "../axios-client";
 
 const NavButton = ({ title, customFunc, icon, color, dotColor }) => (
   <TooltipComponent content={title} position='BottomCenter'>
@@ -30,9 +32,11 @@ const Navbar = () => {
     setActiveMenu,
     setScreenSize,
     screenSize,
-    user,
-    isLoading,
   } = useStateContext();
+
+  const { data: user, isLoading } = useQuery("user", () =>
+    axiosClient.get("/me").then(({ data }) => data)
+  );
 
   useEffect(() => {
     const handleResize = () => setScreenSize(window.innerWidth);
@@ -62,7 +66,7 @@ const Navbar = () => {
         color={currentColor}
         icon={<AiOutlineMenu />}
       />
-      {isLoading ? null : !user.in_internship && <Searchbar />}
+      {isLoading ? null : !user?.in_internship && <Searchbar />}
       <div className='flex'>
         <NavButton
           title='Notification'
@@ -79,7 +83,7 @@ const Navbar = () => {
             <img
               className='rounded-full w-8 h-8'
               src={
-                isLoading ? "/images/placeholder-profile.png" : user.avatar_url
+                isLoading ? "/images/placeholder-profile.png" : user?.avatar_url
               }
               alt='user-profile'
             />

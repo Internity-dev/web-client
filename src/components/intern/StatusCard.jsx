@@ -25,13 +25,13 @@ const StatusCard = ({ appliance }) => {
       <div
         style={{
           backgroundColor:
-            appliance.status == "rejected"
+            appliance.status == "rejected" || appliance.status == "canceled"
               ? "#F9CAD1"
               : appliance.status == "accepted"
               ? "#A3F0D0"
               : "#F5ED8D",
           color:
-            appliance.status == "rejected"
+            appliance.status == "rejected" || appliance.status == "canceled"
               ? "#F03E61"
               : appliance.status == "accepted"
               ? "#0FB782"
@@ -39,13 +39,7 @@ const StatusCard = ({ appliance }) => {
         }}
         className='py-1 px-2 rounded-lg capitalize w-20 text-center mr-5 font-semibold'
       >
-        <h1>
-          {appliance.status == "rejected"
-            ? "ditolak"
-            : appliance.status == "accepted"
-            ? "diterima"
-            : "diproses"}
-        </h1>
+        <h1>{appliance.status}</h1>
       </div>
     </Link>
   );

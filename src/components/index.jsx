@@ -28,6 +28,7 @@ export { default as InternLink } from "./intern/InternLink";
 export { default as InternDetails } from "./intern/InternDetails";
 export { default as InternButton } from "./intern/InternButton";
 export { default as Searchbar } from "./Searchbar";
+export { default as ExcuseModal } from "./ExcuseModal";
 export { default as ProfileHeader } from "./profile/ProfileHeader";
 export { default as Info } from "./profile/Info";
 export { default as SkillsInput } from "./profile/SkillsInput";

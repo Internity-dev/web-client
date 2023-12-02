@@ -2,15 +2,33 @@ import React, { createRef, useEffect, useState } from "react";
 import { Input, LoginBtn } from "../../components";
 import axiosClient from "../../axios-client";
 import { Icon } from "@iconify/react";
+import { useMutation } from "react-query";
 import { useNavigate } from "react-router-dom";
 
 const ChangePassword = () => {
   const oldPasswordRef = createRef();
   const passwordRef = createRef();
   const passwordConfirmationRef = createRef();
+  const navigate = useNavigate();
   const [message, setMessage] = useState(null);
   const [error, setError] = useState(null);
-  const navigate = useNavigate();
+
+  const { mutate, data } = useMutation(
+    (payload) => axiosClient.put("/change-password", payload),
+    {
+      onSuccess: () => {
+        setMessage("Password berhasil diubah");
+        setError(null);
+      },
+      onError: (err) => {
+        const response = err.response;
+        if ((response && response.status === 401) || response.status === 422) {
+          setError(response.data.message);
+          setMessage(null);
+        }
+      },
+    }
+  );
 
   const onSubmit = (ev) => {
     ev.preventDefault();
@@ -20,29 +38,19 @@ const ChangePassword = () => {
       password: passwordRef.current.value,
       password_confirmation: passwordConfirmationRef.current.value,
     };
-    axiosClient
-      .put("/change-password", payload)
-      .then(() => {
-        setMessage("Password berhasil diubah");
-        setError(null);
-      })
-      .catch((err) => {
-        const response = err.response;
-        if ((response && response.status === 401) || response.status === 422) {
-          setError(response.data.message);
-          setMessage(null);
-        }
-      });
+
+    mutate(payload);
   };
 
   useEffect(() => {
-    if (message) {
+    if (data) {
       const timeoutId = setTimeout(() => {
         navigate("/profile");
       }, 1500);
       return () => clearTimeout(timeoutId);
     }
-  }, [message, navigate]);
+  }, [data, navigate]);
+
   return (
     <div className='m-2 md:m-10 mt-24 shadow-xl transition duration-300 dark:bg-secondary-dark-bg bg-white rounded-3xl'>
       <form onSubmit={onSubmit}>
@@ -72,7 +80,7 @@ const ChangePassword = () => {
             {message && (
               <div
                 role='alert'
-                className='alert alert-success fixed w-auto top-16 right-10'
+                className='alert alert-success fixed w-auto top-16 right-10 flex'
               >
                 <Icon icon='icon-park-solid:success' width={30} />
                 <span>{message}</span>
@@ -81,7 +89,7 @@ const ChangePassword = () => {
             {error && (
               <div
                 role='alert'
-                className='alert alert-error fixed w-auto top-16 right-10'
+                className='alert alert-error fixed w-auto top-16 right-10 flex'
               >
                 <Icon icon='mingcute:alert-fill' width={30} />
                 <span>{error}</span>

@@ -1,19 +1,26 @@
 import React from "react";
 import { NewsCard, Title } from "../../components";
-import { useStateContext } from "../../context/ContextProvider";
+import axiosClient from "../../axios-client";
+import { useQuery } from "react-query";
+
+const fetchNews = async () => {
+  const response = await axiosClient.get("/news");
+  return response.data.news.data;
+};
 
 const News = () => {
-  const { news } = useStateContext();
+  const { data: news, isError } = useQuery("news", fetchNews);
 
   return (
     <div className='lg:my-15 my-20'>
       <div className='flex flex-col justify-center items-center'>
         <Title title='news' />
         <div className='flex w-full justify-center flex-wrap'>
-          {news.map((item) => (
-            <NewsCard news={item} />
+          {news?.map((item) => (
+            <NewsCard key={item.id} news={item} />
           ))}
         </div>
+        {isError && <div>Error fetching news data</div>}
       </div>
     </div>
   );

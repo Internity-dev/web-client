@@ -31,7 +31,7 @@ const UploadCv = () => {
       {message && (
         <div
           role='alert'
-          className='alert alert-success fixed w-auto top-16 right-10 z-50'
+          className='alert alert-success fixed w-auto top-16 right-10 z-50 flex'
         >
           <Icon icon='icon-park-solid:success' width={30} />
           <span>{message}</span>

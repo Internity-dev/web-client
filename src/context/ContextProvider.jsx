@@ -14,25 +14,11 @@ const initialState = {
 };
 
 export const ContextProvider = ({ children }) => {
-  const [isLoading, setIsLoading] = useState(true);
-  const [user, setUser] = useState({});
-  const [news, setNews] = useState([]);
-  const [notifications, setNotifications] = useState([]);
-  const [read, setRead] = useState([]);
-  const [vacancies, setVacancies] = useState([]);
-  const [recommendations, setRecommendations] = useState([]);
-  const [appliances, setAppliances] = useState([]);
-  const [activity, setActivity] = useState([]);
-  const [presence, setPresence] = useState([]);
-  const [presences, setPresences] = useState([]);
-  const [reports, setReports] = useState([]);
-  const [avatar, setAvatar] = useState({});
   const [token, _setToken] = useState(localStorage.getItem("ACCESS_TOKEN"));
   const [screenSize, setScreenSize] = useState(undefined);
   const [currentColor, setCurrentColor] = useState("#1191FF");
   const [currentMode, setCurrentMode] = useState("Light");
   const [activeMenu, setActiveMenu] = useState(true);
-  const [saved, setSaved] = useState(true);
   const [isClicked, setIsClicked] = useState(initialState);
 
   const setMode = (e) => {
@@ -55,8 +41,6 @@ export const ContextProvider = ({ children }) => {
   return (
     <StateContext.Provider
       value={{
-        user,
-        setUser,
         token,
         setToken,
         currentColor,
@@ -72,32 +56,6 @@ export const ContextProvider = ({ children }) => {
         setCurrentColor,
         setCurrentMode,
         setMode,
-        isLoading,
-        setIsLoading,
-        avatar,
-        setAvatar,
-        news,
-        setNews,
-        notifications,
-        setNotifications,
-        vacancies,
-        setVacancies,
-        activity,
-        setActivity,
-        saved,
-        setSaved,
-        appliances,
-        setAppliances,
-        reports,
-        setReports,
-        presence,
-        setPresence,
-        presences,
-        setPresences,
-        recommendations,
-        setRecommendations,
-        read,
-        setRead
       }}
     >
       {children}

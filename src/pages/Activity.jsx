@@ -1,13 +1,52 @@
 import React, { useEffect, useState } from "react";
-import { useStateContext } from "../context/ContextProvider";
 import { ActivityButton, ActivityCard, Title } from "../components";
 import Isotope from "isotope-layout";
+import axiosClient from "../axios-client";
+import { useQuery } from "react-query";
 
 const Activity = () => {
-  const { user, activity } = useStateContext();
+  const months = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+  const currentDate = new Date();
+  const day = currentDate.getDate();
+  const monthIndex = currentDate.getMonth();
+  const year = currentDate.getFullYear();
+  const month = months[monthIndex];
+  const formattedDate = `${day} ${month} ${year}`;
+
+  const { data: user } = useQuery("user", () =>
+    axiosClient.get("/me").then(({ data }) => data)
+  );
+  const { data: companyDetails } = useQuery("companyDetails", async () => {
+    const response = await axiosClient.get("/appliances/accepted");
+    return response.data.appliances[0];
+  });
+
+  const { data: activity } = useQuery(
+    ["activity", companyDetails?.intern_date.company_id],
+    async () => {
+      const response = await axiosClient.get(
+        `/today-activities?company=${companyDetails?.intern_date.company_id}`
+      );
+      return response.data;
+    },
+    { enabled: !!companyDetails?.intern_date.company_id }
+  );
   const [isotope, setIsotope] = useState(null);
   const [filterKey, setFilterKey] = useState(
-    user.resume && !user.in_internship ? "registrasi" : "absensi"
+    user?.resume && !user?.in_internship ? "registrasi" : "absensi"
   );
   useEffect(() => {
     setIsotope(
@@ -23,7 +62,7 @@ const Activity = () => {
         ? isotope.arrange({ filter: `*` })
         : isotope.arrange({ filter: `.${filterKey}` });
     }
-  }, [isotope, filterKey]);
+  }, [isotope, filterKey, activity]);
   return (
     <div className='lg:my-15 my-20'>
       <div className='flex flex-col justify-center items-center'>
@@ -51,14 +90,14 @@ const Activity = () => {
             filter='registrasi'
           />
         </div>
-        {user.in_internship ? (
+        {user?.in_internship ? (
           <div className='w-full lg:my-8 my-3 filter-container'>
-            {activity.presence && activity.presence.check_in == null ? (
+            {activity?.presence && activity.presence.check_in == null ? (
               <>
                 <ActivityCard
                   filterKey='absensi'
                   title='masuk'
-                  date='17 September 2006 07:30'
+                  date={formattedDate}
                   icon='ph:sign-in-bold'
                   to='/'
                   bg='#a3f0d0'
@@ -67,9 +106,9 @@ const Activity = () => {
                 <ActivityCard
                   filterKey='absensi'
                   title='izin'
-                  date='17 September 2006 07:30'
+                  date={formattedDate}
                   icon='basil:clipboard-alt-outline'
-                  to='/izin'
+                  to='/'
                   bg='#FFFACD'
                   color='#E9B207'
                 />
@@ -78,19 +117,19 @@ const Activity = () => {
               <ActivityCard
                 filterKey='absensi'
                 title='keluar'
-                date='17 September 2006 07:30'
+                date={formattedDate}
                 icon='ph:sign-out-bold'
-                to='/keluar'
+                to='/'
                 bg='#f9cad1'
                 color='#F03E61'
               />
             )}
 
-            {activity.journal && activity.journal == null ? (
+            {activity?.journal && activity?.journal == null ? (
               <ActivityCard
                 filterKey='laporan'
                 title='laporan harian'
-                date='17 September 2006 07:30'
+                date={formattedDate}
                 icon='basil:clipboard-alt-outline'
                 to='/report'
                 bg='#BABABA'
@@ -98,12 +137,12 @@ const Activity = () => {
               />
             ) : null}
           </div>
-        ) : user.resume ? (
+        ) : user?.resume ? (
           <div className='w-full lg:my-8 my-3 filter-container'>
             <ActivityCard
               filterKey='registrasi'
               title='daftar magang'
-              date='17 September 2006 07:30'
+              date={formattedDate}
               icon='ci:suitcase'
               to='/intern'
               bg='#BADFFF'

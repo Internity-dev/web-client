@@ -1,72 +1,90 @@
 import React, { useEffect, useState } from "react";
 import { InternButton, InternDetails } from "../../components";
 import { useNavigate, useParams } from "react-router-dom";
+import { useQuery, useQueryClient } from "react-query";
 import axiosClient from "../../axios-client";
 import { Icon } from "@iconify/react";
-import { useStateContext } from "../../context/ContextProvider";
 
 const InternDetail = () => {
+  const queryClient = useQueryClient();
   const { id } = useParams();
-  const [isLoading, setIsLoading] = useState(true);
-  const [vacancy, setVacancy] = useState([]);
-  const [message, setMessage] = useState(null);
   const navigate = useNavigate();
-  const { user } = useStateContext();
+  const [message, setMessage] = useState(null);
+  const [error, setError] = useState(null);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axiosClient.get(`/vacancies/${id}`);
-        setVacancy(response.data.vacancy);
-        setIsLoading(false);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
+  const { data: user } = useQuery("user", () =>
+    axiosClient.get("/me").then(({ data }) => data)
+  );
 
-    fetchData();
-  }, []);
+  const { data: status } = useQuery(
+    "appliances",
+    async () => {
+      const response = await axiosClient.get("/appliances");
+      return response.data.appliances;
+    },
+    {
+      enabled: true,
+    }
+  );
+
+  const { data: vacancy, isLoading } = useQuery(["vacancy", id], () =>
+    axiosClient.get(`/vacancies/${id}`).then(({ data }) => data.vacancy)
+  );
+
+  const lastIndex = status?.length - 1;
 
   const onBatal = () => {
     axiosClient
-      .put(`/appliances/${vacancy.id}/cancel`)
+      .put(`/appliances/${status?.[lastIndex]?.id}/cancel`)
       .then((response) => {
+        queryClient.invalidateQueries("appliances");
         setMessage(response.data.message);
       })
       .catch((err) => {
         const response = err.response;
-        if (response && (response.status === 401 || response.status === 500)) {
-          setMessage(response.data.message);
+        if (
+          response &&
+          (response.status === 401 ||
+            response.status === 500 ||
+            response.status === 403)
+        ) {
+          console.error(response.data.message);
         }
       });
   };
 
   const onDaftar = () => {
     const payload = {
-      vacancy_id: vacancy.id,
+      vacancy_id: vacancy?.id,
     };
 
     axiosClient
       .post("/appliances", payload)
       .then(() => {
+        queryClient.invalidateQueries("appliances");
         setMessage("Berhasil daftar!");
       })
       .catch((err) => {
         const response = err.response;
-        if (response && (response.status === 401 || response.status === 500)) {
-          setMessage(response.data.message);
+        if (
+          response &&
+          (response.status === 401 ||
+            response.status === 500 ||
+            response.status === 403)
+        ) {
+          setError(response.data.message);
         }
       });
   };
 
   useEffect(() => {
-    if (message) {
+    if (message || error) {
       const timeoutId = setTimeout(() => {
         navigate("/intern");
       }, 1500);
       return () => clearTimeout(timeoutId);
     }
-  }, [message, navigate]);
+  }, [message, error, navigate]);
 
   return (
     <div className='m-2 md:m-10 mt-24 shadow-xl transition duration-300 dark:bg-secondary-dark-bg bg-white rounded-3xl'>
@@ -79,33 +97,43 @@ const InternDetail = () => {
           {message && (
             <div
               role='alert'
-              className='alert alert-success fixed w-auto top-16 right-10'
+              className='alert alert-success fixed w-auto top-16 right-10 flex'
             >
               <Icon icon='icon-park-solid:success' width={30} />
               <span>{message}</span>
+            </div>
+          )}
+          {error && (
+            <div
+              role='alert'
+              className='alert alert-error fixed w-auto top-16 right-10 flex'
+            >
+              <Icon icon='mingcute:alert-fill' width={30} />
+              <span>{error}</span>
             </div>
           )}
           <InternDetails vacancy={vacancy} />
           <div className='flex justify-center'>
             <div className='m-10 flex justify-center items-center gap-7 text-center w'>
               <InternButton vacancy={vacancy} text='simpan' left />
-              {vacancy.in_pending ? (
+              {vacancy?.in_pending ? (
                 <InternButton
                   vacancy={vacancy}
                   text='batal daftar'
                   onClick={() => onBatal()}
-
                 />
-              ) : vacancy.in_processed ? (
+              ) : vacancy?.in_processed ? (
                 <InternButton vacancy={vacancy} text='Processing' />
               ) : (
                 <InternButton
                   vacancy={vacancy}
                   text='daftar'
                   onClick={() =>
-                    user.in_pending || user.in_processed || user.in_internship
+                    user?.in_pending ||
+                    user?.in_processed ||
+                    user?.in_internship
                       ? document.getElementById("warning").showModal()
-                      : onBatal()
+                      : onDaftar()
                   }
                 />
               )}
@@ -117,7 +145,8 @@ const InternDetail = () => {
         <div className='modal-box'>
           <h3 className='font-bold text-lg'>Warning!</h3>
           <p className='py-4'>
-            Batalkan pendaftaran magang anda sebelum mendaftar ke tempat magang lain
+            Batalkan pendaftaran magang anda sebelum mendaftar ke tempat magang
+            lain
           </p>
           <div className='modal-action'>
             <form method='dialog'>

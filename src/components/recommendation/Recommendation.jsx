@@ -2,24 +2,15 @@ import React, { useEffect, useState } from "react";
 import InternCard from "../intern/InternCard";
 import Title from "../Title";
 import axiosClient from "../../axios-client";
+import { useStateContext } from "../../context/ContextProvider";
+import { useQuery } from "react-query";
 
 const Recommendation = () => {
-  const [recommendations, setRecommendations] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const { data: recommendations, isLoading } = useQuery("recommendations", async () => {
+    const response = await axiosClient.get("/vacancies/recommended");
+    return response.data.vacancies;
+  });
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axiosClient.get("/vacancies/recommended");
-        setRecommendations(response.data.vacancies);
-        setIsLoading(false)
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-
-    fetchData();
-  }, []);
   return (
     <div className='flex flex-col justify-center items-center lg:my-15 my-20  '>
       <Title title='rekomendasi magang' />

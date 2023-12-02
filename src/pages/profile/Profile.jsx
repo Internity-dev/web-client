@@ -4,17 +4,26 @@ import { useStateContext } from "../../context/ContextProvider";
 import { Icon } from "@iconify/react";
 import { Link } from "react-router-dom";
 import axiosClient from "../../axios-client";
+import { useQuery, useQueryClient } from "react-query";
 
 const Profile = () => {
-  const { user, setUser, setToken } = useStateContext();
-  const splitskills = user.skills || "";
+  const { setToken, setCurrentMode } = useStateContext();
+  const queryClient = useQueryClient();
+  const { data: user} = useQuery("user", () =>
+    axiosClient.get("/me").then(({ data }) => data)
+  );
+  const options = { year: "numeric", month: "long", day: "numeric" };
+  const formattedDate = new Date(user?.date_of_birth).toLocaleDateString('en-GB', options);
+
+  const splitskills = user?.skills || "";
   const skills = splitskills.split(",");
 
   const onLogout = (ev) => {
     ev.preventDefault();
 
     axiosClient.post("/logout").then(() => {
-      setUser({});
+      queryClient.invalidateQueries("user");
+      setCurrentMode("Light");
       setToken(null);
     });
   };
@@ -30,21 +39,21 @@ const Profile = () => {
           <div className='my-5 flex flex-col'>
             <Info
               title={
-                user.gender === "male"
+                user?.gender === "male"
                   ? "Laki-Laki"
-                  : user.gender === "female"
+                  : user?.gender === "female"
                   ? "Perempuan"
                   : "-"
               }
               icon='mdi:gender-male'
             />
             <Info
-              title={user.address ? user.address : "-"}
+              title={user?.address ? user.address : "-"}
               icon='mdi:location-on-outline'
             />
-            <Info title={user.phone ? user.phone : "-"} icon='mdi:phone' />
+            <Info title={user?.phone ? user.phone : "-"} icon='mdi:phone' />
             <Info
-              title={user.date_of_birth ? user.date_of_birth : "-"}
+              title={user?.date_of_birth ? formattedDate : "-"}
               icon='mdi:cake-variant-outline'
             />
           </div>
@@ -54,14 +63,14 @@ const Profile = () => {
             Info Saya
           </h1>
           <p className='my-5 text-dark transition duration-300 dark:text-lightOne text-xl'>
-            {user.bio ? user.bio : "-"}
+            {user?.bio ? user.bio : "-"}
           </p>
         </div>
         <div className='mx-10 my-5'>
           <h1 className='text-dark transition duration-300 dark:text-lightOne text-2xl font-bold'>
             Skills
           </h1>
-          {user.skills ? (
+          {user?.skills ? (
             <div className='flex items-center gap-5 my-5'>
               {skills.map((skill, index) => (
                 <h1

@@ -4,9 +4,11 @@ import { MdOutlineCancel } from "react-icons/md";
 import { TooltipComponent } from "@syncfusion/ej2-react-popups";
 import { useStateContext } from "../context/ContextProvider";
 import Sidelink from "./Sidelink";
+import { useQuery } from "react-query";
+import axiosClient from "../axios-client";
 
 const Sidebar = () => {
-  const { currentColor, activeMenu, setActiveMenu, screenSize, user, isLoading } =
+  const { currentColor, activeMenu, setActiveMenu, screenSize } =
     useStateContext();
 
   const handleCloseSideBar = () => {
@@ -14,6 +16,10 @@ const Sidebar = () => {
       setActiveMenu(false);
     }
   };
+
+  const { data: user } = useQuery("user", () =>
+    axiosClient.get("/me").then(({ data }) => data)
+  );
 
   return (
     <div className='ml-3 h-screen md:overflow-hidden overflow-auto md:hover:overflow-auto pb-10 z-50'>
@@ -52,17 +58,13 @@ const Sidebar = () => {
               handler={handleCloseSideBar}
               to='activity'
             />
-            {isLoading ? (
-              null
-            ) : (
-              user.in_internship && (
-                <Sidelink
-                  name='report'
-                  icon='tabler:news'
-                  handler={handleCloseSideBar}
-                  to='report'
-                />
-              )
+            {user?.in_internship && (
+              <Sidelink
+                name='report'
+                icon='tabler:news'
+                handler={handleCloseSideBar}
+                to='report'
+              />
             )}
             <Sidelink
               name='intern'

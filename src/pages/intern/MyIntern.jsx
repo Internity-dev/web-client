@@ -1,22 +1,47 @@
-import React, { useEffect, useState } from "react";
-import { InternDetails, Title } from "../../components";
+import React from "react";
+import { useQuery } from "react-query";
 import axiosClient from "../../axios-client";
+import { InternDetails, Title } from "../../components";
 import { useStateContext } from "../../context/ContextProvider";
 
 const MyIntern = () => {
-  const { appliances, user } = useStateContext();
+  const { data: user } = useQuery("user", () =>
+    axiosClient.get("/me").then(({ data }) => data)
+  );
+
+  const {
+    data: appliancesData,
+    isLoading
+  } = useQuery(
+    "acceptedAppliances",
+    async () => {
+      const response = await axiosClient.get("/appliances/accepted");
+      return response.data;
+    },
+    {
+      enabled: !!user?.id,
+    }
+  );
 
   return (
-    <div className='flex flex-col justify-center items-center lg:my-15 my-20  '>
+    <div className='flex flex-col justify-center items-center lg:my-15 my-20'>
       <Title title='magangku' />
-      {user.in_internship ? (
+      {isLoading ? (
+        <div className='flex items-center justify-center h-72'>
+          <span className='loading loading-spinner loading-lg'></span>
+        </div>
+      ) : user?.in_internship ? (
         <div className='m-2 md:m-10 mt-24 shadow-xl transition duration-300 dark:bg-secondary-dark-bg bg-white rounded-3xl'>
-            <InternDetails key={appliances.id} vacancy={appliances.vacancy} />
+          {appliancesData?.appliances && (
+            appliancesData.appliances.map((appliance) => (
+              <InternDetails key={appliance.id} vacancy={appliance.vacancy} />
+            ))
+          )}
         </div>
       ) : (
         <div className='flex justify-center items-center h-72 m-7'>
           <h1 className='text-dark transition duration-300 dark:text-lightOne text-xl first-letter:capitalize'>
-            belum ada tempat magang terdaftar
+            Belum ada tempat magang terdaftar
           </h1>
         </div>
       )}

@@ -54,7 +54,7 @@ const Register = () => {
             <p className='mb-4'>Create your account</p>
             {errors &&
               Object.keys(errors).map((key) => (
-                <div className='alert alert-error mb-3' key={key}>
+                <div className='alert alert-error fixed w-auto top-16 right-10 z-50 flex' key={key}>
                   <Icon icon='mingcute:alert-fill' width={30} />
                   <p>{errors[key][0]}</p>
                 </div>
@@ -99,16 +99,12 @@ const Register = () => {
                   className='border border-gray-400 mr-2'
                   name='terms'
                   id='terms'
+                  required
                 />
                 <label htmlFor='terms'>
                   I accept the{" "}
-                  <a href='' className='text-main font-semibold'>
-                    Terms
-                  </a>{" "}
-                  &{" "}
-                  <a href='' className='text-main font-semibold'>
-                    Conditions
-                  </a>
+                  <label className='text-main font-semibold'>Terms</label> &{" "}
+                  <label className='text-main font-semibold'>Conditions</label>
                 </label>
               </div>
               <LoginBtn text='Sign Up' />

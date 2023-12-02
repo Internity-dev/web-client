@@ -7,7 +7,7 @@ import { Icon } from '@iconify/react';
 const Login = () => {
   const emailRef = createRef()
   const passwordRef = createRef()
-  const { setUser, setToken } = useStateContext()
+  const { setToken } = useStateContext()
   const [message, setMessage] = useState(null)
 
   const onSubmit = ev => {
@@ -19,7 +19,6 @@ const Login = () => {
     }
     axiosClient.post('/login', payload)
       .then(({data}) => {
-        setUser(data.user)
         setToken(data.access_token)
       })
       .catch((err) => {
@@ -42,7 +41,7 @@ const Login = () => {
             <h2 className='text-3xl mb-4'>Sign In</h2>
             <p className='mb-4'>Sign in to your account</p>
             {message && (
-              <div className='alert alert-error'>
+              <div className='alert alert-error fixed w-auto top-16 right-10 z-50 flex'>
                 <Icon icon="mingcute:alert-fill" width={30} />
                 <p>{message}</p>
               </div>

@@ -37,6 +37,7 @@ const Input = ({ label, icon, showeye, name, innerRef }) => {
           onBlur={handleBlur}
           onChange={handleInputChange}
           value={inputValue}
+          autoComplete="off"
         />
       </div>
       <div className='col-span-1 flex justify-center items-center'>
