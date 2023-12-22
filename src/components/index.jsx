@@ -1,5 +1,6 @@
 export { default as LoginBtn } from "./login/LoginBtn";
-export { default as Input } from "./Input";
+export { default as Input } from "./inputs/Input";
+export { default as InputDate } from "./inputs/InputDate";
 export { default as LoginBanner } from "./login/LoginBanner";
 export { default as DefaultLayout } from "./layout/DefaultLayout";
 export { default as GuestLayout } from "./layout/GuestLayout";
@@ -26,6 +27,7 @@ export { default as InternCard } from "./intern/InternCard";
 export { default as StatusCard } from "./intern/StatusCard";
 export { default as InternLink } from "./intern/InternLink";
 export { default as InternDetails } from "./intern/InternDetails";
+export { default as MyInternDetail } from "./intern/MyInternDetail";
 export { default as InternButton } from "./intern/InternButton";
 export { default as Searchbar } from "./Searchbar";
 export { default as ExcuseModal } from "./ExcuseModal";

@@ -66,7 +66,7 @@ const Navbar = () => {
         color={currentColor}
         icon={<AiOutlineMenu />}
       />
-      {isLoading ? null : !user?.in_internship && <Searchbar />}
+      {/* {isLoading ? null : !user?.in_internship && <Searchbar />} */}
       <div className='flex'>
         <NavButton
           title='Notification'

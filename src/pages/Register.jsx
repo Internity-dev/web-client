@@ -11,7 +11,7 @@ const Register = () => {
   const passwordRef = createRef();
   const passwordConfirmationRef = createRef();
   const courseCodeRef = createRef();
-  const { setUser, setToken } = useStateContext();
+  const { setToken } = useStateContext();
   const [errors, setErrors] = useState(null);
 
   const onSubmit = (ev) => {
@@ -27,7 +27,6 @@ const Register = () => {
     axiosClient
       .post("/register", payload)
       .then(({ data }) => {
-        setUser(data.user);
         setToken(data.access_token);
       })
       .catch((err) => {

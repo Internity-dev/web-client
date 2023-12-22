@@ -1,5 +1,5 @@
 import React, { createRef, useEffect, useState } from "react";
-import { InputText, LoginBtn } from "../../components";
+import { InputDate, InputText, LoginBtn } from "../../components";
 import axiosClient from "../../axios-client";
 import { Icon } from "@iconify/react";
 import { useMutation, useQuery } from "react-query";
@@ -224,25 +224,16 @@ const ChangeProfile = () => {
                 <option value='female'>Perempuan</option>
               </select>
             </div>
-
-            <div className='form-control my-2'>
-              <label className='label'>
-                <span className='label-text text-dark transition duration-300 dark:text-lightOne text-base'>
-                  Tanggal Lahir
-                </span>
-              </label>
-              <input
-                type='date'
-                name='date_of_birth'
-                className='input input-bordered bg-main-bg transition duration-300 dark:bg-main-dark-bg text-base'
-                ref={dateOfBirthRef}
-                placeholder={
-                  user?.date_of_birth ? user.date_of_birth : "17/09/2006"
-                }
-                value={dateOfBirth}
-                onChange={(e) => setDateOfBirth(e.target.value)}
-              />
-            </div>
+            <InputDate
+              label='Tanggal Lahir'
+              name='date_of_birth'
+              innerRef={dateOfBirthRef}
+              placeholder={
+                user?.date_of_birth ? user.date_of_birth : "17/09/2006"
+              }
+              value={dateOfBirth}
+              onChange={(e) => setDateOfBirth(e.target.value)}
+            />
 
             <div className='form-control my-2'>
               <label className='label'>

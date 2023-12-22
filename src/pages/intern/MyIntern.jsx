@@ -1,8 +1,7 @@
 import React from "react";
 import { useQuery } from "react-query";
 import axiosClient from "../../axios-client";
-import { InternDetails, Title } from "../../components";
-import { useStateContext } from "../../context/ContextProvider";
+import { MyInternDetail, Title } from "../../components";
 
 const MyIntern = () => {
   const { data: user } = useQuery("user", () =>
@@ -34,7 +33,7 @@ const MyIntern = () => {
         <div className='m-2 md:m-10 mt-24 shadow-xl transition duration-300 dark:bg-secondary-dark-bg bg-white rounded-3xl'>
           {appliancesData?.appliances && (
             appliancesData.appliances.map((appliance) => (
-              <InternDetails key={appliance.id} vacancy={appliance.vacancy} />
+              <MyInternDetail key={appliance.id} vacancy={appliance.vacancy} />
             ))
           )}
         </div>

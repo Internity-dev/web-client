@@ -26,7 +26,7 @@ const InputText = ({
         className='input input-bordered w-full bg-main-bg transition duration-300 dark:bg-main-dark-bg'
         onKeyPress={(e) => {
           if (e.key === "Enter") {
-            e.preventDefault(); // Prevent form submission on Enter key press
+            e.preventDefault();
           }
         }}
       />
