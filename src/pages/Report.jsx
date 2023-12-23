@@ -35,6 +35,7 @@ const Report = () => {
   const workTypeRef = createRef();
   const descriptionRef = createRef();
   const [message, setMessage] = useState(null);
+  const [error, setError] = useState(null);
   const [currentPage, setCurrentPage] = useState(0);
   const reportsPerPage = 5;
   const [description, setDescription] = useState("");
@@ -53,13 +54,19 @@ const Report = () => {
   const queryClient = useQueryClient();
 
   const updateJournalMutation = useMutation(
-    (payload) =>
-      axiosClient.put(`/journals/${activity?.journal.id}`, payload),
+    (payload) => axiosClient.put(`/journals/${activity?.journal.id}`, payload),
     {
       onSuccess: () => {
         queryClient.invalidateQueries("activity");
         queryClient.invalidateQueries("reports");
         setMessage("Berhasil mengupdate journal");
+      },
+      onError: (err) => {
+        const response = err.response;
+        if (response.status === 422) {
+          setError(response.data.message);
+          setMessage(null);
+        }
       },
     }
   );
@@ -224,6 +231,15 @@ const Report = () => {
           <span>{message}</span>
         </div>
       )}
+      {error && (
+        <div
+          role='alert'
+          className='alert alert-error fixed w-auto top-16 right-10 flex'
+        >
+          <Icon icon='mingcute:alert-fill' width={30} />
+          <span>{error}</span>
+        </div>
+      )} 
     </div>
   );
 };

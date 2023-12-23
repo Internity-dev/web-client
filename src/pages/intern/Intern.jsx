@@ -21,11 +21,11 @@ const Intern = () => {
           </div>
           <div className='flex w-full justify-center flex-col md:my-5 my-10'>
             <div className='w-full flex items-center justify-center flex-wrap'>
-              <InternLink
+              {/* <InternLink
                 to='/saved'
                 title='tersimpan'
                 icon='material-symbols:bookmark-outline-rounded'
-              />
+              /> */}
               <InternLink
                 to='/status'
                 title='status pendaftaran'
@@ -39,7 +39,7 @@ const Intern = () => {
               <InternCard
                 key={vacancy.id}
                 vacancy={vacancy}
-                icon='material-symbols:bookmark-add-outline-rounded'
+                // icon='material-symbols:bookmark-add-outline-rounded'
               />
             ))}
           </div>

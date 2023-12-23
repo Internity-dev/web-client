@@ -24,7 +24,7 @@ const Recommendation = () => {
             <InternCard
               key={recommendation.id}
               vacancy={recommendation}
-              icon='material-symbols:bookmark-outline-rounded'
+              // icon='material-symbols:bookmark-outline-rounded'
             />
           ))}
         </>

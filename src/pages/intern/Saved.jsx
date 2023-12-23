@@ -24,7 +24,7 @@ const Saved = () => {
               <InternCard
                 key={vacancy.id}
                 vacancy={vacancy}
-                icon='material-symbols:bookmark-add-outline-rounded'
+                // icon='material-symbols:bookmark-add-outline-rounded'
               />
             ))}
           </div>
