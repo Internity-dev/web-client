@@ -8,7 +8,7 @@ const Intern = () => {
     axiosClient.get("/me").then(({ data }) => data)
   );
 
-  const { data: vacanciesData } = useQuery("vacancies", () =>
+  const { data: vacanciesData, isLoading } = useQuery("vacancies", () =>
     axiosClient.get("/vacancies").then(({ data }) => data.vacancies)
   );
 
@@ -35,13 +35,19 @@ const Intern = () => {
             </div>
           </div>
           <div className='flex flex-col justify-center items-center lg:my-5 my-10  '>
-            {vacanciesData?.map((vacancy) => (
-              <InternCard
-                key={vacancy.id}
-                vacancy={vacancy}
-                // icon='material-symbols:bookmark-add-outline-rounded'
-              />
-            ))}
+            {isLoading ? (
+              <div className='flex items-center justify-center h-52'>
+                <span className='loading loading-spinner loading-lg'></span>
+              </div>
+            ) : (
+              vacanciesData?.map((vacancy) => (
+                <InternCard
+                  key={vacancy.id}
+                  vacancy={vacancy}
+                  // icon='material-symbols:bookmark-add-outline-rounded'
+                />
+              ))
+            )}
           </div>
         </div>
       ) : (

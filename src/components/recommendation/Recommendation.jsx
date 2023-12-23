@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import InternCard from "../intern/InternCard";
 import Title from "../Title";
 import axiosClient from "../../axios-client";
-import { useStateContext } from "../../context/ContextProvider";
 import { useQuery } from "react-query";
 
 const Recommendation = () => {
