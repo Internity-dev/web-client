@@ -71,7 +71,7 @@ const Profile = () => {
             Skills
           </h1>
           {user?.skills ? (
-            <div className='flex items-center gap-5 my-5'>
+            <div className='flex flex-wrap items-center gap-5 my-5'>
               {skills.map((skill, index) => (
                 <h1
                   key={index}
