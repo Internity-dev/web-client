@@ -26,13 +26,8 @@ const NavButton = ({ title, customFunc, icon, color, dotColor }) => (
 );
 
 const Navbar = () => {
-  const {
-    currentColor,
-    activeMenu,
-    setActiveMenu,
-    setScreenSize,
-    screenSize,
-  } = useStateContext();
+  const { currentColor, activeMenu, setActiveMenu, setScreenSize, screenSize } =
+    useStateContext();
 
   const { data: user, isLoading } = useQuery("user", () =>
     axiosClient.get("/me").then(({ data }) => data)
@@ -71,7 +66,9 @@ const Navbar = () => {
         <NavButton
           title='Notification'
           dotColor='rgb(254, 201, 15)'
-          customFunc={() => document.getElementById("notifications").showModal()}
+          customFunc={() =>
+            document.getElementById("notifications").showModal()
+          }
           color={currentColor}
           icon={<RiNotification3Line />}
         />
@@ -80,13 +77,18 @@ const Navbar = () => {
             className='flex items-center gap-2 cursor-pointer p-1 hover:bg-light-gray rounded-lg'
             onClick={() => document.getElementById("profile").showModal()}
           >
-            <img
-              className='rounded-full w-8 h-8'
-              src={
-                isLoading ? "/images/placeholder-profile.png" : user?.avatar_url
-              }
-              alt='user-profile'
-            />
+            <div className='avatar static'>
+              <div className='w-8 rounded-full'>
+                <img
+                  src={
+                    isLoading
+                      ? "/images/placeholder-profile.png"
+                      : user?.avatar_url
+                  }
+                  alt='user-profile'
+                />
+              </div>
+            </div>
             <p>
               <span className='text-neutral-400 text-14'>Hi,</span>{" "}
               <span className='text-neutral-400 font-bold ml-1 text-14'>
