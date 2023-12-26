@@ -25,8 +25,8 @@ const Input = ({ label, icon, showeye, name, innerRef }) => {
   };
 
   return (
-    <div className={`input-div mt-0 grid-cols-10 ${isFocus ? "focus" : ""}`}>
-      <div className='col-span-1 flex justify-center items-center text-gray dark:text-lightOne transition duration-300'><Icon icon={icon} width={30} /></div>
+    <div className={`input-div mb-4 grid-cols-10 ${isFocus ? "focus" : ""}`}>
+      <div className='col-span-1 flex justify-center items-center text-gray dark:text-lightOne transition duration-300'><Icon icon={icon} width={25} /></div>
       <div className='div col-span-8'>
         <h5 className="text-gray dark:text-lightOne">{label}</h5>
         <input

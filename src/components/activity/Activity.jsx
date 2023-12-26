@@ -21,7 +21,7 @@ const Activity = () => {
     { enabled: !!companyDetails?.intern_date.company_id }
   );
   return (
-    <div className='flex flex-col justify-center items-center lg:my-15 my-20'>
+    <div className='flex flex-col justify-center items-center md:my-15 my-20'>
       <Title title='aktivitas hari ini' />
       {activity?.presence && activity.presence.check_in == null ? (
         <ActivityNotification

@@ -5,7 +5,7 @@ import { useMutation, useQuery } from "react-query";
 import InputText from "../profile/InputText";
 import LoginBtn from "../login/LoginBtn";
 import { useNavigate } from "react-router-dom";
-import { Icon } from "@iconify/react";
+import Alert from "../Alert";
 
 const MyIntern = ({ vacancy }) => {
   const navigate = useNavigate();
@@ -148,22 +148,10 @@ const MyIntern = ({ vacancy }) => {
             onChange={(e) => setExtend(e.target.value)}
           />
           {message && (
-            <div
-              role='alert'
-              className='alert alert-success fixed w-auto top-16 right-10 flex'
-            >
-              <Icon icon='icon-park-solid:success' width={30} />
-              <span>{message}</span>
-            </div>
+            <Alert text={message} />
           )}
           {error && (
-            <div
-              role='alert'
-              className='alert alert-error fixed w-auto top-16 right-10 flex'
-            >
-              <Icon icon='mingcute:alert-fill' width={30} />
-              <span>{error}</span>
-            </div>
+            <Alert text={error} error />
           )}
           <LoginBtn text='Save' />
         </form>

@@ -4,6 +4,7 @@ import { Icon } from "@iconify/react";
 import { NavLink } from "react-router-dom";
 import Modal from "../Modal";
 import axiosClient from "../../axios-client";
+import Alert from "../Alert";
 
 const ProfileHeader = () => {
   const { data: user} = useQuery("user", () =>
@@ -23,9 +24,9 @@ const ProfileHeader = () => {
 
   return (
     <div className='w-full bg-main rounded-3xl flex flex-col'>
-      <div className='my-10 flex flex-col justify-center items-center'>
+      <div className='my-6 flex flex-col justify-center items-center'>
         <div className='avatar static'>
-          <div className='w-36 rounded-full'>
+          <div className='w-28 rounded-full'>
             <img src={user?.avatar_url ? user.avatar_url : '/images/placeholder-profile.png'} alt={`Avatar of ${user?.name}`} />
           </div>
         </div>
@@ -50,13 +51,7 @@ const ProfileHeader = () => {
           </button>
           <Modal setMessage={setMessage} />
           {message && (
-            <div
-              role='alert'
-              className='alert alert-success fixed w-auto top-16 right-10 z-50 flex'
-            >
-              <Icon icon='icon-park-solid:success' width={30} />
-              <span>{message}</span>
-            </div>
+            <Alert text={message} />
           )}
         </div>
       </div>

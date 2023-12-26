@@ -1,5 +1,5 @@
 import React, { createRef, useEffect, useState } from "react";
-import { Header, InputText, PresenceModal } from "../components";
+import { Alert, Header, InputText, PresenceModal } from "../components";
 import ReactPaginate from "react-paginate";
 import axiosClient from "../axios-client";
 import { Icon } from "@iconify/react";
@@ -144,7 +144,7 @@ const Report = () => {
           </tbody>
         </table>
       </div>
-      <div className='flex justify-between items-center'>
+      <div className='flex flex-col justify-between'>
         <div className='flex flex-col items-start justify-center'>
           <p>Total Journals: {reports?.length}</p>
           <p>
@@ -194,7 +194,7 @@ const Report = () => {
             <div className='form-control my-2'>
               <label className='label'>
                 <span className='label-text text-dark transition duration-300 dark:text-lightOne text-base'>
-                  Tentang Saya
+                  Deskripsi
                 </span>
               </label>
               <textarea
@@ -222,24 +222,8 @@ const Report = () => {
           <button>close</button>
         </form>
       </dialog>
-      {message && (
-        <div
-          role='alert'
-          className='alert alert-success fixed w-auto top-16 right-10 z-50 flex'
-        >
-          <Icon icon='icon-park-solid:success' width={30} />
-          <span>{message}</span>
-        </div>
-      )}
-      {error && (
-        <div
-          role='alert'
-          className='alert alert-error fixed w-auto top-16 right-10 flex'
-        >
-          <Icon icon='mingcute:alert-fill' width={30} />
-          <span>{error}</span>
-        </div>
-      )} 
+      {message && <Alert text={message} />}
+      {error && <Alert text={error} error />}
     </div>
   );
 };

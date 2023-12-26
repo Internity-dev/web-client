@@ -1,5 +1,5 @@
 import React, { createRef, useEffect, useState } from "react";
-import { InputDate, InputText, LoginBtn } from "../../components";
+import { Alert, InputDate, InputText, LoginBtn } from "../../components";
 import axiosClient from "../../axios-client";
 import { Icon } from "@iconify/react";
 import { useMutation, useQuery } from "react-query";
@@ -148,24 +148,8 @@ const ChangeProfile = () => {
         </div>
         <div className='flex flex-col'>
           <div className='mx-10 my-5'>
-            {message && (
-              <div
-                role='alert'
-                className='alert alert-success fixed w-auto top-16 right-10 flex'
-              >
-                <Icon icon='icon-park-solid:success' width={30} />
-                <span>{message}</span>
-              </div>
-            )}
-            {error && (
-              <div
-                role='alert'
-                className='alert alert-error fixed w-auto top-16 right-10 flex'
-              >
-                <Icon icon='mingcute:alert-fill' width={30} />
-                <span>{error}</span>
-              </div>
-            )}
+            {message && <Alert text={message} />}
+            {error && <Alert text={error} error />}
             <InputText
               label='Nama'
               name='name'

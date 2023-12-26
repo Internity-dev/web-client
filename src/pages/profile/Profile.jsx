@@ -36,7 +36,7 @@ const Profile = () => {
           <h1 className='text-dark transition duration-300 dark:text-lightOne text-2xl font-bold'>
             Info Saya
           </h1>
-          <div className='my-5 flex flex-col'>
+          <div className='my-5 flex flex-col flex-wrap'>
             <Info
               title={
                 user?.gender === "male"

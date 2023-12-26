@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { InternButton, InternDetails } from "../../components";
+import { Alert, InternButton, InternDetails } from "../../components";
 import { useNavigate, useParams } from "react-router-dom";
 import { useQuery, useQueryClient } from "react-query";
 import axiosClient from "../../axios-client";
-import { Icon } from "@iconify/react";
 
 const InternDetail = () => {
   const queryClient = useQueryClient();
@@ -87,34 +86,18 @@ const InternDetail = () => {
   }, [message, error, navigate]);
 
   return (
-    <div className='m-2 md:m-10 mt-24 shadow-xl transition duration-300 dark:bg-secondary-dark-bg bg-white rounded-3xl'>
+    <div className='m-2 md:m-5 mt-24 shadow-xl transition duration-300 dark:bg-secondary-dark-bg bg-white rounded-3xl'>
       {isLoading ? (
         <div className='flex items-center justify-center h-screen'>
           <span className='loading loading-spinner loading-lg'></span>
         </div>
       ) : (
         <>
-          {message && (
-            <div
-              role='alert'
-              className='alert alert-success fixed w-auto top-16 right-10 flex'
-            >
-              <Icon icon='icon-park-solid:success' width={30} />
-              <span>{message}</span>
-            </div>
-          )}
-          {error && (
-            <div
-              role='alert'
-              className='alert alert-error fixed w-auto top-16 right-10 flex'
-            >
-              <Icon icon='mingcute:alert-fill' width={30} />
-              <span>{error}</span>
-            </div>
-          )}
+          {message && <Alert text={message} />}
+          {error && <Alert text={error} error />}
           <InternDetails vacancy={vacancy} />
           <div className='flex justify-center'>
-            <div className='m-10 flex justify-center items-center gap-7 text-center w'>
+            <div className='flex justify-between gap-2 md:gap-7 mb-5'>
               <InternButton vacancy={vacancy} text='simpan' left />
               {vacancy?.in_pending ? (
                 <InternButton

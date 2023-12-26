@@ -10,7 +10,7 @@ const PresenceButton = ({ name, icon, onClick }) => {
 
   return (
     <button
-      className='bg-main h-40 text-white transition duration-300 dark:text-neutral-200 w-40 p-4 pt-9 rounded-2xl flex flex-col items-center lg:my-0 mb-6 mx-6'
+      className='bg-main h-32 w-32 lg:h-40 lg:w-40 text-white transition duration-300 dark:text-neutral-200 p-4 pt-9 rounded-2xl flex flex-col items-center lg:my-0 mb-2 mx-2 lg:mb-6 lg:mx-6'
       onClick={handleClick}
     >
       <Icon icon={icon} color='#fff' width='45' />

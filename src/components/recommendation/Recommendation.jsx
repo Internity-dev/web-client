@@ -28,7 +28,7 @@ const Recommendation = () => {
           ))}
         </>
       ) : (
-        <h1 className='my-24 text-dark dark:text-lightOne text-lg'>
+        <h1 className='my-24 text-dark dark:text-lightOne text-lg text-center'>
           Tidak ada rekomendasi yang sesuai dengan anda
         </h1>
       )}

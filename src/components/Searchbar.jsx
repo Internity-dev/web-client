@@ -35,7 +35,7 @@ const Searchbar = () => {
   return (
     <form
       action=''
-      className='lg:w-[30rem] w-52 h-10 overflow-hidden flex items-center rounded-full bg-lightOne transition duration-300 dark:bg-main-dark-bg border border-gray'
+      className='md:w-[30rem] w-52 h-10 overflow-hidden flex items-center rounded-full bg-lightOne transition duration-300 dark:bg-main-dark-bg border border-gray'
     >
       <div className='relative w-full'>
         <input
@@ -45,7 +45,7 @@ const Searchbar = () => {
           id='search-box'
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className='lg:text-xl text-xs px-5 w-full h-full transform-none rounded-full bg-lightOne dark:bg-main-dark-bg text-neutral-700 dark:text-neutral-200 outline-none placeholder-neutral-700 transition duration-300 dark:placeholder-neutral-200'
+          className='md:text-xl text-xs px-5 w-full h-full transform-none rounded-full bg-lightOne dark:bg-main-dark-bg text-neutral-700 dark:text-neutral-200 outline-none placeholder-neutral-700 transition duration-300 dark:placeholder-neutral-200'
         />
         <div className='absolute inset-y-0 flex items-center pl-2 pointer-events-none'></div>
       </div>

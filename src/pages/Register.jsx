@@ -1,9 +1,8 @@
-import { React, createRef, useState } from "react";
-import { LoginBtn, Input, LoginBanner } from "../components";
+import { React, createRef, useEffect, useState } from "react";
+import { LoginBtn, Input, LoginBanner, Alert } from "../components";
 import { Link } from "react-router-dom";
 import axiosClient from "../axios-client.js";
 import { useStateContext } from "../context/ContextProvider.jsx";
-import { Icon } from "@iconify/react";
 
 const Register = () => {
   const nameRef = createRef();
@@ -37,26 +36,33 @@ const Register = () => {
       });
   };
 
+  useEffect(() => {
+    if (errors) {
+      const timeoutId = setTimeout(() => {
+        setErrors(null);
+      }, 1500);
+      return () => clearTimeout(timeoutId);
+    }
+  }, [errors, setErrors]);
+
+
   return (
     <div
       className='min-h-screen flex items-center justify-center overflow-hidden'
       style={{ backgroundImage: "linear-gradient(115deg, #1191FF, #F9F9F9)" }}
     >
-      <div className='w-10/12 lg:w-8/12 bg-white rounded-xl shadow-lg overflow-hidden'>
+      <div className='w-11/12 md:w-8/12 bg-white rounded-xl shadow-lg overflow-hidden my-5'>
         <div className='flex flex-col lg:flex-row'>
           <LoginBanner
             header='Welcome to Internity!'
             text='Ayo mulai karirmu!'
           />
-          <div className='w-full lg:w-1/2 py-10 px-12'>
-            <h2 className='text-3xl mb-4'>Sign Up</h2>
-            <p className='mb-4'>Create your account</p>
+          <div className='w-full lg:w-1/2 py-5 px-12'>
+            <h2 className='text-2xl mb-1'>Sign Up</h2>
+            <p className='mb-5 text-lg'>Create your account</p>
             {errors &&
               Object.keys(errors).map((key) => (
-                <div className='alert alert-error fixed w-auto top-16 right-10 z-50 flex' key={key}>
-                  <Icon icon='mingcute:alert-fill' width={30} />
-                  <p>{errors[key][0]}</p>
-                </div>
+                <Alert text={errors} error />
               ))}
             <form onSubmit={onSubmit} method='POST'>
               <Input

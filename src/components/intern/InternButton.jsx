@@ -9,13 +9,13 @@ const InternButton = ({ text, left, vacancy, onClick }) => {
   };
 
   const normalRight =
-    "text-lg rounded-xl p-3 lg:w-400 md:w-72 w-52 hover:drop-shadow-xl font-medium bg-main text-lightOne capitalize";
+    "text-lg rounded-xl p-3 lg:w-400 md:w-72 w-36 hover:drop-shadow-xl font-medium bg-main text-lightOne capitalize";
   const activeRight =
-    "text-lg rounded-xl p-3 lg:w-400 md:w-72 w-52 hover:drop-shadow-xl font-medium bg-red-600 text-lightOne capitalize";
+    "text-lg rounded-xl p-3 lg:w-400 md:w-72 w-36 hover:drop-shadow-xl font-medium bg-red-600 text-lightOne capitalize";
   const normalLeft =
-    "text-lg rounded-xl p-3 lg:w-400 md:w-72 w-52 hover:drop-shadow-xl font-medium border-2 bg-lightOne text-main capitalize";
+    "text-lg rounded-xl p-3 lg:w-400 md:w-72 w-36 hover:drop-shadow-xl font-medium border-2 bg-lightOne text-main capitalize";
   const activeLeft =
-    "text-lg rounded-xl p-3 lg:w-400 md:w-72 w-52 hover:drop-shadow-xl font-medium border-2 bg-lightOne text-red-600 capitalize";
+    "text-lg rounded-xl p-3 lg:w-400 md:w-72 w-36 hover:drop-shadow-xl font-medium border-2 bg-lightOne text-red-600 capitalize";
 
   let className;
   if (left) {

@@ -6,7 +6,7 @@ const ActivityNotification = ({ title, date, to }) => {
   return (
     <NavLink
       to={to}
-      className='flex m-3 flex-wrap justify-between gap-1 items-center border border-gray md:w-800 w-96 h-20 rounded-xl'
+      className='flex m-3 flex-wrap justify-between gap-1 items-center border border-gray md:w-800 w-80 h-20 rounded-xl'
     >
       <div className='ml-5'>
         <h1 className='font-bold text-dark transition duration-300 dark:text-lightOne capitalize'>
@@ -18,9 +18,8 @@ const ActivityNotification = ({ title, date, to }) => {
       </div>
       <Icon
         icon='pepicons-pencil:exclamation'
-        width='60'
         style={{ color: "#E9B207", backgroundColor: "#FFFACD" }}
-        className='text-xl rounded-full p-3 hover:bg-light-gray mr-5'
+        className='text-xl rounded-full p-3 hover:bg-light-gray mr-5 w-14 h-14 md:w-16 md:h-16'
       />
     </NavLink>
   );

@@ -16,7 +16,7 @@ const fetchNews = async () => {
 };
 
 const News = () => {
-  const { data: news, isError } = useQuery("news", fetchNews);
+  const { data: news } = useQuery("news", fetchNews);
 
   return (
     <div className='flex flex-col justify-center items-center lg:my-15 my-20'>
@@ -37,7 +37,7 @@ const News = () => {
           clickable: true,
         }}
         modules={[FreeMode, Pagination]}
-        className='max-w-sm md:max-w-3xl'
+        className='max-w-xs md:max-w-3xl'
       >
         {news?.map((item) => (
           <SwiperSlide key={item.id}>

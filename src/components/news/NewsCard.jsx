@@ -11,7 +11,7 @@ const NewsCard = ({ news }) => {
   });
   return (
     <Link to={`/news/${news.id}`} className='relative mt-3 mx-2 cursor-grab'>
-      <div className='news-card bg-slate-100 dark:bg-[rgb(66,70,77)] cursor-pointer transition duration-300'>
+      <div className='news-card w-[320px] md:w-[350px] bg-slate-100 dark:bg-[rgb(66,70,77)] cursor-pointer transition duration-300'>
         <div className='news-image'>
           <img src={news.image} alt='news cover' />
         </div>

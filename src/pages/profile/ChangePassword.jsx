@@ -1,7 +1,6 @@
 import React, { createRef, useEffect, useState } from "react";
-import { Input, LoginBtn } from "../../components";
+import { Alert, Input, LoginBtn } from "../../components";
 import axiosClient from "../../axios-client";
-import { Icon } from "@iconify/react";
 import { useMutation } from "react-query";
 import { useNavigate } from "react-router-dom";
 
@@ -78,22 +77,10 @@ const ChangePassword = () => {
               showeye
             />
             {message && (
-              <div
-                role='alert'
-                className='alert alert-success fixed w-auto top-16 right-10 flex'
-              >
-                <Icon icon='icon-park-solid:success' width={30} />
-                <span>{message}</span>
-              </div>
+              <Alert text={message} />
             )}
             {error && (
-              <div
-                role='alert'
-                className='alert alert-error fixed w-auto top-16 right-10 flex'
-              >
-                <Icon icon='mingcute:alert-fill' width={30} />
-                <span>{error}</span>
-              </div>
+              <Alert text={error} error />
             )}
             <LoginBtn text='Save' />
           </div>

@@ -19,9 +19,9 @@ const Notification = () => {
 
   return (
     <dialog id='notifications' className='modal'>
-      <div className='modal-box bg-white dark:bg-[#42464D] w-96 absolute top-16 right-5 transition duration-300'>
+      <div className='modal-box bg-white dark:bg-[#42464D] md:w-96 absolute top-16 right-5 transition duration-300'>
         <div className='flex justify-between items-center'>
-          <div className='flex gap-3'>
+          <div className='flex gap-2'>
             <p className='font-semibold text-lg transition duration-300 dark:text-neutral-200'>
               Notifications
             </p>

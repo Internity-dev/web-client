@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Header } from "../components";
+import { Alert, Header } from "../components";
 import { useStateContext } from "../context/ContextProvider";
 import ReactPaginate from "react-paginate";
 import axiosClient from "../axios-client";
-import { Icon } from "@iconify/react";
 import { useQuery } from "react-query";
 
 const Notifications = () => {
@@ -148,15 +147,7 @@ const Notifications = () => {
         />
       </div>
 
-      {message && (
-        <div
-          role='alert'
-          className='alert alert-success fixed w-auto top-16 right-10 z-50 flex'
-        >
-          <Icon icon='icon-park-solid:success' width={30} />
-          <span>{message}</span>
-        </div>
-      )}
+      {message && <Alert text={message} />}
     </div>
   );
 };

@@ -89,7 +89,7 @@ const Presence = () => {
           </tbody>
         </table>
       </div>
-      <div className='flex justify-between items-center'>
+      <div className='flex flex-col justify-between'>
         <div className='flex flex-col items-start justify-center'>
           <p>Total Presences: {presences?.length}</p>
           <p>

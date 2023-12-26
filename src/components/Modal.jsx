@@ -49,7 +49,7 @@ const Modal = ({ setMessage }) => {
     <dialog id='my_modal_2' className='modal'>
       <div className='modal-box flex flex-col justify-center items-center bg-lightOne dark:bg-dark'>
         <form
-          className='flex flex-col justify-center items-center border-2 border-dashed border-main h-72 w-400 cursor-pointer rounded-md'
+          className='flex flex-col justify-center items-center border-2 border-dashed border-main h-72 w-80 md:w-400 cursor-pointer rounded-md'
           onClick={handleInputClick}
           onSubmit={onSubmit}
           encType='multipart/form-data'
@@ -79,12 +79,12 @@ const Modal = ({ setMessage }) => {
             onClick={(e) => {
               e.stopPropagation();
             }}
-            className='absolute bottom-12 right-20 bg-main text-lightOne p-2 hover:drop-shadow-xl rounded-md capitalize'
+            className='absolute bottom-12 right-10 md:right-20 bg-main text-lightOne p-2 hover:drop-shadow-xl rounded-md capitalize'
           >
             submit
           </button>
         </form>
-        <section className='my-3 flex items-center py-4 px-5 rounded-md bg-slate-300 dark:bg-main-dark-bg w-400'>
+        <section className='my-3 flex items-center py-4 px-5 rounded-md bg-slate-300 dark:bg-main-dark-bg w-80 md:w-400'>
           <Icon icon='pepicons-print:cv' color='#1191ff' width={30} />
           <h1 className='text-dark dark:text-lightOne'>
             - {filename ?? "No selected file"}

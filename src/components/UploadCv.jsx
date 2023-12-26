@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Modal from "./Modal";
-import { Icon } from "@iconify/react";
+import Alert from "./Alert";
 
 const UploadCv = () => {
   const [message, setMessage] = useState(null);
@@ -29,13 +29,7 @@ const UploadCv = () => {
       </button>
       <Modal setMessage={setMessage} />
       {message && (
-        <div
-          role='alert'
-          className='alert alert-success fixed w-auto top-16 right-10 z-50 flex'
-        >
-          <Icon icon='icon-park-solid:success' width={30} />
-          <span>{message}</span>
-        </div>
+        <Alert text={message} />
       )}
     </div>
   );
