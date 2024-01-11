@@ -21,7 +21,7 @@ const MyIntern = ({ vacancy }) => {
     axiosClient.get("/me").then(({ data }) => data)
   );
   const { data: appliancesData } = useQuery(
-    "internDates",
+    "companyDetails",
     async () => {
       const response = await axiosClient.get("/appliances/accepted");
       return response.data.intern_date[0];
@@ -37,7 +37,7 @@ const MyIntern = ({ vacancy }) => {
     }
   }, [appliancesData]);
 
-  const { mutate, data } = useMutation(
+  const { mutate } = useMutation(
     (payload) =>
       axiosClient.put(
         `/appliances/${appliancesData.company_id}/edit-date`,
@@ -75,6 +75,7 @@ const MyIntern = ({ vacancy }) => {
       const timeoutId = setTimeout(() => {
         setMessage(null);
         setError(null);
+        navigate("/intern")
       }, 1500);
       return () => clearTimeout(timeoutId);
     }

@@ -81,11 +81,11 @@ const Navbar = () => {
               <div className='w-8 rounded-full'>
                 <img
                   src={
-                    isLoading
-                      ? "/images/placeholder-profile.png"
-                      : user?.avatar_url
+                    user?.avatar_url
+                      ? user.avatar_url
+                      : "/images/placeholder-profile.png"
                   }
-                  alt='user-profile'
+                  alt={`Avatar of ${user?.name}`}
                 />
               </div>
             </div>
