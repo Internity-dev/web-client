@@ -21,7 +21,7 @@ const MyIntern = ({ vacancy }) => {
     axiosClient.get("/me").then(({ data }) => data)
   );
   const { data: appliancesData } = useQuery(
-    "companyDetails",
+    "internDates",
     async () => {
       const response = await axiosClient.get("/appliances/accepted");
       return response.data.intern_date[0];
