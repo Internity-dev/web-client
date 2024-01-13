@@ -11,7 +11,7 @@ const InputDate = ({ label, name, innerRef, placeholder, value, onChange }) => {
       <input
         type='date'
         name={name}
-        className='input input-bordered w-full bg-main-bg transition duration-300 dark:bg-main-dark-bg'
+        className='input input-bordered w-full bg-main-bg transition duration-300 dark:bg-main-dark-bg [color-scheme:light] dark:[color-scheme:dark]'
         ref={innerRef}
         placeholder={placeholder}
         value={value}

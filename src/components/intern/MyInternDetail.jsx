@@ -83,18 +83,18 @@ const MyIntern = ({ vacancy }) => {
 
   return (
     <div className='flex flex-col'>
-      <div className='m-10'>
-        <h1 className='text-dark transition duration-300 dark:text-lightOne text-2xl font-medium capitalize'>
+      <div className='m-5 md:m-10'>
+        <h1 className='text-dark transition duration-300 dark:text-lightOne text-2xl font-medium capitalize text-center md:text-left'>
           {vacancy.name}
         </h1>
-        <div className='flex'>
+        <div className='flex flex-col md:flex-row items-center'>
           <img
             src={vacancy.company.logo_url}
             alt='logo'
             width={90}
-            className='my-5'
+            className='my-5 w-36 md:w-40'
           />
-          <div className='flex flex-col justify-center ml-5'>
+          <div className='flex flex-col justify-center flex-wrap md:ml-5'>
             <h1 className='text-dark transition duration-300 dark:text-lightOne font-semibold'>
               {vacancy.company.name}
             </h1>
@@ -118,11 +118,11 @@ const MyIntern = ({ vacancy }) => {
           </h1>
         </div>
       </div>
-      <div className='mx-10 mb-10 text-dark transition duration-300 dark:text-lightOne md:text-lg text-base'>
+      <div className='m-5 md:m-10 text-dark transition duration-300 dark:text-lightOne md:text-lg text-base'>
         <h1 className='text-2xl font-medium capitalize'>deskripsi pekerjaan</h1>
         <h1 className='first-letter:uppercase mt-5'>{vacancy.description}</h1>
       </div>
-      <div className='mx-10 mb-10 text-dark transition duration-300 dark:text-lightOne md:text-lg text-base'>
+      <div className='m-5 md:m-10 text-dark transition duration-300 dark:text-lightOne md:text-lg text-base'>
         <form onSubmit={onSubmit}>
           <h1 className='text-2xl font-medium capitalize'>edit tanggal</h1>
           <InputDate
@@ -148,12 +148,8 @@ const MyIntern = ({ vacancy }) => {
             value={extend}
             onChange={(e) => setExtend(e.target.value)}
           />
-          {message && (
-            <Alert text={message} />
-          )}
-          {error && (
-            <Alert text={error} error />
-          )}
+          {message && <Alert text={message} />}
+          {error && <Alert text={error} error />}
           <LoginBtn text='Save' />
         </form>
       </div>

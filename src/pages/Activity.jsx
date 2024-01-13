@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { ActivityButton, ActivityCard, Title } from "../components";
+import { ActivityButton, ActivityCard, NoActivity, Title } from "../components";
 import Isotope from "isotope-layout";
 import axiosClient from "../axios-client";
 import { useQuery } from "react-query";
@@ -124,8 +124,8 @@ const Activity = () => {
                 color='#F03E61'
               />
             )}
-
-            {activity?.journal && activity?.journal == null ? (
+            <NoActivity filterKey='registrasi' />
+            {activity?.journal ? (
               <ActivityCard
                 filterKey='laporan'
                 title='laporan harian'
@@ -135,7 +135,9 @@ const Activity = () => {
                 bg='#BABABA'
                 color='#5B5B5B'
               />
-            ) : null}
+            ) : (
+              <NoActivity filterKey='laporan' />
+            )}
           </div>
         ) : user?.resume ? (
           <div className='w-full lg:my-8 my-3 filter-container'>
@@ -148,15 +150,11 @@ const Activity = () => {
               bg='#BADFFF'
               color='#1191FF'
             />
+            <NoActivity filterKey='absensi' />
+            <NoActivity filterKey='laporan' />
           </div>
         ) : (
-          <div className='flex items-center justify-center w-full h-64'>
-            <div className='filter-container'>
-              <h1 className='text-dark transition duration-300 dark:text-lightOne text-xl'>
-                Belum ada aktivitas terbaru
-              </h1>
-            </div>
-          </div>
+          <NoActivity />
         )}
       </div>
     </div>

@@ -47,10 +47,10 @@ const Login = () => {
       style={{ backgroundImage: "linear-gradient(115deg, #1191FF, #F9F9F9)" }}
     >
       <div className='w-11/12 lg:w-8/12 bg-white rounded-xl shadow-lg overflow-hidden my-5'>
-        <div className='flex flex-col lg:flex-row'>
-          <LoginBanner header='Welcome back' text='Continue your internship' />
+        <div className='flex flex-col sm:flex-row'>
+          <LoginBanner header='Welcome back!' text='Continue your internship' />
           <div className='w-full lg:w-1/2 py-5 px-12'>
-            <h2 className='text-2xl mb-1'>Sign In</h2>
+            <h2 className='text-xl md:text-2xl mb-1'>Sign In</h2>
             <p className='mb-5 text-lg'>Sign in to your account</p>
             {errors && <Alert text={errors} error />}
             <form onSubmit={onSubmit} method='POST'>

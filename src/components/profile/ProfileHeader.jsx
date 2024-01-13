@@ -30,7 +30,7 @@ const ProfileHeader = () => {
             <img src={user?.avatar_url ? user.avatar_url : '/images/placeholder-profile.png'} alt={`Avatar of ${user?.name}`} />
           </div>
         </div>
-        <div className='text-lightOne mt-5 text-center'>
+        <div className='text-lightOne mt-5 mx-1 text-center'>
           <h1 className='capitalize text-2xl font-bold'>{user?.name}</h1>
           <h1 className='text-lg'>{user?.email}</h1>
         </div>

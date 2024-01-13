@@ -30,7 +30,7 @@ const MyIntern = () => {
           <span className='loading loading-spinner loading-lg'></span>
         </div>
       ) : user?.in_internship ? (
-        <div className='m-2 md:m-10 mt-24 shadow-xl transition duration-300 dark:bg-secondary-dark-bg bg-white rounded-3xl'>
+        <div className='m-2 md:m-10 mt-8 shadow-xl transition duration-300 dark:bg-secondary-dark-bg bg-white rounded-3xl'>
           {appliancesData?.appliances && (
             appliancesData.appliances.map((appliance) => (
               <MyInternDetail key={appliance.id} vacancy={appliance.vacancy} />

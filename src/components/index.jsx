@@ -19,6 +19,7 @@ export { default as PresenceButton } from "./presence/PresenceButton";
 export { default as PresenceModal } from "./presence/PresenceModal";
 export { default as UploadCv } from "./UploadCv";
 export { default as Activity } from "./activity/Activity";
+export { default as NoActivity } from "./activity/NoActivity";
 export { default as ActivityButton } from "./activity/ActivityButton";
 export { default as ActivityCard } from "./activity/ActivityCard";
 export { default as News } from "./news/News";
