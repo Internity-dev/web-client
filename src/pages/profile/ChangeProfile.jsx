@@ -14,8 +14,8 @@ const ChangeProfile = () => {
   const { mutate } = useMutation(
     (payload) => axiosClient.put("/change-profile", payload),
     {
-      onSuccess: () => {
-        setMessage("Profil berhasil diubah");
+      onSuccess: (response) => {
+        setMessage(response.data.message);
         refetchUser();
       },
       onError: (err) => {

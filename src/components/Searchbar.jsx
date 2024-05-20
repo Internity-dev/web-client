@@ -8,17 +8,23 @@ const Searchbar = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  // Function to fetch search results from the API
   const fetchSearchResults = async () => {
     setLoading(true);
     setError(null);
 
     try {
-      const response = await axiosClient.get(`/vacancies?vacancies=${sear}`);
+      const response = await axiosClient.get(`/search/${searchTerm}`);
       console.log(response.data)
-    } catch (error) {
-      console.error('Error fetching search results:', error);
-      setError('An error occurred while fetching the results.');
+    } catch (err) {
+      const response = err.response;
+      if (
+        response &&
+        (response.status === 401 ||
+          response.status === 500 ||
+          response.status === 403)
+      ) {
+        setError(response.data.message);
+      }
     } finally {
       setLoading(false);
     }
@@ -41,7 +47,7 @@ const Searchbar = () => {
         <input
           type='search'
           name=''
-          placeholder='cari tempat magang...'
+          placeholder='cari tempat PKL...'
           id='search-box'
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}

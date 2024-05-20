@@ -58,7 +58,7 @@ const Notifications = () => {
       })
       .catch((err) => {
         const response = err.response;
-        if (response && response.status === 422) {
+        if (response) {
           console.log(response.data);
         }
       });

@@ -144,7 +144,7 @@ const MyIntern = ({ vacancy }) => {
             name='extend'
             type='number'
             innerRef={extendRef}
-            placeholder='Perpanjang waktu magang'
+            placeholder='Perpanjang waktu PKL'
             value={extend}
             onChange={(e) => setExtend(e.target.value)}
           />

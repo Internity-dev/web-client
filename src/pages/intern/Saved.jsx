@@ -8,8 +8,8 @@ const Saved = () => {
     axiosClient.get("/me").then(({ data }) => data)
   );
 
-  const { data: vacanciesData } = useQuery("vacancies", () =>
-    axiosClient.get("/vacancies").then(({ data }) => data.vacancies)
+  const { data: vacanciesData } = useQuery("savedvacancies", () =>
+    axiosClient.get("/savedvacancies").then(({ data }) => data.vacancies)
   );
 
   return (
@@ -23,8 +23,8 @@ const Saved = () => {
             {vacanciesData?.map((vacancy) => (
               <InternCard
                 key={vacancy.id}
-                vacancy={vacancy}
-                // icon='material-symbols:bookmark-add-outline-rounded'
+                vacancy={vacancy.vacancy}
+                icon='material-symbols:bookmark-remove'
               />
             ))}
           </div>

@@ -18,7 +18,7 @@ const UploadCv = () => {
         Upload CV mu yuk!
       </h1>
       <p className='text-dark transition duration-300 dark:text-lightTwo text-lg m-3'>
-        Biar kami bisa kasih rekomendasi tempat magang sesuai dengan skill yang
+        Biar kami bisa kasih rekomendasi tempat PKL sesuai dengan skill yang
         kamu punya, <span className='font-bold'>pastiin CV nya ATS ya :)</span>
       </p>
       <button

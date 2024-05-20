@@ -24,7 +24,7 @@ const MyIntern = () => {
 
   return (
     <div className='flex flex-col justify-center items-center lg:my-15 my-20'>
-      <Title title='magangku' />
+      <Title title='PKL-ku' />
       {isLoading ? (
         <div className='flex items-center justify-center h-72'>
           <span className='loading loading-spinner loading-lg'></span>
@@ -40,7 +40,7 @@ const MyIntern = () => {
       ) : (
         <div className='flex justify-center items-center h-72 m-7'>
           <h1 className='text-dark transition duration-300 dark:text-lightOne text-xl first-letter:capitalize'>
-            Belum ada tempat magang terdaftar
+            Belum ada tempat PKL terdaftar
           </h1>
         </div>
       )}

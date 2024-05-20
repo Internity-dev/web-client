@@ -12,7 +12,7 @@ const Recommendation = () => {
 
   return (
     <div className='flex flex-col justify-center items-center lg:my-15 my-20  '>
-      <Title title='rekomendasi magang' />
+      <Title title='rekomendasi PKL' />
       {isLoading ? (
         <div className='flex items-center justify-center h-52'>
           <span className='loading loading-spinner loading-lg'></span>

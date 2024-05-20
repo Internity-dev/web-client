@@ -62,7 +62,7 @@ const Register = () => {
             <p className='mb-5 md:text-lg'>Create your account</p>
             {errors &&
               Object.keys(errors).map((key) => (
-                <Alert text={errors} error />
+                <Alert key={key} text={errors} error />
               ))}
             <form onSubmit={onSubmit} method='POST'>
               <Input

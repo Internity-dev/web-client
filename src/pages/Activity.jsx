@@ -143,7 +143,7 @@ const Activity = () => {
           <div className='w-full lg:my-8 my-3 filter-container'>
             <ActivityCard
               filterKey='registrasi'
-              title='daftar magang'
+              title='daftar PKL'
               date={formattedDate}
               icon='ci:suitcase'
               to='/intern'

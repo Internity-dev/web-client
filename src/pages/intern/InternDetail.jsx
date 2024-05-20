@@ -59,9 +59,55 @@ const InternDetail = () => {
 
     axiosClient
       .post("/appliances", payload)
-      .then(() => {
+      .then((response) => {
         queryClient.invalidateQueries("appliances");
-        setMessage("Berhasil daftar!");
+        setMessage(response.data.message);
+      })
+      .catch((err) => {
+        const response = err.response;
+        if (
+          response &&
+          (response.status === 401 ||
+            response.status === 500 ||
+            response.status === 403)
+        ) {
+          setError(response.data.message);
+        }
+      });
+  };
+
+  const onSave = () => {
+    const payload = {
+      vacancy_id: vacancy?.id,
+    };
+
+    axiosClient
+      .post("/savedvacancies", payload)
+      .then((response) => {
+        queryClient.invalidateQueries("savedvacancies");
+        queryClient.invalidateQueries("vacancies");
+        setMessage(response.data.message);
+      })
+      .catch((err) => {
+        const response = err.response;
+        if (
+          response &&
+          (response.status === 401 ||
+            response.status === 500 ||
+            response.status === 403)
+        ) {
+          setError(response.data.message);
+        }
+      });
+  };
+
+  const onUnsave = () => {
+    axiosClient
+      .delete(`/savedvacancies/${vacancy.id}`)
+      .then((response) => {
+        queryClient.invalidateQueries("savedvacancies");
+        queryClient.invalidateQueries("vacancies");
+        setMessage(response.data.message);
       })
       .catch((err) => {
         const response = err.response;
@@ -98,7 +144,21 @@ const InternDetail = () => {
           <InternDetails vacancy={vacancy} />
           <div className='flex justify-center'>
             <div className='flex justify-between gap-2 md:gap-7 mb-5'>
-              <InternButton vacancy={vacancy} text='simpan' left />
+              {vacancy?.is_saved ? (
+                <InternButton
+                  vacancy={vacancy}
+                  text='Batal simpan'
+                  left
+                  onClick={() => onUnsave()}
+                />
+              ) : (
+                <InternButton
+                  vacancy={vacancy}
+                  text='Simpan'
+                  left
+                  onClick={() => onSave()}
+                />
+              )}
               {vacancy?.in_pending ? (
                 <InternButton
                   vacancy={vacancy}
@@ -128,8 +188,7 @@ const InternDetail = () => {
         <div className='modal-box'>
           <h3 className='font-bold text-lg'>Warning!</h3>
           <p className='py-4'>
-            Batalkan pendaftaran magang anda sebelum mendaftar ke tempat magang
-            lain
+            Batalkan pendaftaran PKL anda sebelum mendaftar ke tempat PKL lain
           </p>
           <div className='modal-action'>
             <form method='dialog'>

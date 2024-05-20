@@ -19,7 +19,7 @@ const InternButton = ({ text, left, vacancy, onClick }) => {
 
   let className;
   if (left) {
-    className = vacancy.in_pending ? activeLeft : normalLeft;
+    className = vacancy.is_saved ? activeLeft : normalLeft;
   } else {
     className = vacancy.in_pending ? activeRight : normalRight;
   }

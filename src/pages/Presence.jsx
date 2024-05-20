@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Header } from "../components";
-import { useStateContext } from "../context/ContextProvider";
 import ReactPaginate from "react-paginate";
 import axiosClient from "../axios-client";
 import { useQuery } from "react-query";
@@ -37,7 +36,7 @@ const Presence = () => {
   );
 
   return (
-    <div className='m-2 md:m-10 mt-24 p-2 md:p-10 bg-white dark:bg-dark rounded-3xl'>
+    <div className='m-2 md:m-10 p-2 md:p-10 bg-white dark:bg-dark rounded-3xl'>
       <Header category='My' title='Presences' />
       <div className='overflow-x-auto'>
         <table className='table'>

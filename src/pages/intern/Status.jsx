@@ -33,7 +33,7 @@ const Status = () => {
       ) : (
         <div className='flex justify-center items-center h-72 m-7'>
           <h1 className='text-dark transition duration-300 dark:text-lightOne text-xl first-letter:capitalize'>
-            Belum ada tempat magang terdaftar
+            Belum ada tempat PKL terdaftar
           </h1>
         </div>
       )}
