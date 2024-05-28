@@ -1,11 +1,12 @@
 import { Navigate, Outlet } from "react-router-dom";
 import { useStateContext } from "../../context/ContextProvider";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Icon } from "@iconify/react";
 import { Navbar, Footer, Sidebar } from "..";
 import "../../index.css";
 
 export default function DefaultLayout() {
+  const [mobileSearch, setMobileSearch] = useState(false);
   const {
     token,
     setMode,
@@ -59,12 +60,17 @@ export default function DefaultLayout() {
               : "bg-main-bg transition duration-300 dark:bg-main-dark-bg  w-full min-h-screen flex-2 "
           }
         >
-          <div className='fixed z-50 md:static bg-main-bg transition duration-300 dark:bg-main-dark-bg w-full '>
-            <Navbar />
+          <div
+            className={`${
+              mobileSearch ? "ease-in mb-11" : "ease-out"
+            } z-50 bg-main-bg dark:bg-main-dark-bg transition-all duration-1000`}
+          >
+            <Navbar
+              mobileSearch={mobileSearch}
+              setMobileSearch={setMobileSearch}
+            />
           </div>
-          <div>
             <Outlet />
-          </div>
           <Footer />
         </div>
       </div>

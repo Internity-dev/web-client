@@ -36,6 +36,7 @@ const News = () => {
         pagination={{
           clickable: true,
         }}
+        slidesperv
         modules={[FreeMode, Pagination]}
         className='max-w-xs md:max-w-3xl'
       >

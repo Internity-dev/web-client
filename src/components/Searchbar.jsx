@@ -1,65 +1,30 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Icon } from "@iconify/react";
-import axiosClient from "../axios-client";
 
-const Searchbar = () => {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [searchResults, setSearchResults] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-
-  const fetchSearchResults = async () => {
-    setLoading(true);
-    setError(null);
-
-    try {
-      const response = await axiosClient.get(`/search/${searchTerm}`);
-      console.log(response.data)
-    } catch (err) {
-      const response = err.response;
-      if (
-        response &&
-        (response.status === 401 ||
-          response.status === 500 ||
-          response.status === 403)
-      ) {
-        setError(response.data.message);
-      }
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    if (searchTerm.trim() !== '') {
-      fetchSearchResults();
-    } else {
-      setSearchResults([]);
-    }
-  }, [searchTerm]);
-
+const Searchbar = ({ searchTerm, setSearchTerm, onFocus, onBlur }) => {
   return (
-    <form
-      action=''
-      className='md:w-[30rem] w-52 h-10 overflow-hidden flex items-center rounded-full bg-lightOne transition duration-300 dark:bg-main-dark-bg border border-gray'
-    >
-      <div className='relative w-full'>
+    <form action='' className='w-full'>
+      <div className='relative'>
+        <div className='pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4'>
+          <Icon
+            icon='ion:search-outline'
+            width='30'
+            className='h-5 w-5 text-gray-400'
+          />
+        </div>
         <input
           type='search'
-          name=''
-          placeholder='cari tempat PKL...'
+          placeholder='Cari tempat PKL ...'
           id='search-box'
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className='md:text-xl text-xs px-5 w-full h-full transform-none rounded-full bg-lightOne dark:bg-main-dark-bg text-neutral-700 dark:text-neutral-200 outline-none placeholder-neutral-700 transition duration-300 dark:placeholder-neutral-200'
+          onFocus={onFocus}
+          onBlur={onBlur}
+          name='keyword'
+          autoComplete='off'
+          className='block w-full rounded-full border-none bg-secondary py-2 pl-12 pr-3 text-xs placeholder:text-gray-500 focus:border-primary-400 focus:text-gray-900 focus:outline-none focus:ring-1 focus:ring-primary-400 focus:placeholder:text-gray-400 sm:py-2 sm:text-sm'
         />
-        <div className='absolute inset-y-0 flex items-center pl-2 pointer-events-none'></div>
       </div>
-      <Icon
-        icon='ic:baseline-search'
-        width='30'
-        className='mr-6 text-neutral-700 transition duration-300 dark:text-neutral-200 cursor-pointer'
-      />
     </form>
   );
 };
