@@ -14,7 +14,6 @@ export default {
         main: "#1191FF",
         lightOne: "#FFFFFF",
         lightTwo: "#F9F9F9",
-        gray: "#5B5B5B",
       },
       fontSize: {
         14: "14px",

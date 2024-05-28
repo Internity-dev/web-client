@@ -26,9 +26,9 @@ const Input = ({ label, icon, showeye, name, innerRef }) => {
 
   return (
     <div className={`input-div mb-4 grid-cols-10 ${isFocus ? "focus" : ""}`}>
-      <div className='col-span-1 flex justify-center items-center text-gray dark:text-lightOne transition duration-300'><Icon icon={icon} width={25} /></div>
+      <div className='col-span-1 flex justify-center items-center text-gray-600 dark:text-lightOne transition duration-300'><Icon icon={icon} width={25} /></div>
       <div className='div col-span-8'>
-        <h5 className="text-gray dark:text-lightOne">{label}</h5>
+        <h5 className="text-gray-600 dark:text-lightOne">{label}</h5>
         <input
           name={name}
           ref={innerRef}
@@ -43,7 +43,7 @@ const Input = ({ label, icon, showeye, name, innerRef }) => {
       <div className='col-span-1 flex justify-center items-center'>
         {showeye && (
           <button type='button' onClick={togglePasswordVisibility}>
-            <Icon className="text-gray dark:text-lightOne" icon={isPasswordVisible ? "radix-icons:eye-open" : "eva:eye-off-2-fill"} width={25} />
+            <Icon className="text-gray-600 dark:text-lightOne" icon={isPasswordVisible ? "radix-icons:eye-open" : "eva:eye-off-2-fill"} width={25} />
           </button>
         )}
       </div>

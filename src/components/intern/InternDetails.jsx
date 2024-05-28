@@ -1,6 +1,12 @@
 import React from "react";
 
 const InternDetails = ({ vacancy }) => {
+  const formatDate = (dateString) => {
+    const options = { year: "numeric", month: "long", day: "numeric" };
+    const date = new Date(dateString);
+    return date.toLocaleDateString("id-ID", options);
+  };
+
   return (
     <div className='flex flex-col'>
       <div className='m-5 md:m-10'>
@@ -32,8 +38,8 @@ const InternDetails = ({ vacancy }) => {
         </div>
         <div className='flex gap-5 text-sm'>
           <h1 className='text-main'>{vacancy.applied} pendaftar</h1>
-          <h1 className='text-gray transition duration-300 dark:text-slate-300'>
-            9 september 2006
+          <h1 className='text-gray-600 transition duration-300 dark:text-slate-300'>
+            {formatDate(vacancy.created_at)}
           </h1>
         </div>
       </div>

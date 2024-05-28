@@ -56,7 +56,12 @@ const Navbar = ({ mobileSearch, setMobileSearch }) => {
         const { data } = await axiosClient.get(`/search/${searchTerm}`);
         setSearchResults(data.vacancies);
       } catch (err) {
-        setError(err.message || "Something went wrong");
+        const response = err.response;
+        if (response) {
+          setError(response.data.message);
+        } else {
+          setError("An unexpected error occurred.");
+        }
       } finally {
         setLoading(false);
       }
@@ -94,7 +99,7 @@ const Navbar = ({ mobileSearch, setMobileSearch }) => {
   };
 
   return (
-    <nav className='fixed top-0 z-50 w-full bg-main-bg dark:bg-main-dark-bg'>
+    <nav className='w-full bg-main-bg dark:bg-main-dark-bg'>
       <div className='mx-auto max-w-7xl px-4 sm:items-center sm:px-6 lg:px-8'>
         <div className='relative flex items-center justify-between py-1.5 lg:gap-4 lg:py-2'>
           <NavButton
@@ -158,7 +163,7 @@ const Navbar = ({ mobileSearch, setMobileSearch }) => {
                         src={
                           user?.avatar_url
                             ? user.avatar_url
-                            : "/images/placeholder-profile.png"
+                            : `https://ui-avatars.com/api/?name=${user?.name}&amp;background=277bc0&amp;color=fff`
                         }
                         alt={`Avatar of ${user?.name}`}
                       />
