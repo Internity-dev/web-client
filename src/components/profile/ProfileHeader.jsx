@@ -27,7 +27,14 @@ const ProfileHeader = () => {
       <div className='my-6 flex flex-col justify-center items-center'>
         <div className='avatar static'>
           <div className='w-28 rounded-full'>
-            <img src={user?.avatar_url ? user.avatar_url : '/images/placeholder-profile.png'} alt={`Avatar of ${user?.name}`} />
+            <img
+              src={
+                user?.avatar_url
+                  ? user.avatar_url
+                  : `https://ui-avatars.com/api/?name=${user?.name}&amp;background=277bc0&amp;color=fff`
+              }
+              alt={`Avatar of ${user?.name}`}
+            />
           </div>
         </div>
         <div className='text-lightOne mt-5 mx-1 text-center'>
@@ -50,9 +57,7 @@ const ProfileHeader = () => {
             <h1 className='underline text-lg font-bold'>Edit CV</h1>
           </button>
           <Modal setMessage={setMessage} />
-          {message && (
-            <Alert text={message} />
-          )}
+          {message && <Alert text={message} />}
         </div>
       </div>
     </div>

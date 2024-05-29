@@ -44,8 +44,12 @@ const UserProfile = () => {
             <div className='avatar static'>
               <div className='w-24 h-24 rounded-full'>
                 <img
-                  src={user?.avatar_url || "/images/placeholder-profile.png"}
-                  alt='user-profile'
+                  src={
+                    user?.avatar_url
+                      ? user.avatar_url
+                      : `https://ui-avatars.com/api/?name=${user?.name}&amp;background=277bc0&amp;color=fff`
+                  }
+                  alt={`Avatar of ${user?.name}`}
                 />
               </div>
             </div>
