@@ -30,7 +30,7 @@ const Register = () => {
       })
       .catch((err) => {
         const response = err.response;
-        if (response && response.status === 422) {
+        if (response && response.data && response.data.errors) {
           setErrors(response.data.errors);
         }
       });
@@ -61,9 +61,16 @@ const Register = () => {
             <h2 className='text-xl md:text-2xl mb-1'>Sign Up</h2>
             <p className='mb-5 md:text-lg'>Create your account</p>
             {errors &&
-              Object.keys(errors).map((key) => (
-                <Alert key={key} text={errors} error />
-              ))}
+              Object.keys(errors).map((key, index) =>
+                errors[key].map((error, idx) => (
+                  <Alert
+                    key={`${key}-${idx}`}
+                    text={error}
+                    error
+                    index={index + idx}
+                  />
+                ))
+              )}
             <form onSubmit={onSubmit} method='POST'>
               <Input
                 innerRef={nameRef}

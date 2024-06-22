@@ -15,15 +15,12 @@ axiosClient.interceptors.response.use(
     return response;
   },
   (error) => {
-    if (!error.response) {
-      localStorage.removeItem("ACCESS_TOKEN");
-      window.location.reload();
-    } else {
-      const { response } = error;
-      if (response.status === 401) {
-        localStorage.removeItem("ACCESS_TOKEN");
-        window.location.reload();
-      }
+    const { response } = error;
+    if (response.status === 401) {
+      localStorage.removeItem("TOKEN");
+      // window.location.reload();
+    } else if (response.status === 404) {
+      //Show not found
     }
 
     throw error;

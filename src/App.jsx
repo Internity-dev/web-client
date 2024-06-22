@@ -25,6 +25,7 @@ import {
 import "./index.css";
 
 import { useStateContext } from "./context/ContextProvider";
+import Test from "./pages/Test";
 
 const App = () => {
   const { setCurrentColor, setCurrentMode, currentMode } = useStateContext();
@@ -62,6 +63,7 @@ const App = () => {
           <Route path='/' element={<GuestLayout />}>
             <Route path='/login' element={<Login />} />
             <Route path='/register' element={<Register />} />
+            <Route path='/test' element={<Test />} />
           </Route>
           <Route path='*' element={<NotFound />} />
         </Routes>
