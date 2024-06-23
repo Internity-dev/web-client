@@ -18,7 +18,7 @@ const UserProfile = () => {
     axiosClient.post("/logout").then(() => {
       queryClient.invalidateQueries("user");
       setToken(null);
-      setCurrentMode("Light");
+      window.location.reload();
     });                 
   };
 

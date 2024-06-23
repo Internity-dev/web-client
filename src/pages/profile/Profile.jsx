@@ -23,8 +23,8 @@ const Profile = () => {
 
     axiosClient.post("/logout").then(() => {
       queryClient.invalidateQueries("user");
-      setCurrentMode("Light");
       setToken(null);
+      window.location.reload();
     });
   };
 
