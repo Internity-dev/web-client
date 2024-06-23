@@ -68,9 +68,9 @@ const Login = () => {
                 showeye
               />
               <div className='mt-5'>
-                <a href='#' className='text-dark underline'>
+                {/* <a href='#' className='text-dark underline'>
                   Forgot Password?
-                </a>
+                </a> */}
               </div>
               <LoginBtn text='Sign In' />
               <div className='mt-5'>
