@@ -45,7 +45,10 @@ const InternDetails = ({ vacancy }) => {
       </div>
       <div className='m-5 md:m-10 text-dark transition duration-300 dark:text-lightOne md:text-lg text-base'>
         <h1 className='text-2xl font-medium capitalize'>deskripsi pekerjaan</h1>
-        <h1 className='first-letter:uppercase mt-5'>{vacancy.description}</h1>
+        <div
+          className='first-letter:uppercase mt-5'
+          dangerouslySetInnerHTML={{ __html: vacancy.description }}
+        />
       </div>
     </div>
   );
