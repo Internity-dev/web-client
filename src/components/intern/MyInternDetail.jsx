@@ -14,7 +14,7 @@ const MyIntern = ({ vacancy }) => {
   const endDateRef = createRef();
   const [endDate, setEndDate] = useState("");
   const extendRef = createRef();
-  const [extend, setExtend] = useState(1);
+  const [extend, setExtend] = useState(0);
   const [message, setMessage] = useState(null);
   const [error, setError] = useState(null);
   const { data: user } = useQuery("user", () =>
