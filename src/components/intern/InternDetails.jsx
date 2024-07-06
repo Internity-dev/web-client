@@ -15,7 +15,7 @@ const InternDetails = ({ vacancy }) => {
         </h1>
         <div className='flex flex-col md:flex-row items-center'>
           <img
-            src={vacancy.company.logo_url}
+            src={vacancy.company.logo_url ? vacancy.company.logo_url : '/images/placeholder-company.webp'}
             alt='logo'
             className='my-5 w-36 md:w-40'
           />
@@ -23,10 +23,12 @@ const InternDetails = ({ vacancy }) => {
             <h1 className='text-dark transition duration-300 dark:text-lightOne font-semibold'>
               {vacancy.company.name}
             </h1>
-            <p className='text-dark transition duration-300 dark:text-lightOne font-medium'>
-              {vacancy.company.address}, {vacancy.company.city},{" "}
-              {vacancy.company.state}
-            </p>
+            {vacancy.company.city && (
+              <p className='text-dark transition duration-300 dark:text-lightOne font-medium'>
+                {vacancy.company.address}, {vacancy.company.city},{" "}
+                {vacancy.company.state}
+              </p>
+            )}
             <a
               className='text-dark transition duration-300 dark:text-lightOne underline'
               href={vacancy.company.website}

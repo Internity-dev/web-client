@@ -9,15 +9,21 @@ const StatusCard = ({ appliance }) => {
     >
       <div className='flex items-center ml-2 md:ml-5 w-64 md:w-auto'>
         <img
-          src={appliance.vacancy.company.logo_url}
-          alt={appliance.vacancy.company.logo_url}
+          src={
+            appliance.vacancy.company.logo_url
+              ? appliance.vacancy.company.logo_url
+              : "/images/placeholder-company.webp"
+          }
+          alt='logo'
           className='w-20 md:w-24'
         />
         <div className='ml-3 leading-5'>
           <h1 className='font-bold capitalize text-lg'>
             {appliance.vacancy.name}
           </h1>
-          <p className='capitalize one-line'>{appliance.vacancy.company.name}</p>
+          <p className='capitalize one-line'>
+            {appliance.vacancy.company.name}
+          </p>
           <p className='capitalize'>
             {appliance.vacancy.company.city}, {appliance.vacancy.company.state}
           </p>
