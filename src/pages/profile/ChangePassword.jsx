@@ -12,7 +12,7 @@ const ChangePassword = () => {
   const [message, setMessage] = useState(null);
   const [error, setError] = useState(null);
 
-  const { D, data } = useMutation(
+  const { mutate, data } = useMutation(
     (payload) => axiosClient.put("/change-password", payload),
     {
       onSuccess: () => {
@@ -76,12 +76,8 @@ const ChangePassword = () => {
               icon='mdi:lock-outline'
               showeye
             />
-            {message && (
-              <Alert text={message} />
-            )}
-            {error && (
-              <Alert text={error} error />
-            )}
+            {message && <Alert text={message} />}
+            {error && <Alert text={error} error />}
             <LoginBtn text='Save' />
           </div>
         </div>
