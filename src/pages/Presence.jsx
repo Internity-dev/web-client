@@ -36,7 +36,7 @@ const Presence = () => {
   );
 
   return (
-    <div className='m-2 md:m-10 p-2 md:p-10 bg-white dark:bg-dark rounded-3xl'>
+    <div className='m-2 md:m-10 p-8 md:p-10 bg-white dark:bg-dark rounded-3xl transition duration-300'>
       <Header category='My' title='Presences' />
       <div className='overflow-x-auto'>
         <table className='table'>
@@ -46,6 +46,7 @@ const Presence = () => {
               <th>jam masuk</th>
               <th>jam keluar</th>
               <th>lampiran</th>
+              <th>deskripsi</th>
               <th>status</th>
               <th>status</th>
             </tr>
@@ -60,8 +61,13 @@ const Presence = () => {
                 <th>{presence.check_in}</th>
                 <th>{presence.check_out}</th>
                 <th>
-                  <img src={presence.attachment} alt='' />
+                  <img
+                    src={presence.attachment_url}
+                    alt={presence.attachment_url}
+                    width='150'
+                  />
                 </th>
+                <th>{presence.description}</th>
                 <th>
                   <button
                     className='uppercase text-sm p-2 rounded-md text-lightOne'

@@ -92,7 +92,7 @@ const Report = () => {
   }, [message]);
 
   return (
-    <div className='m-2 md:m-10 mt-24 p-2 md:p-10 bg-white dark:bg-dark rounded-3xl transition duration-300'>
+    <div className='m-2 md:m-10 p-8 md:p-10 bg-white dark:bg-dark rounded-3xl transition duration-300'>
       <Header category='Jurnal' title='PKL' />
       <div className='w-full flex justify-center'>
         <div className='w-full h-10 flex items-center justify-end'>

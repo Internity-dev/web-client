@@ -17,6 +17,7 @@ export { default as Footer } from "./Footer";
 export { default as Title } from "./Title";
 export { default as PresenceButton } from "./presence/PresenceButton";
 export { default as PresenceModal } from "./presence/PresenceModal";
+export { default as PresenceCamera } from "./presence/PresenceCamera";
 export { default as UploadCv } from "./UploadCv";
 export { default as Activity } from "./activity/Activity";
 export { default as NoActivity } from "./activity/NoActivity";

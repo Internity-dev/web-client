@@ -34,6 +34,7 @@ const MyIntern = ({ vacancy }) => {
     if (appliancesData) {
       setStartDate(appliancesData.start_date || "");
       setEndDate(appliancesData.end_date || "");
+      setExtend(appliancesData.extend);
     }
   }, [appliancesData]);
 

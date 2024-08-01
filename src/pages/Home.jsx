@@ -8,6 +8,8 @@ import {
   News,
   PresenceModal,
   Alert,
+  PresenceCamera,
+  ExcuseModal,
 } from "../components";
 import { useStateContext } from "../context/ContextProvider";
 import { Link } from "react-router-dom";
@@ -19,6 +21,7 @@ const Home = () => {
   const queryClient = useQueryClient();
   const [message, setMessage] = useState(null);
   const [companyDetails, setCompanyDetails] = useState(null);
+  const [presenceCam, setPresenceCam] = useState(false);
   const now = new Date();
   const formattedTime = now.toLocaleTimeString("en-US", {
     hour12: false,
@@ -76,7 +79,11 @@ const Home = () => {
   );
 
   const presenceMutation = useMutation(
-    (payload) => axiosClient.put(`/presences/${activity.presence.id}`, payload),
+    (payload) =>
+      axiosClient.post(
+        `/presences/${activity.presence.id}?_method=PUT`,
+        payload
+      ),
     {
       onSuccess: () => {
         queryClient.invalidateQueries("activity");
@@ -116,15 +123,6 @@ const Home = () => {
     setMessage("Berhasil absen keluar!");
   };
 
-  const onIzin = () => {
-    const payload = {
-      check_in: formattedTime,
-      presence_status_id: 3,
-    };
-    presenceMutation.mutate(payload);
-    setMessage("Berhasil izin!");
-  };
-
   const onMasuk = () => {
     const payload = {
       check_in: formattedTime,
@@ -143,6 +141,12 @@ const Home = () => {
     }
   }, [message, setMessage]);
 
+  useEffect(() => {
+    if (presenceCam) {
+      document.getElementById("checkin").showModal();
+    }
+  }, [presenceCam]);
+
   return (
     <div>
       {user?.in_internship ? (
@@ -156,17 +160,24 @@ const Home = () => {
               <PresenceButton
                 name='masuk'
                 icon='ph:sign-in-bold'
-                onClick={() =>
-                  activity?.presence == null
-                    ? document.getElementById("absen").showModal()
-                    : onMasuk()
-                }
+                onClick={() => {
+                  if (!fetchedCompanyDetails?.intern_date.start_date) {
+                    document.getElementById("date").showModal();
+                  } else if (activity?.presence == null) {
+                    document.getElementById("absen").showModal();
+                  } else {
+                    setPresenceCam(true);
+                  }
+                }}
               />
               <PresenceButton
                 name='keluar'
                 icon='ph:sign-out-bold'
                 onClick={() =>
-                  activity?.presence == null && presences[0].check_out == null
+                  !fetchedCompanyDetails?.intern_date.start_date
+                    ? document.getElementById("date").showModal()
+                    : activity?.presence == null &&
+                      presences[0].check_out == null
                     ? onKeluar()
                     : activity.presence
                     ? document.getElementById("masuk").showModal()
@@ -177,26 +188,40 @@ const Home = () => {
                 name='izin'
                 icon='basil:clipboard-alt-outline'
                 onClick={() =>
-                  activity.presence == null
+                  !fetchedCompanyDetails?.intern_date.start_date
+                    ? document.getElementById("date").showModal()
+                    : activity.presence == null
                     ? document.getElementById("absen").showModal()
-                    : onIzin()
+                    : document.getElementById("izin").showModal()
                 }
               />
               <Link to='/presence'>
                 <PresenceButton name='kehadiran' icon='ic:round-list' />
               </Link>
             </div>
+            <PresenceModal
+              id='date'
+              message='Anda belum menentukan tanggal PKL!'
+            />
             <PresenceModal id='absen' message='Anda sudah absen hari ini!' />
             <PresenceModal id='masuk' message='Silakan absen masuk dahulu' />
             <PresenceModal
               id='keluar'
               message='Anda sudah absen keluar hari ini!'
             />
+            {presenceCam && ( // Conditionally render the camera
+              <PresenceCamera
+                onClose={() => setPresenceCam(false)}
+                mutation={presenceMutation}
+                time={formattedTime}
+                setMessage={setMessage}
+              />
+            )}
           </div>
           <Activity />
           <News />
           {message && <Alert text={message} />}
-          {/* <ExcuseModal setMessage={setMessage} /> */}
+          <ExcuseModal mutation={presenceMutation} time={formattedTime} setMessage={setMessage} />
         </div>
       ) : user?.resume ? (
         <div>
