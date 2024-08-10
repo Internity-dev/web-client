@@ -6,7 +6,7 @@ import { NavLink } from "react-router-dom";
 import { useQuery, useQueryClient } from "react-query";
 
 const UserProfile = () => {
-  const { setToken, setCurrentMode } = useStateContext();
+  const { setToken } = useStateContext();
   const queryClient = useQueryClient();
 
   const { data: user, isLoading } = useQuery("user", () =>
