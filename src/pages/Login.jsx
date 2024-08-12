@@ -69,7 +69,7 @@ const Login = () => {
               />
               <div className='mt-5'>
                 <a
-                  href='https://wa.me/6285693926490?text=Halo%20min%2C%20tolong%20reset%20password%20saya%20atas%20nama%20(nama%20anda)'
+                  href='https://wa.me/6282112631356?text=Halo%20min%2C%20tolong%20reset%20password%20saya%20atas%20nama%20(nama%20anda)'
                   target='blank'
                   className='text-dark underline'
                 >

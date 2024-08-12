@@ -7,13 +7,8 @@ import "../../index.css";
 
 export default function DefaultLayout() {
   const [mobileSearch, setMobileSearch] = useState(false);
-  const {
-    token,
-    setMode,
-    setCurrentMode,
-    currentMode,
-    activeMenu
-  } = useStateContext();
+  const { token, setMode, setCurrentMode, currentMode, activeMenu } =
+    useStateContext();
 
   if (!token) {
     return <Navigate to='/login' />;
@@ -70,7 +65,7 @@ export default function DefaultLayout() {
               setMobileSearch={setMobileSearch}
             />
           </div>
-            <Outlet />
+          <Outlet />
           <Footer />
         </div>
       </div>
