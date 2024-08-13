@@ -13,7 +13,7 @@ const NewsCard = ({ news }) => {
     <Link to={`/news/${news.id}`} className='relative mt-3 mx-2 cursor-grab'>
       <div className='news-card w-[320px] md:w-[350px] bg-slate-100 dark:bg-[rgb(66,70,77)] cursor-pointer transition duration-300'>
         <div className='news-image'>
-          <img src={news?.image} alt='news cover' />
+          <img src={news?.image_url} alt='news cover' />
         </div>
         <div className='lg:px-4 lg:pt-2 lg:pb-11 px-7 pt-7 pb-8'>
           <div className='flex flex-wrap mb-1'>

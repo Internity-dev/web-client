@@ -33,7 +33,7 @@ const NewsDetail = () => {
         <div className='flex flex-col w-full justify-center items-center'>
           <h1 className='text-2xl font-bold mt-5'>{news?.title}</h1>
           <h1 className='mb-5'>{formattedDate}</h1>
-          <img src={news?.image} alt='' className='m-5 w-400 max-h-96' />
+          <img src={news?.image_url} alt='' className='m-5 w-400 max-h-96' />
           <div
             className='m-5 text-justify'
             dangerouslySetInnerHTML={{ __html: news?.content }}
