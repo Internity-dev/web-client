@@ -7,6 +7,7 @@ import { useStateContext } from "../context/ContextProvider.jsx";
 const Register = () => {
   const nameRef = createRef();
   const emailRef = createRef();
+  const phoneRef = createRef();
   const passwordRef = createRef();
   const passwordConfirmationRef = createRef();
   const courseCodeRef = createRef();
@@ -19,6 +20,7 @@ const Register = () => {
     const payload = {
       name: nameRef.current.value,
       email: emailRef.current.value,
+      phone: phoneRef.current.value,
       password: passwordRef.current.value,
       password_confirmation: passwordConfirmationRef.current.value,
       course_code: courseCodeRef.current.value,
@@ -84,6 +86,13 @@ const Register = () => {
                 name='email'
                 label='Email'
                 icon='tabler:mail'
+              />
+              <Input
+                type='number'
+                innerRef={phoneRef}
+                name='phone'
+                label='Phone Number'
+                icon='tabler:phone'
               />
               <Input
                 innerRef={passwordRef}

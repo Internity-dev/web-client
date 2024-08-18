@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Icon } from '@iconify/react';
 
-const Input = ({ label, icon, showeye, name, innerRef }) => {
+const Input = ({ label, icon, showeye, name, innerRef, type }) => {
   const [isFocus, setIsFocus] = useState(false); 
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [inputValue, setInputValue] = useState("");
@@ -32,7 +32,7 @@ const Input = ({ label, icon, showeye, name, innerRef }) => {
         <input
           name={name}
           ref={innerRef}
-          type={inputType}
+          type={type ? type : inputType}
           onFocus={handleFocus}
           onBlur={handleBlur}
           onChange={handleInputChange}
