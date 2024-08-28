@@ -123,15 +123,6 @@ const Home = () => {
     setMessage("Berhasil absen keluar!");
   };
 
-  const onMasuk = () => {
-    const payload = {
-      check_in: formattedTime,
-      presence_status_id: 1,
-    };
-    presenceMutation.mutate(payload);
-    setMessage("Berhasil absen!");
-  };
-
   useEffect(() => {
     if (message) {
       const timeoutId = setTimeout(() => {

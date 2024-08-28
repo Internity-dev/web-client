@@ -21,6 +21,7 @@ import {
   NewsDetail,
   Presence,
   Notifications,
+  ServerDown,
 } from "./pages";
 import "./index.css";
 
@@ -66,6 +67,7 @@ const App = () => {
             <Route path='/test' element={<Test />} />
           </Route>
           <Route path='*' element={<NotFound />} />
+          <Route path='/down' element={<ServerDown />} />
         </Routes>
       </Router>
     </div>
