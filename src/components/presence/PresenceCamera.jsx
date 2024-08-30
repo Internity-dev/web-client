@@ -64,7 +64,7 @@ const PresenceCamera = ({ onClose, mutation, time, setMessage }) => {
               screenshotFormat='image/jpeg'
               width={640}
               height={480}
-              mirrored={false}
+              mirrored={true}
             />
           </>
         )}
