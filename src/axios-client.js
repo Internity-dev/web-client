@@ -20,7 +20,7 @@ axiosClient.interceptors.response.use(
     const { response } = error;
     if (response.status === 401) {
       localStorage.removeItem("TOKEN");
-      window.location.href = "/login";
+      // window.location.href = "/login";
     } else if (response.status === 404) {
       //Show not found
     }
