@@ -30,13 +30,13 @@ const MyIntern = () => {
           <span className='loading loading-spinner loading-lg'></span>
         </div>
       ) : user?.in_internship ? (
-        <div className='m-2 md:m-10 mt-8 shadow-xl transition duration-300 dark:bg-secondary-dark-bg bg-white rounded-3xl'>
+        <>
           {appliancesData?.appliances && (
             appliancesData.appliances.map((appliance) => (
-              <MyInternDetail key={appliance.id} vacancy={appliance.vacancy} />
+              <MyInternDetail key={appliance.id} vacancy={appliance.vacancy} internDate={appliance.intern_date}/>
             ))
           )}
-        </div>
+        </>
       ) : (
         <div className='flex justify-center items-center h-72 m-7'>
           <h1 className='text-dark transition duration-300 dark:text-lightOne text-xl first-letter:capitalize'>
