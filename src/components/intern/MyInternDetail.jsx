@@ -6,7 +6,6 @@ import InputText from "../profile/InputText";
 import LoginBtn from "../login/LoginBtn";
 import { useNavigate } from "react-router-dom";
 import Alert from "../Alert";
-import useUser from "../../hooks/useUser";
 
 const MyInternDetail = ({ vacancy, internDate }) => {
   const navigate = useNavigate();
@@ -18,19 +17,6 @@ const MyInternDetail = ({ vacancy, internDate }) => {
   const [extend, setExtend] = useState(internDate?.extend || 0);
   const [message, setMessage] = useState(null);
   const [error, setError] = useState(null);
-
-  const { data: user } = useUser();
-  
-  const { data: appliancesData } = useQuery(
-    "internDates",
-    async () => {
-      const response = await axiosClient.get("/appliances/accepted");
-      return response.data.intern_date[0];
-    },
-    {
-      enabled: !!user?.id,
-    }
-  );
 
   const { mutate } = useMutation(
     (payload) =>
@@ -45,6 +31,10 @@ const MyInternDetail = ({ vacancy, internDate }) => {
       },
       onError: (err) => {
         const response = err.response;
+        if (response.status === 400) {
+          setError(response.data.message);
+          setMessage(null);
+        }
         if (response.status === 500) {
           setError(response.data.message);
           setMessage(null);
