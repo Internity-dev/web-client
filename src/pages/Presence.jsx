@@ -1,24 +1,25 @@
 import React, { useState } from "react";
-import { Header } from "../components";
+import { Header, CompanyDropdown } from "../components";
 import ReactPaginate from "react-paginate";
 import axiosClient from "../axios-client";
 import { useQuery } from "react-query";
+import useCompanyDetails from "../hooks/useCompanyDetails";
 
 const Presence = () => {
-  const { data: companyDetails } = useQuery("companyDetails", async () => {
-    const response = await axiosClient.get("/appliances/accepted");
-    return response.data.appliances[0];
-  });
+  const { companyDetails, selectedCompanyId, setSelectedCompanyId } = useCompanyDetails();
 
   const { data: presences } = useQuery(
-    ["presences", companyDetails?.intern_date.company_id],
+    ["presences", selectedCompanyId],
     async () => {
-      const response = await axiosClient.get(
-        `/presences?company=${companyDetails?.intern_date.company_id}`
-      );
-      return response.data.presences;
+      if (selectedCompanyId) {
+        const response = await axiosClient.get(
+          `/presences?company=${selectedCompanyId}`
+        );
+        return response.data.presences;
+      }
+      return [];
     },
-    { enabled: !!companyDetails?.intern_date.company_id }
+    { enabled: !!selectedCompanyId }
   );
   const [currentPage, setCurrentPage] = useState(0);
   const presencesPerPage = 6;
@@ -35,9 +36,22 @@ const Presence = () => {
     (currentPage + 1) * presencesPerPage
   );
 
+  const handleCompanyChange = (event) => {
+    setSelectedCompanyId(event.target.value);
+    setCurrentPage(0);
+  };
+
   return (
     <div className='m-2 md:m-10 p-8 md:p-10 bg-white dark:bg-dark rounded-3xl transition duration-300'>
-      <Header category='My' title='Presences' />
+      <div className='md:flex md:items-center md:justify-between mb-5'>
+        <Header category='My' title='Presences' />
+        <CompanyDropdown
+          companyDetails={companyDetails}
+          selectedCompanyId={selectedCompanyId}
+          handleCompanyChange={handleCompanyChange}
+          />
+      </div>
+
       <div className='overflow-x-auto'>
         <table className='table'>
           <thead>

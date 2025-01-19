@@ -1,4 +1,5 @@
 export { default as LoginBtn } from "./login/LoginBtn";
+export { default as CompanyDropdown } from "./inputs/CompanyDropdown";
 export { default as Input } from "./inputs/Input";
 export { default as InputDate } from "./inputs/InputDate";
 export { default as LoginBanner } from "./login/LoginBanner";
@@ -38,3 +39,4 @@ export { default as ProfileHeader } from "./profile/ProfileHeader";
 export { default as Info } from "./profile/Info";
 export { default as SkillsInput } from "./profile/SkillsInput";
 export { default as InputText } from "./profile/InputText";
+export { default as Loading } from "./report/Loading";

@@ -1,41 +1,32 @@
 import React, { createRef, useEffect, useState } from "react";
-import { Alert, Header, InputText, PresenceModal } from "../components";
+import { Alert, Header, InputText, PresenceModal, Loading, CompanyDropdown  } from "../components";
 import ReactPaginate from "react-paginate";
 import axiosClient from "../axios-client";
 import { Icon } from "@iconify/react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
+import useCompanyDetails from "../hooks/useCompanyDetails";
+import useActivity from "../hooks/useActivity";
 
 const Report = () => {
-  const { data: companyDetails } = useQuery("companyDetails", async () => {
-    const response = await axiosClient.get("/appliances/accepted");
-    return response.data.appliances[0];
-  });
-
-  const { data: activity } = useQuery(
-    ["activity", companyDetails?.intern_date.company_id],
-    async () => {
-      const response = await axiosClient.get(
-        `/today-activities?company=${companyDetails?.intern_date.company_id}`
-      );
-      return response.data;
-    },
-    { enabled: !!companyDetails?.intern_date.company_id }
-  );
+  const { companyDetails, selectedCompanyId, setSelectedCompanyId } = useCompanyDetails();
+  
+  const { data: activity } = useActivity(selectedCompanyId);
 
   const { data: reports } = useQuery(
-    ["reports", companyDetails?.intern_date.company_id],
+    ["reports", selectedCompanyId],
     async () => {
       const response = await axiosClient.get(
-        `/journals?company=${companyDetails?.intern_date.company_id}`
+        `/journals?company=${selectedCompanyId}`
       );
       return response.data.journals;
     },
-    { enabled: !!companyDetails?.intern_date.company_id }
+    { enabled: !!selectedCompanyId }
   );
   const workTypeRef = createRef();
   const descriptionRef = createRef();
   const [message, setMessage] = useState(null);
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);
   const reportsPerPage = 5;
   const [description, setDescription] = useState("");
@@ -82,6 +73,40 @@ const Report = () => {
     document.getElementById("add").close();
   };
 
+  const handleExportJournal = async () => {
+    try {
+      setLoading(true);
+      const response = await axiosClient.post(`/export-journal`, {
+        company: selectedCompanyId,
+      }, {
+        responseType: "blob",
+      });
+
+      if(response?.data){
+        const blob = new Blob([response.data], { type: "application/pdf" });
+        const url = window.URL.createObjectURL(blob);
+
+        const link = document.createElement("a");
+        link.href = url;
+
+        const currentDate = new Date().toISOString().split('T')[0];
+        const fileName = `journal-${currentDate}.pdf`;
+
+        link.download = fileName;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+
+        setMessage("Report berhasil diunduh!");
+      }
+
+    } catch (error) {
+      setError("Gagal mengekspor jurnal. Silakan coba lagi.");
+    } finally {
+      setLoading(false); 
+    }
+  };
+
   useEffect(() => {
     if (message) {
       const timeoutId = setTimeout(() => {
@@ -91,11 +116,28 @@ const Report = () => {
     }
   }, [message]);
 
+  const handleCompanyChange = (event) => {
+    setSelectedCompanyId(event.target.value);
+    setCurrentPage(0);
+  };
+
   return (
     <div className='m-2 md:m-10 p-8 md:p-10 bg-white dark:bg-dark rounded-3xl transition duration-300'>
-      <Header category='Jurnal' title='PKL' />
+      <div className='md:flex md:items-center md:justify-between mb-5'>
+        <Header category='Jurnal' title='PKL' />
+        <CompanyDropdown
+          companyDetails={companyDetails}
+          selectedCompanyId={selectedCompanyId}
+          handleCompanyChange={handleCompanyChange}
+          />
+      </div>
       <div className='w-full flex justify-center'>
-        <div className='w-full h-10 flex items-center justify-end'>
+        <div className='w-full h-10 flex items-center justify-between'>
+        <button
+            className='btn btn-outline btn-warning btn-sm text-lightOne font-bold ml-2'
+            onClick={handleExportJournal} disabled={loading}>
+            {loading ? <Loading /> : "Export Journal"}
+          </button>
           <button
             className='btn btn-outline btn-info btn-sm text-lightOne font-bold'
             onClick={() =>
