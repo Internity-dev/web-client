@@ -197,7 +197,7 @@ const Report = () => {
           </button>
           <button
             className='btn btn-outline btn-info btn-sm text-lightOne font-bold'
-            onClick={handleOpenAdd}
+            onClick={() => !activity?.journal ? document.getElementById("journal").showModal() : handleOpenAdd()}
           >
             add journal
           </button>
