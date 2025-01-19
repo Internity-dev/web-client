@@ -1,26 +1,13 @@
 import React, { useState } from "react";
 import { Header, CompanyDropdown } from "../components";
 import ReactPaginate from "react-paginate";
-import axiosClient from "../axios-client";
-import { useQuery } from "react-query";
 import useCompanyDetails from "../hooks/useCompanyDetails";
+import usePresences from "../hooks/usePresence";
 
 const Presence = () => {
   const { companyDetails, selectedCompanyId, setSelectedCompanyId } = useCompanyDetails();
+  const { data: presences } = usePresences(selectedCompanyId);
 
-  const { data: presences } = useQuery(
-    ["presences", selectedCompanyId],
-    async () => {
-      if (selectedCompanyId) {
-        const response = await axiosClient.get(
-          `/presences?company=${selectedCompanyId}`
-        );
-        return response.data.presences;
-      }
-      return [];
-    },
-    { enabled: !!selectedCompanyId }
-  );
   const [currentPage, setCurrentPage] = useState(0);
   const presencesPerPage = 6;
   const pageCount = Math.ceil(

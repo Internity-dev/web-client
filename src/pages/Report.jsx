@@ -6,11 +6,14 @@ import { Icon } from "@iconify/react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import useCompanyDetails from "../hooks/useCompanyDetails";
 import useActivity from "../hooks/useActivity";
+import usePresences from "../hooks/usePresence";
 
 const Report = () => {
   const { companyDetails, selectedCompanyId, setSelectedCompanyId } = useCompanyDetails();
   
   const { data: activity } = useActivity(selectedCompanyId);
+
+  const { data: presences } = usePresences(selectedCompanyId);
 
   const { data: reports } = useQuery(
     ["reports", selectedCompanyId],
@@ -31,6 +34,9 @@ const Report = () => {
   const reportsPerPage = 5;
   const [description, setDescription] = useState("");
   const [workType, setWorkType] = useState("");
+  const [editableReport, setEditableReport] = useState(null); // Track the report being edited
+  const [isEditMode, setIsEditMode] = useState(false);
+
   const pageCount = Math.ceil(
     reports?.length ? reports.length / reportsPerPage : 5 / reportsPerPage
   );
@@ -44,7 +50,7 @@ const Report = () => {
 
   const queryClient = useQueryClient();
 
-  const updateJournalMutation = useMutation(
+  const addJournalMutation = useMutation(
     (payload) => axiosClient.put(`/journals/${activity?.journal.id}`, payload),
     {
       onSuccess: () => {
@@ -62,6 +68,53 @@ const Report = () => {
     }
   );
 
+  const updateJournalMutation = useMutation(
+    (payload) => axiosClient.put(`/journals/${editableReport?.id}`, payload),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries("activity");
+        queryClient.invalidateQueries("reports");
+        setMessage("Berhasil mengupdate journal");
+      },
+      onError: (err) => {
+        const response = err.response;
+        if (response.status === 422) {
+          setError(response.data.message);
+          setMessage(null);
+        }
+      },
+    }
+  );
+
+  const handleOpenAdd = () => {
+    setIsEditMode(false);
+    setWorkType(""); 
+    setDescription("");
+    document.getElementById("add").showModal();
+  };
+
+  const handleRowClick = (report) => {
+    const reportDate = report?.date;
+    if (!reportDate) {
+      return;
+    }
+
+    const userPresence = presences.find((presence) => {
+      const presenceDate = new Date(presence.date).toISOString().split('T')[0];
+
+      return presenceDate === reportDate && presence.check_in;
+    });
+
+    if (userPresence) {
+      setEditableReport(report);
+      setWorkType(report.work_type);
+      setDescription(report.description);
+      setIsEditMode(true);
+      document.getElementById("add").showModal();
+    } else {
+      setError("Oops, kamu tidak absen pada tanggal ini.");
+    }
+  };
   const onSubmit = (ev) => {
     ev.preventDefault();
 
@@ -69,7 +122,11 @@ const Report = () => {
       work_type: workTypeRef.current.value,
       description: descriptionRef.current.value,
     };
-    updateJournalMutation.mutate(payload);
+    if (isEditMode) {
+      updateJournalMutation.mutate(payload);
+    } else {
+      addJournalMutation.mutate(payload);
+    }
     document.getElementById("add").close();
   };
 
@@ -140,11 +197,7 @@ const Report = () => {
           </button>
           <button
             className='btn btn-outline btn-info btn-sm text-lightOne font-bold'
-            onClick={() =>
-              !activity?.journal
-                ? document.getElementById("journal").showModal()
-                : document.getElementById("add").showModal()
-            }
+            onClick={handleOpenAdd}
           >
             add journal
           </button>
@@ -163,8 +216,9 @@ const Report = () => {
           <tbody>
             {slicedReports?.map((report) => (
               <tr
-                className='border-b-dark dark:border-b-lightOne'
+                className='border-b-dark dark:border-b-lightOne cursor-pointer hover:bg-gray-100'
                 key={report.id}
+                onClick={() => handleRowClick(report)}
               >
                 <th>{report.date}</th>
                 <th>{report.work_type}</th>
@@ -216,7 +270,7 @@ const Report = () => {
       <dialog id='add' className='modal'>
         <div className='modal-box bg-lightOne dark:bg-dark'>
           <div className='flex justify-between items-center'>
-            <h3 className='font-bold text-lg'>Add journal</h3>
+            <h3 className='font-bold text-lg'>{isEditMode ? "Edit Journal" : "Add Journal"}</h3>
             <form method='dialog'>
               <button className='text-2xl p-3 hover:drop-shadow-xl hover:bg-light-gray rounded-full'>
                 <Icon icon='ic:round-close' color='#99abb4' />
@@ -256,7 +310,7 @@ const Report = () => {
               }}
               className='bg-main text-lightOne p-2 hover:drop-shadow-xl rounded-md capitalize'
             >
-              submit
+              {isEditMode ? "Update" : "Submit"}
             </button>
           </form>
         </div>
