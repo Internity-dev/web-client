@@ -2,11 +2,10 @@ import React from "react";
 import { useQuery } from "react-query";
 import axiosClient from "../../axios-client";
 import { MyInternDetail, Title } from "../../components";
+import useUser from "../../hooks/useUser";
 
 const MyIntern = () => {
-  const { data: user } = useQuery("user", () =>
-    axiosClient.get("/me").then(({ data }) => data)
-  );
+  const { data: user } = useUser();
 
   const {
     data: appliancesData,

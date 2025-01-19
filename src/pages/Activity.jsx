@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { ActivityButton, ActivityCard, NoActivity, Title } from "../components";
 import Isotope from "isotope-layout";
-import axiosClient from "../axios-client";
-import { useQuery } from "react-query";
+import useCompanyDetails from "../hooks/useCompanyDetails";
+import useActivity from "../hooks/useActivity";
+import useUser from "../hooks/useUser";
 
 const Activity = () => {
   const months = [
@@ -26,24 +27,12 @@ const Activity = () => {
   const month = months[monthIndex];
   const formattedDate = `${day} ${month} ${year}`;
 
-  const { data: user } = useQuery("user", () =>
-    axiosClient.get("/me").then(({ data }) => data)
-  );
-  const { data: companyDetails } = useQuery("companyDetails", async () => {
-    const response = await axiosClient.get("/appliances/accepted");
-    return response.data.appliances[0];
-  });
+  const { data: user } = useUser();
+  
+  const { selectedCompanyId } = useCompanyDetails();
 
-  const { data: activity } = useQuery(
-    ["activity", companyDetails?.intern_date.company_id],
-    async () => {
-      const response = await axiosClient.get(
-        `/today-activities?company=${companyDetails?.intern_date.company_id}`
-      );
-      return response.data;
-    },
-    { enabled: !!companyDetails?.intern_date.company_id }
-  );
+  const { data: activity } = useActivity(selectedCompanyId);
+  
   const [isotope, setIsotope] = useState(null);
   const [filterKey, setFilterKey] = useState(
     user?.resume && !user?.in_internship ? "registrasi" : "absensi"

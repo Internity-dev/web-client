@@ -3,6 +3,7 @@ import { Alert, InternButton, InternDetails } from "../../components";
 import { useNavigate, useParams } from "react-router-dom";
 import { useQuery, useQueryClient } from "react-query";
 import axiosClient from "../../axios-client";
+import useUser from "../../hooks/useUser";
 
 const InternDetail = () => {
   const queryClient = useQueryClient();
@@ -11,9 +12,7 @@ const InternDetail = () => {
   const [message, setMessage] = useState(null);
   const [error, setError] = useState(null);
 
-  const { data: user } = useQuery("user", () =>
-    axiosClient.get("/me").then(({ data }) => data)
-  );
+  const { data: user } = useUser();
 
   const { data: status } = useQuery(
     "appliances",

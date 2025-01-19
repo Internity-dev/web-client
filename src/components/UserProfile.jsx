@@ -3,16 +3,14 @@ import axiosClient from "../axios-client.js";
 import { Icon } from "@iconify/react";
 import { useStateContext } from "../context/ContextProvider";
 import { NavLink } from "react-router-dom";
-import { useQuery, useQueryClient } from "react-query";
+import { useQueryClient } from "react-query";
+import useUser from "../hooks/useUser.jsx";
 
 const UserProfile = () => {
   const { setToken } = useStateContext();
   const queryClient = useQueryClient();
 
-  const { data: user, isLoading } = useQuery("user", () =>
-    axiosClient.get("/me").then(({ data }) => data)
-  );
-
+  const { data: user, isLoading } = useUser();
   const onLogout = (ev) => {
     ev.preventDefault();
     axiosClient.post("/logout").then(() => {

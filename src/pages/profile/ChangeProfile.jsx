@@ -2,14 +2,13 @@ import React, { createRef, useEffect, useState } from "react";
 import { Alert, InputDate, InputText, LoginBtn } from "../../components";
 import axiosClient from "../../axios-client";
 import { Icon } from "@iconify/react";
-import { useMutation, useQuery } from "react-query";
+import { useMutation } from "react-query";
 import { useNavigate } from "react-router-dom";
+import useUser from "../../hooks/useUser";
 
 const ChangeProfile = () => {
   const navigate = useNavigate();
-  const { data: user, refetch: refetchUser } = useQuery("user", () =>
-    axiosClient.get("/me").then(({ data }) => data)
-  );
+  const { data: user , refetch: refetchUser } = useUser();
 
   const { mutate } = useMutation(
     (payload) => axiosClient.put("/change-profile", payload),

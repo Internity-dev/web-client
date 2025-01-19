@@ -4,8 +4,7 @@ import { MdOutlineCancel } from "react-icons/md";
 import { TooltipComponent } from "@syncfusion/ej2-react-popups";
 import { useStateContext } from "../context/ContextProvider";
 import Sidelink from "./Sidelink";
-import { useQuery } from "react-query";
-import axiosClient from "../axios-client";
+import useUser from "../hooks/useUser";
 
 const Sidebar = () => {
   const { currentColor, activeMenu, setActiveMenu, screenSize } =
@@ -17,9 +16,7 @@ const Sidebar = () => {
     }
   };
 
-  const { data: user } = useQuery("user", () =>
-    axiosClient.get("/me").then(({ data }) => data)
-  );
+  const { data: user } = useUser();
 
   return (
     <div className='ml-3 h-screen md:overflow-hidden overflow-auto md:hover:overflow-auto pb-10 z-50'>

@@ -5,10 +5,10 @@ import { MdKeyboardArrowDown } from "react-icons/md";
 import { TooltipComponent } from "@syncfusion/ej2-react-popups";
 import { Notification, Searchbar, UserProfile } from ".";
 import { useStateContext } from "../context/ContextProvider";
-import { useQuery } from "react-query";
 import axiosClient from "../axios-client";
 import { Icon } from "@iconify/react";
 import SearchResult from "./SearchResult";
+import useUser from "../hooks/useUser";
 
 const NavButton = ({ title, customFunc, icon, color, dotColor }) => (
   <TooltipComponent content={title} position='BottomCenter'>
@@ -36,9 +36,7 @@ const Navbar = ({ mobileSearch, setMobileSearch }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const { data: user, isLoading } = useQuery("user", () =>
-    axiosClient.get("/me").then(({ data }) => data)
-  );
+  const { data: user } = useUser();
 
   useEffect(() => {
     if (!searchTerm) {

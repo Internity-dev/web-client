@@ -3,13 +3,11 @@ import { useQuery } from "react-query";
 import { Icon } from "@iconify/react";
 import { NavLink } from "react-router-dom";
 import Modal from "../Modal";
-import axiosClient from "../../axios-client";
 import Alert from "../Alert";
+import useUser from "../../hooks/useUser";
 
 const ProfileHeader = () => {
-  const { data: user} = useQuery("user", () =>
-    axiosClient.get("/me").then(({ data }) => data)
-  );
+  const { data: user } = useUser();
 
   const [message, setMessage] = useState(null);
 
