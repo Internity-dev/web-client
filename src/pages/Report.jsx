@@ -115,6 +115,11 @@ const Report = () => {
       setError("Oops, kamu tidak absen pada tanggal ini.");
     }
   };
+  const handleClose = () => {
+    document.getElementById("add").close();
+    setWorkType(""); 
+    setDescription("");
+  }
   const onSubmit = (ev) => {
     ev.preventDefault();
 
@@ -275,11 +280,9 @@ const Report = () => {
         <div className='modal-box bg-lightOne dark:bg-dark'>
           <div className='flex justify-between items-center'>
             <h3 className='font-bold text-lg'>{isEditMode ? "Edit Journal" : "Add Journal"}</h3>
-            <form method='dialog'>
-              <button className='text-2xl p-3 hover:drop-shadow-xl hover:bg-light-gray rounded-full'>
+              <button className='text-2xl p-3 hover:drop-shadow-xl hover:bg-light-gray rounded-full' onClick={handleClose}>
                 <Icon icon='ic:round-close' color='#99abb4' />
               </button>
-            </form>
           </div>
           <form onSubmit={onSubmit}>
             <InputText
