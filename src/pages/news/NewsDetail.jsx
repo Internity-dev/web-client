@@ -2,6 +2,7 @@ import React from "react";
 import { useParams } from "react-router-dom";
 import axiosClient from "../../axios-client";
 import { useQuery } from "react-query";
+import { Loading } from "../../components";
 
 const fetchNewsDetail = async (id) => {
   const response = await axiosClient.get(`/news/${id}`);
@@ -26,9 +27,7 @@ const NewsDetail = () => {
   return (
     <div className='m-2 md:m-10 mt-24 shadow-xl transition duration-300 dark:bg-secondary-dark-bg bg-white rounded-3xl'>
       {isLoading ? (
-        <div className='flex items-center justify-center h-screen'>
-          <span className='loading loading-spinner loading-lg'></span>
-        </div>
+        <Loading />
       ) : (
         <div className='flex flex-col w-full justify-center items-center'>
           <h1 className='text-2xl font-bold mt-5'>{news?.title}</h1>

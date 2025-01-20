@@ -39,4 +39,5 @@ export { default as ProfileHeader } from "./profile/ProfileHeader";
 export { default as Info } from "./profile/Info";
 export { default as SkillsInput } from "./profile/SkillsInput";
 export { default as InputText } from "./profile/InputText";
-export { default as Loading } from "./report/Loading";
+export { default as ButtonLoading } from "./report/ButtonLoading";
+export { default as Loading } from "./Loading";

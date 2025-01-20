@@ -1,6 +1,6 @@
 import React from "react";
 import { useQuery } from "react-query";
-import { StatusCard, Title } from "../../components";
+import { Loading, StatusCard, Title } from "../../components";
 import axiosClient from "../../axios-client";
 
 const Status = () => {
@@ -16,9 +16,7 @@ const Status = () => {
     <div className='flex flex-col justify-center items-center lg:my-15 my-20'>
       <Title title='intern status' />
       {isLoading ? (
-        <div className='flex items-center justify-center h-72 m-7'>
-          <span className='loading loading-spinner loading-lg'></span>
-        </div>
+        <Loading />
       ) : statusData && statusData.length !== 0 ? (
         <>
           {statusData.map((appliance) => (

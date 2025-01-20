@@ -1,5 +1,5 @@
 import React from "react";
-import { Title, UploadCv, InternCard, InternLink } from "../../components";
+import { Title, UploadCv, InternCard, InternLink, Loading } from "../../components";
 import { useQuery } from "react-query";
 import axiosClient from "../../axios-client";
 import useUser from "../../hooks/useUser";
@@ -34,9 +34,7 @@ const Intern = () => {
           </div>
           <div className='flex flex-col justify-center items-center lg:my-5 my-10  '>
             {isLoading ? (
-              <div className='flex items-center justify-center h-52'>
-                <span className='loading loading-spinner loading-lg'></span>
-              </div>
+              <Loading />
             ) : (
               vacanciesData?.map((vacancy) => (
                 <InternCard

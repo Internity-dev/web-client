@@ -5,6 +5,7 @@ import { useStateContext } from "../context/ContextProvider";
 import { NavLink } from "react-router-dom";
 import { useQueryClient } from "react-query";
 import useUser from "../hooks/useUser.jsx";
+import Loading from "./Loading.jsx";
 
 const UserProfile = () => {
   const { setToken } = useStateContext();
@@ -34,9 +35,7 @@ const UserProfile = () => {
           </form>
         </div>
         {isLoading ? (
-          <div className='flex items-center justify-center h-screen'>
-            <span className='loading loading-spinner loading-lg'></span>
-          </div>
+          <Loading />
         ) : (
           <div className='flex gap-5 items-center mt-6 border-color border-b-1 pb-6'>
             <div className='avatar static'>

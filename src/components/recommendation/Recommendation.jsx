@@ -3,6 +3,7 @@ import InternCard from "../intern/InternCard";
 import Title from "../Title";
 import axiosClient from "../../axios-client";
 import { useQuery } from "react-query";
+import Loading from "../Loading";
 
 const Recommendation = () => {
   const { data: recommendations, isLoading } = useQuery("recommendations", async () => {
@@ -14,9 +15,7 @@ const Recommendation = () => {
     <div className='flex flex-col justify-center items-center lg:my-15 my-20  '>
       <Title title='rekomendasi PKL' />
       {isLoading ? (
-        <div className='flex items-center justify-center h-52'>
-          <span className='loading loading-spinner loading-lg'></span>
-        </div>
+        <Loading />
       ) : recommendations && recommendations.length !== 0 ? (
         <>
           {recommendations.slice(0, 8).map((recommendation) => (

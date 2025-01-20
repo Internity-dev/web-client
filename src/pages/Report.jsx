@@ -1,5 +1,5 @@
 import React, { createRef, useEffect, useState } from "react";
-import { Alert, Header, InputText, PresenceModal, Loading, CompanyDropdown  } from "../components";
+import { Alert, Header, InputText, PresenceModal, ButtonLoading, CompanyDropdown, Loading  } from "../components";
 import ReactPaginate from "react-paginate";
 import axiosClient from "../axios-client";
 import { Icon } from "@iconify/react";
@@ -15,7 +15,7 @@ const Report = () => {
 
   const { data: presences } = usePresences(selectedCompanyId);
 
-  const { data: reports } = useQuery(
+  const { data: reports, isLoading } = useQuery(
     ["reports", selectedCompanyId],
     async () => {
       const response = await axiosClient.get(
@@ -193,7 +193,7 @@ const Report = () => {
         <button
             className='btn btn-outline btn-warning btn-sm text-lightOne font-bold ml-2'
             onClick={handleExportJournal} disabled={loading}>
-            {loading ? <Loading /> : "Export Journal"}
+            {loading ? <ButtonLoading /> : "Export Journal"}
           </button>
           <button
             className='btn btn-outline btn-info btn-sm text-lightOne font-bold'
@@ -204,41 +204,45 @@ const Report = () => {
         </div>
       </div>
       <div className='overflow-x-auto'>
-        <table className='table'>
-          <thead>
-            <tr className='border-b-dark dark:border-b-lightOne uppercase text-dark dark:text-lightOne'>
-              <th>tanggal</th>
-              <th>bidang pekerjaan</th>
-              <th>uraian pekerjaan</th>
-              <th>status</th>
-            </tr>
-          </thead>
-          <tbody>
-            {slicedReports?.map((report) => (
-              <tr
-                className='border-b-dark dark:border-b-lightOne cursor-pointer hover:bg-gray-100'
-                key={report.id}
-                onClick={() => handleRowClick(report)}
-              >
-                <th>{report.date}</th>
-                <th>{report.work_type}</th>
-                <th>{report.description}</th>
-                <th>
-                  <button
-                    className={`uppercase text-sm ${
-                      report.is_approved
-                        ? "bg-[#A3F0D0] p-2 rounded-md text-[#0FB782]"
-                        : "bg-[#F5ED8D] p-2 rounded-md text-[#E9B207]"
-                    }`}
-                    disabled
-                  >
-                    {report.is_approved ? "disetujui" : "pending"}
-                  </button>
-                </th>
+        {isLoading ? (
+          <Loading />
+        ) : (
+          <table className='table'>
+            <thead>
+              <tr className='border-b-dark dark:border-b-lightOne uppercase text-dark dark:text-lightOne'>
+                <th>tanggal</th>
+                <th>bidang pekerjaan</th>
+                <th>uraian pekerjaan</th>
+                <th>status</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {slicedReports?.map((report) => (
+                <tr
+                  className='border-b-dark dark:border-b-lightOne cursor-pointer hover:bg-gray-100'
+                  key={report.id}
+                  onClick={() => handleRowClick(report)}
+                >
+                  <th>{report.date}</th>
+                  <th>{report.work_type}</th>
+                  <th>{report.description}</th>
+                  <th>
+                    <button
+                      className={`uppercase text-sm ${
+                        report.is_approved
+                          ? "bg-[#A3F0D0] p-2 rounded-md text-[#0FB782]"
+                          : "bg-[#F5ED8D] p-2 rounded-md text-[#E9B207]"
+                      }`}
+                      disabled
+                    >
+                      {report.is_approved ? "disetujui" : "pending"}
+                    </button>
+                  </th>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
       </div>
       <div className='flex flex-col justify-between'>
         <div className='flex flex-col items-start justify-center'>

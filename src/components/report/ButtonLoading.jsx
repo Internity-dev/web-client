@@ -1,7 +1,7 @@
 import React from "react";
 import { Icon } from "@iconify/react";
 
-const Loading = () => {
+const ButtonLoading = () => {
   return (
     <div className="flex items-center justify-center space-x-2">
       <Icon icon="eos-icons:loading" className="text-gray-600 dark:text-gray-300 text-xl animate-spin" />
@@ -12,4 +12,4 @@ const Loading = () => {
   );
 };
 
-export default Loading;
+export default ButtonLoading;

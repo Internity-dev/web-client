@@ -1,7 +1,7 @@
 import React from "react";
 import { useQuery } from "react-query";
 import axiosClient from "../../axios-client";
-import { MyInternDetail, Title } from "../../components";
+import { Loading, MyInternDetail, Title } from "../../components";
 import useUser from "../../hooks/useUser";
 
 const MyIntern = () => {
@@ -25,9 +25,7 @@ const MyIntern = () => {
     <div className='flex flex-col justify-center items-center lg:my-15 my-20'>
       <Title title='PKL-ku' />
       {isLoading ? (
-        <div className='flex items-center justify-center h-72'>
-          <span className='loading loading-spinner loading-lg'></span>
-        </div>
+        <Loading />
       ) : user?.in_internship ? (
         <>
           {appliancesData?.appliances && (
