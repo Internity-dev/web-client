@@ -75,9 +75,16 @@ const MyInternDetail = ({ vacancy, internDate }) => {
   return (
     <div className="flex flex-col m-2 md:m-10 mt-8 shadow-xl transition duration-300 dark:bg-secondary-dark-bg bg-white rounded-3xl max-w-5xl w-[95%]">
       <div className="m-5 md:m-10">
+        <div className="flex flex-col md:flex-row gap-2 items-center md:justify-between">
         <h1 className="text-dark transition duration-300 dark:text-lightOne text-2xl font-medium capitalize text-center md:text-left">
           {vacancy.name}
         </h1>
+        {internDate.finished === 1 && (
+        <div className="badge badge-success px-8 py-3 mb-4">
+            <span className="text-lightOne"> Selesai </span> 
+        </div>
+        )}
+        </div>
         <div className="flex flex-col md:flex-row items-center">
           <img
             src={
@@ -127,16 +134,6 @@ const MyInternDetail = ({ vacancy, internDate }) => {
       <div className="m-5 md:m-10 text-dark transition duration-300 dark:text-lightOne md:text-lg text-base">
         {internDate.finished ? (
           <div>
-            <div className="flex gap-2 mb-4">
-              <img
-                src="/images/checkmark-icon.svg"
-                alt="checkmark icon"
-                className="h-8 w-8"
-              />
-              <h1 className="text-2xl font-medium capitalize text-green-500">
-                Selesai
-              </h1>
-            </div>
             <div className="w-full">
               <p className="text-gray-700 transition duration-300 dark:text-lightOne">
                 <strong>Tanggal Mulai:</strong>{" "}
