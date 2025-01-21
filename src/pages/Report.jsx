@@ -170,13 +170,18 @@ const Report = () => {
   };
 
   useEffect(() => {
-    if (message) {
+    if (message || error) {
       const timeoutId = setTimeout(() => {
-        setMessage(null);
+        if (message) {
+          setMessage(null);
+        }
+        else if (error) {
+          setError(null);
+        }
       }, 1500);
       return () => clearTimeout(timeoutId);
     }
-  }, [message]);
+  }, [message, error]);
 
   const handleCompanyChange = (event) => {
     setSelectedCompanyId(event.target.value);

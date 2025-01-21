@@ -1,7 +1,7 @@
 import React, { createRef, useEffect, useState } from "react";
 import InputDate from "../inputs/InputDate";
 import axiosClient from "../../axios-client";
-import { useMutation, useQuery } from "react-query";
+import { useMutation } from "react-query";
 import InputText from "../profile/InputText";
 import LoginBtn from "../login/LoginBtn";
 import { useNavigate } from "react-router-dom";
@@ -58,13 +58,17 @@ const MyInternDetail = ({ vacancy, internDate }) => {
   useEffect(() => {
     if (message || error) {
       const timeoutId = setTimeout(() => {
-        setMessage(null);
-        setError(null);
-        navigate("/intern");
+        if (message) {
+          setMessage(null);
+          navigate("/intern");
+        }
+        else if (error) {
+          setError(null);
+        }
       }, 1500);
       return () => clearTimeout(timeoutId);
     }
-  }, [message, error]);
+  }, [message, error, navigate]);
 
   const formatDate = (dateString) => {
     const options = { year: "numeric", month: "long", day: "numeric" };
