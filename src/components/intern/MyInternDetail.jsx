@@ -17,6 +17,7 @@ const MyInternDetail = ({ vacancy, internDate }) => {
   const [extend, setExtend] = useState(internDate?.extend || 0);
   const [message, setMessage] = useState(null);
   const [error, setError] = useState(null);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const { mutate } = useMutation(
     (payload) =>
@@ -28,24 +29,29 @@ const MyInternDetail = ({ vacancy, internDate }) => {
       onSuccess: () => {
         setMessage("Tanggal berhasil diubah");
         setError(null);
+        setIsDialogOpen(false);
       },
       onError: (err) => {
         const response = err.response;
         if (response.status === 400) {
-          setError(response.data.message);
+          setError("Tanggal tidak valid");
           setMessage(null);
         }
         if (response.status === 500) {
           setError(response.data.message);
           setMessage(null);
         }
+        setIsDialogOpen(false);
       },
     }
   );
 
   const onSubmit = (ev) => {
     ev.preventDefault();
+    setIsDialogOpen(true);
+  };
 
+  const handleConfirmSubmit = () => {
     const payload = {
       start_date: startDateRef.current.value,
       end_date: endDateRef.current.value,
@@ -53,6 +59,10 @@ const MyInternDetail = ({ vacancy, internDate }) => {
     };
 
     mutate(payload);
+  };
+
+  const handleCancel = () => {
+    setIsDialogOpen(false);
   };
 
   useEffect(() => {
@@ -184,6 +194,25 @@ const MyInternDetail = ({ vacancy, internDate }) => {
           </form>
         )}
       </div>
+
+      {isDialogOpen && (
+        <dialog open id='warning' className='modal'>
+          <div className='modal-box'>
+            <h3 className='font-bold text-lg'>Warning!</h3>
+            <p className='py-4'>
+              Kamu yakin mau mengubah tanggal PKL ini?
+            </p>
+            <div className='modal-action'>
+              <button onClick={handleCancel} className='btn'>
+                Close
+              </button>
+              <button onClick={handleConfirmSubmit} className='btn btn-primary'>
+                Confirm
+              </button>
+            </div>
+          </div>
+        </dialog>
+      )}
     </div>
   );
 };
