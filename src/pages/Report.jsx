@@ -74,7 +74,7 @@ const Report = () => {
       onSuccess: () => {
         queryClient.invalidateQueries("activity");
         queryClient.invalidateQueries("reports");
-        setMessage("Berhasil mengupdate journal");
+        setMessage("Berhasil mengedit journal");
       },
       onError: (err) => {
         const response = err.response;
@@ -138,9 +138,10 @@ const Report = () => {
   const handleExportJournal = async () => {
     try {
       setLoading(true);
-      const response = await axiosClient.post(`/export-journal`, {
-        company: selectedCompanyId,
-      }, {
+      const response = await axiosClient.post(
+        `/export-journal/${selectedCompanyId}`,
+        {},
+      {
         responseType: "blob",
       });
 
