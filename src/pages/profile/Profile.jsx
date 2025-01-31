@@ -4,14 +4,14 @@ import { useStateContext } from "../../context/ContextProvider";
 import { Icon } from "@iconify/react";
 import { Link } from "react-router-dom";
 import axiosClient from "../../axios-client";
-import { useQuery, useQueryClient } from "react-query";
+import { useQueryClient } from "react-query";
+import useUser from "../../hooks/useUser";
 
 const Profile = () => {
   const { setToken, setCurrentMode } = useStateContext();
   const queryClient = useQueryClient();
-  const { data: user} = useQuery("user", () =>
-    axiosClient.get("/me").then(({ data }) => data)
-  );
+
+  const { data: user } = useUser();
   const options = { year: "numeric", month: "long", day: "numeric" };
   const formattedDate = new Date(user?.date_of_birth).toLocaleDateString('en-GB', options);
 

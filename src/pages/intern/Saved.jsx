@@ -2,11 +2,10 @@ import React from "react";
 import { Title, UploadCv, InternCard, InternLink } from "../../components";
 import { useQuery } from "react-query";
 import axiosClient from "../../axios-client";
+import useUser from "../../hooks/useUser";
 
 const Saved = () => {
-  const { data: user } = useQuery("user", () =>
-    axiosClient.get("/me").then(({ data }) => data)
-  );
+  const { data: user } = useUser();
 
   const { data: vacanciesData } = useQuery("savedvacancies", () =>
     axiosClient.get("/savedvacancies").then(({ data }) => data.vacancies)

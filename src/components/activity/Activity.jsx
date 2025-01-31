@@ -1,25 +1,13 @@
 import React from "react";
 import ActivityNotification from "./ActivityNotification";
 import Title from "../Title";
-import { useQuery } from "react-query";
-import axiosClient from "../../axios-client";
+import useCompanyDetails from "../../hooks/useCompanyDetails";
+import useActivity from "../../hooks/useActivity";
 
 const Activity = () => {
-  const { data: companyDetails } = useQuery("companyDetails", async () => {
-    const response = await axiosClient.get("/appliances/accepted");
-    return response.data.appliances[0];
-  });
+  const { selectedCompanyId } = useCompanyDetails();
 
-  const { data: activity } = useQuery(
-    ["activity", companyDetails?.intern_date.company_id],
-    async () => {
-      const response = await axiosClient.get(
-        `/today-activities?company=${companyDetails?.intern_date.company_id}`
-      );
-      return response.data;
-    },
-    { enabled: !!companyDetails?.intern_date.company_id }
-  );
+  const { data: activity } = useActivity(selectedCompanyId);
   return (
     <div className='flex flex-col justify-center items-center md:my-15 my-20'>
       <Title title='aktivitas hari ini' />

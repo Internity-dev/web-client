@@ -15,12 +15,14 @@ import { useStateContext } from "../context/ContextProvider";
 import { Link } from "react-router-dom";
 import { useQuery, useQueryClient, useMutation } from "react-query";
 import axiosClient from "../axios-client";
+import useCompanyDetails from "../hooks/useCompanyDetails";
+import useActivity from "../hooks/useActivity";
+import useUser from "../hooks/useUser";
 
 const Home = () => {
   const { setPresence } = useStateContext();
   const queryClient = useQueryClient();
   const [message, setMessage] = useState(null);
-  const [companyDetails, setCompanyDetails] = useState(null);
   const [presenceCam, setPresenceCam] = useState(false);
   const now = new Date();
   const formattedTime = now.toLocaleTimeString("en-US", {
@@ -30,52 +32,23 @@ const Home = () => {
     second: "2-digit",
   });
 
-  const userQueryKey = "user";
-  const companyDetailsQueryKey = "companyDetails";
-  const activityQueryKey = ["activity", companyDetails?.intern_date.company_id];
-  const presencesQueryKey = [
-    "presences",
-    companyDetails?.intern_date.company_id,
-  ];
+  const { companyDetails, selectedCompanyId } = useCompanyDetails();
 
-  const { data: user } = useQuery(userQueryKey, () =>
-    axiosClient.get("/me").then(({ data }) => data)
-  );
+  const presencesQueryKey = ["presences", selectedCompanyId];
 
-  const { data: fetchedCompanyDetails } = useQuery(
-    companyDetailsQueryKey,
-    async () => {
-      const response = await axiosClient.get("/appliances/accepted");
-      return response.data.appliances[0];
-    }
-  );
+  const { data: user } = useUser();
 
-  useEffect(() => {
-    if (fetchedCompanyDetails) {
-      setCompanyDetails(fetchedCompanyDetails);
-    }
-  }, [fetchedCompanyDetails]);
-
-  const { data: activity } = useQuery(
-    activityQueryKey,
-    async () => {
-      const response = await axiosClient.get(
-        `/today-activities?company=${fetchedCompanyDetails?.intern_date.company_id}`
-      );
-      return response.data;
-    },
-    { enabled: !!fetchedCompanyDetails?.intern_date.company_id }
-  );
+  const { data: activity } = useActivity(selectedCompanyId);
 
   const { data: presences } = useQuery(
     presencesQueryKey,
     async () => {
       const response = await axiosClient.get(
-        `/presences?company=${fetchedCompanyDetails?.intern_date.company_id}`
+        `/presences?company=${selectedCompanyId}`
       );
       return response.data.presences;
     },
-    { enabled: !!fetchedCompanyDetails?.intern_date.company_id }
+    { enabled: !!selectedCompanyId }
   );
 
   const presenceMutation = useMutation(
@@ -99,7 +72,7 @@ const Home = () => {
   );
 
   const keluarMutation = useMutation(
-    (payload) => axiosClient.put(`/presences/${presences[0].id}`, payload),
+    (payload) => axiosClient.put(`/presences/${presences[0]?.id}`, payload),
     {
       onSuccess: () => {
         queryClient.invalidateQueries("activity");
@@ -152,7 +125,7 @@ const Home = () => {
                 name='masuk'
                 icon='ph:sign-in-bold'
                 onClick={() => {
-                  if (!fetchedCompanyDetails?.intern_date.start_date) {
+                  if (!companyDetails?.length || !companyDetails[0]?.intern_date?.start_date) {
                     document.getElementById("date").showModal();
                   } else if (activity?.presence == null) {
                     document.getElementById("absen").showModal();
@@ -165,7 +138,8 @@ const Home = () => {
                 name='keluar'
                 icon='ph:sign-out-bold'
                 onClick={() =>
-                  !fetchedCompanyDetails?.intern_date.start_date
+                  !companyDetails?.length ||
+                  !companyDetails[0]?.intern_date.start_date
                     ? document.getElementById("date").showModal()
                     : activity?.presence == null &&
                       presences[0].check_out == null
@@ -179,7 +153,8 @@ const Home = () => {
                 name='izin'
                 icon='basil:clipboard-alt-outline'
                 onClick={() =>
-                  !fetchedCompanyDetails?.intern_date.start_date
+                  !companyDetails?.length ||
+                  !companyDetails[0]?.intern_date.start_date
                     ? document.getElementById("date").showModal()
                     : activity.presence == null
                     ? document.getElementById("absen").showModal()

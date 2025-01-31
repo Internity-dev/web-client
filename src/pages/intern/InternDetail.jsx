@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { Alert, InternButton, InternDetails } from "../../components";
+import { Alert, InternButton, InternDetails, Loading } from "../../components";
 import { useNavigate, useParams } from "react-router-dom";
 import { useQuery, useQueryClient } from "react-query";
 import axiosClient from "../../axios-client";
+import useUser from "../../hooks/useUser";
 
 const InternDetail = () => {
   const queryClient = useQueryClient();
@@ -11,9 +12,7 @@ const InternDetail = () => {
   const [message, setMessage] = useState(null);
   const [error, setError] = useState(null);
 
-  const { data: user } = useQuery("user", () =>
-    axiosClient.get("/me").then(({ data }) => data)
-  );
+  const { data: user } = useUser();
 
   const { data: status } = useQuery(
     "appliances",
@@ -134,9 +133,7 @@ const InternDetail = () => {
   return (
     <div className='m-2 md:m-5 mt-24 shadow-xl transition duration-300 dark:bg-secondary-dark-bg bg-white rounded-3xl'>
       {isLoading ? (
-        <div className='flex items-center justify-center h-screen'>
-          <span className='loading loading-spinner loading-lg'></span>
-        </div>
+        <Loading />
       ) : (
         <>
           {message && <Alert text={message} />}
