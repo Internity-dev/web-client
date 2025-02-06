@@ -111,6 +111,52 @@ const Home = () => {
     }
   }, [presenceCam]);
 
+  const checkInternshipPeriod = () => {
+    const selectedCompany = companyDetails?.find(
+      (company) => company.intern_date.company_id === selectedCompanyId
+    );
+    const endDate = selectedCompany.intern_date.end_date;
+    if (endDate) {
+      return now.toISOString().split('T')[0] > endDate;
+    }
+    return false;
+  };
+
+  const handlePresenceButtonClick = (action) => {
+    if (checkInternshipPeriod()) {
+      document.getElementById("overdue").showModal();
+    } else {
+      if (action === "masuk") {
+        if (!companyDetails?.length || !companyDetails[0]?.intern_date?.start_date) {
+          document.getElementById("date").showModal();
+        } else if (activity?.presence == null) {
+          document.getElementById("absen").showModal();
+        } else {
+          setPresenceCam(true);
+        }
+      } else if (action === "keluar") {
+        if (
+          !companyDetails?.length ||
+          !companyDetails[0]?.intern_date.start_date
+        ) {
+          document.getElementById("date").showModal();
+        } else if (activity?.presence == null && presences[0]?.check_out == null) {
+          onKeluar();
+        } else {
+          activity?.presence ? document.getElementById("masuk").showModal() : document.getElementById("keluar").showModal();
+        }
+      } else if (action === "izin") {
+        if (!companyDetails?.length || !companyDetails[0]?.intern_date.start_date) {
+          document.getElementById("date").showModal();
+        } else if (activity?.presence == null) {
+          document.getElementById("absen").showModal();
+        } else {
+          document.getElementById("izin").showModal();
+        }
+      }
+    }
+  };
+
   return (
     <div>
       {user?.in_internship ? (
@@ -124,42 +170,18 @@ const Home = () => {
               <PresenceButton
                 name='masuk'
                 icon='ph:sign-in-bold'
-                onClick={() => {
-                  if (!companyDetails?.length || !companyDetails[0]?.intern_date?.start_date) {
-                    document.getElementById("date").showModal();
-                  } else if (activity?.presence == null) {
-                    document.getElementById("absen").showModal();
-                  } else {
-                    setPresenceCam(true);
-                  }
-                }}
+                onClick={() => handlePresenceButtonClick("masuk")}
               />
               <PresenceButton
                 name='keluar'
                 icon='ph:sign-out-bold'
-                onClick={() =>
-                  !companyDetails?.length ||
-                  !companyDetails[0]?.intern_date.start_date
-                    ? document.getElementById("date").showModal()
-                    : activity?.presence == null &&
-                      presences[0].check_out == null
-                    ? onKeluar()
-                    : activity.presence
-                    ? document.getElementById("masuk").showModal()
-                    : document.getElementById("keluar").showModal()
+                onClick={() => handlePresenceButtonClick("keluar")
                 }
               />
               <PresenceButton
                 name='izin'
                 icon='basil:clipboard-alt-outline'
-                onClick={() =>
-                  !companyDetails?.length ||
-                  !companyDetails[0]?.intern_date.start_date
-                    ? document.getElementById("date").showModal()
-                    : activity.presence == null
-                    ? document.getElementById("absen").showModal()
-                    : document.getElementById("izin").showModal()
-                }
+                onClick={() => handlePresenceButtonClick("izin")}
               />
               <Link to='/presence'>
                 <PresenceButton name='kehadiran' icon='ic:round-list' />
@@ -175,6 +197,8 @@ const Home = () => {
               id='keluar'
               message='Anda sudah absen keluar hari ini!'
             />
+            <PresenceModal id='overdue' message='Anda sudah melewati periode magang!' />
+
             {presenceCam && ( // Conditionally render the camera
               <PresenceCamera
                 onClose={() => setPresenceCam(false)}
