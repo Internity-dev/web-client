@@ -38,13 +38,16 @@ const Activity = () => {
     user?.resume && !user?.in_internship ? "registrasi" : "absensi"
   );
   useEffect(() => {
-    setIsotope(
-      new Isotope(".filter-container", {
-        itemSelector: ".filter-item",
-        layoutMode: "vertical",
-      })
-    );
-  }, []);
+    if (activity) {
+      setIsotope(
+        new Isotope(".filter-container", {
+          itemSelector: ".filter-item",
+          layoutMode: "vertical",
+        })
+      );
+    }
+  }, [activity]);
+  
   useEffect(() => {
     if (isotope) {
       filterKey === "*"
