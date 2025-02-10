@@ -1,5 +1,5 @@
-import React, { createRef, useEffect, useState } from "react";
-import { Alert, Header, InputText, PresenceModal, ButtonLoading, CompanyDropdown, Loading  } from "../components";
+import { createRef, useEffect, useState } from "react";
+import { Alert, Header, InputText, PresenceModal, CompanyDropdown, Loading, ExportModal  } from "../components";
 import ReactPaginate from "react-paginate";
 import axiosClient from "../axios-client";
 import { Icon } from "@iconify/react";
@@ -29,7 +29,6 @@ const Report = () => {
   const descriptionRef = createRef();
   const [message, setMessage] = useState(null);
   const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);
   const reportsPerPage = 5;
   const [description, setDescription] = useState("");
@@ -135,50 +134,8 @@ const Report = () => {
     document.getElementById("add").close();
   };
 
-  const handleExportJournal = async () => {
-    try {
-      setLoading(true);
-      let url = '';
-
-      if (companyDetails?.length > 1) {
-        url = '/export-journals';
-      } else if (selectedCompanyId) {
-        url = `/export-journal/${selectedCompanyId}`;
-      } else {
-        setError("No company selected.");
-        return;
-      }
-
-      const response = await axiosClient.post(
-        url,
-        {},
-      {
-        responseType: "blob",
-      });
-
-      if(response?.data){
-        const blob = new Blob([response.data], { type: "application/pdf" });
-        const url = window.URL.createObjectURL(blob);
-
-        const link = document.createElement("a");
-        link.href = url;
-
-        const currentDate = new Date().toISOString().split('T')[0];
-        const fileName = `journal-${currentDate}.pdf`;
-
-        link.download = fileName;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-
-        setMessage("Report berhasil diunduh!");
-      }
-
-    } catch (error) {
-      setError("Gagal mengekspor jurnal. Silakan coba lagi.");
-    } finally {
-      setLoading(false); 
-    }
+  const handleExportClick = () => {
+    document.getElementById("exportModal").showModal();
   };
 
   useEffect(() => {
@@ -214,12 +171,12 @@ const Report = () => {
         <div className='w-full h-10 flex items-center justify-between md:gap-4 mb-2'>
         <button
             className='btn btn-outline btn-warning btn-sm text-lightOne font-bold'
-            onClick={handleExportJournal} disabled={loading}>
+            onClick={handleExportClick}>
               <span className="hidden md:block">
-                {loading ? <ButtonLoading /> : "Export Journal"}
+                Export Journal
               </span>
               <span className="block md:hidden">
-                {loading ? <ButtonLoading /> : <Icon icon='ic:round-download' fontSize={20} />}
+                <Icon icon='ic:round-download' fontSize={20} />
               </span>
           </button>
           <button
@@ -241,6 +198,7 @@ const Report = () => {
                 <th>bidang pekerjaan</th>
                 <th>uraian pekerjaan</th>
                 <th>status</th>
+                <th>edit</th>
               </tr>
             </thead>
             <tbody>
@@ -264,6 +222,16 @@ const Report = () => {
                     >
                       {report.is_approved ? "disetujui" : "pending"}
                     </button>
+                  </th>
+                  <th>
+                    <Icon
+                      icon="mdi:pencil"
+                      className="text-gray-500 hover:text-blue-500"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleRowClick(report);
+                      }}
+                    />
                   </th>
                 </tr>
               ))}
@@ -347,6 +315,8 @@ const Report = () => {
           <button>close</button>
         </form>
       </dialog>
+      <ExportModal companyDetails={companyDetails} selectedCompanyId={selectedCompanyId} />
+
       {message && <Alert text={message} />}
       {error && <Alert text={error} error />}
     </div>
