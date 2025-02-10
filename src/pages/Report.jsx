@@ -34,7 +34,7 @@ const Report = () => {
   const reportsPerPage = 5;
   const [description, setDescription] = useState("");
   const [workType, setWorkType] = useState("");
-  const [editableReport, setEditableReport] = useState(null); // Track the report being edited
+  const [editableReport, setEditableReport] = useState(null);
   const [isEditMode, setIsEditMode] = useState(false);
 
   const pageCount = Math.ceil(
@@ -138,8 +138,19 @@ const Report = () => {
   const handleExportJournal = async () => {
     try {
       setLoading(true);
+      let url = '';
+
+      if (companyDetails?.length > 1) {
+        url = '/export-journals';
+      } else if (selectedCompanyId) {
+        url = `/export-journal/${selectedCompanyId}`;
+      } else {
+        setError("No company selected.");
+        return;
+      }
+
       const response = await axiosClient.post(
-        `/export-journal/${selectedCompanyId}`,
+        url,
         {},
       {
         responseType: "blob",
@@ -200,11 +211,16 @@ const Report = () => {
           />
       </div>
       <div className='w-full flex justify-center'>
-        <div className='w-full h-10 flex items-center justify-between'>
+        <div className='w-full h-10 flex items-center justify-between md:gap-4 mb-2'>
         <button
-            className='btn btn-outline btn-warning btn-sm text-lightOne font-bold ml-2'
+            className='btn btn-outline btn-warning btn-sm text-lightOne font-bold'
             onClick={handleExportJournal} disabled={loading}>
-            {loading ? <ButtonLoading /> : "Export Journal"}
+              <span className="hidden md:block">
+                {loading ? <ButtonLoading /> : "Export Journal"}
+              </span>
+              <span className="block md:hidden">
+                {loading ? <ButtonLoading /> : <Icon icon='ic:round-download' fontSize={20} />}
+              </span>
           </button>
           <button
             className='btn btn-outline btn-info btn-sm text-lightOne font-bold'
