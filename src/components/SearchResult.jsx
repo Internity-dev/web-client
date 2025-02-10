@@ -1,4 +1,4 @@
-import React from "react";
+import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 
 const SearchResult = ({ results, loading, error }) => {
@@ -34,6 +34,12 @@ const SearchResult = ({ results, loading, error }) => {
       </div>
     </div>
   );
+};
+
+SearchResult.propTypes = {
+  results: PropTypes.array,
+  loading: PropTypes.bool,
+  error: PropTypes.string,
 };
 
 export default SearchResult;

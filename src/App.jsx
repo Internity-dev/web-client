@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 
 import { GuestLayout, DefaultLayout } from "./components";
 import {
@@ -38,7 +38,7 @@ const App = () => {
       setCurrentColor(currentThemeColor);
       setCurrentMode(currentThemeMode);
     }
-  }, []);
+  }, [setCurrentColor, setCurrentMode]);
 
   return (
     <div className={currentMode === "Dark" ? "dark" : ""}>

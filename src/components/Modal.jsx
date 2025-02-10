@@ -1,4 +1,5 @@
-import React, { createRef, useState } from "react";
+import PropTypes from "prop-types";
+import { createRef, useState } from "react";
 import { useMutation } from "react-query";
 import { useQueryClient } from "react-query";
 import { Icon } from "@iconify/react";
@@ -98,5 +99,7 @@ const Modal = ({ setMessage }) => {
     </dialog>
   );
 };
+
+Modal.propTypes = { setMessage: PropTypes.func };
 
 export default Modal;

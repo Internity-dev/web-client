@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import PropTypes from "prop-types";
 
 const SkillsInput = (props) => {
   const [tags, setTags] = useState(props.tags.split(", "));
@@ -72,6 +73,13 @@ const SkillsInput = (props) => {
       </div>
     </div>
   );
+};
+
+SkillsInput.propTypes = {
+  name: PropTypes.string,
+  tags: PropTypes.string,
+  selectedTags: PropTypes.func,
+  innerRef: PropTypes.any,
 };
 
 export default SkillsInput;

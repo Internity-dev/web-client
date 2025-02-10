@@ -1,5 +1,5 @@
 import { Icon } from "@iconify/react";
-import React from "react";
+import PropTypes from "prop-types";
 import { NavLink } from "react-router-dom";
 
 const ActivityNotification = ({ title, date, to }) => {
@@ -23,6 +23,12 @@ const ActivityNotification = ({ title, date, to }) => {
       />
     </NavLink>
   );
+};
+
+ActivityNotification.propTypes = {
+  title: PropTypes.string,
+  date: PropTypes.string,
+  to: PropTypes.string,
 };
 
 export default ActivityNotification;

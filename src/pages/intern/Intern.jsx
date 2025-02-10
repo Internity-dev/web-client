@@ -1,4 +1,3 @@
-import React from "react";
 import { Title, UploadCv, InternCard, InternLink, Loading } from "../../components";
 import { useQuery } from "react-query";
 import axiosClient from "../../axios-client";

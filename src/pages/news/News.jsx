@@ -1,4 +1,3 @@
-import React from "react";
 import { NewsCard, Title } from "../../components";
 import axiosClient from "../../axios-client";
 import { useQuery } from "react-query";

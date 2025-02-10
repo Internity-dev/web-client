@@ -1,4 +1,4 @@
-import React from "react";
+import PropTypes from "prop-types";
 import { Icon } from "@iconify/react";
 
 const PresenceButton = ({ name, icon, onClick }) => {
@@ -17,6 +17,12 @@ const PresenceButton = ({ name, icon, onClick }) => {
       <p className='mt-3 text-lg font-semibold capitalize'>{name}</p>
     </button>
   );
+};
+
+PresenceButton.propTypes = {
+  name: PropTypes.string.isRequired,
+  icon: PropTypes.string.isRequired,
+  onClick: PropTypes.func,
 };
 
 export default PresenceButton;

@@ -1,4 +1,4 @@
-import React from "react";
+import PropTypes from "prop-types";
 import { Icon } from "@iconify/react";
 
 const Searchbar = ({ searchTerm, setSearchTerm, onFocus, onBlur }) => {
@@ -27,6 +27,13 @@ const Searchbar = ({ searchTerm, setSearchTerm, onFocus, onBlur }) => {
       </div>
     </form>
   );
+};
+
+Searchbar.propTypes = {
+  searchTerm: PropTypes.string,
+  setSearchTerm: PropTypes.func,
+  onFocus: PropTypes.func,
+  onBlur: PropTypes.func,
 };
 
 export default Searchbar;

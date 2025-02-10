@@ -1,4 +1,4 @@
-import { React, createRef, useEffect, useState } from "react";
+import { createRef, useEffect, useState } from "react";
 import { LoginBtn, Input, LoginBanner, Alert } from "../components";
 import { Link } from "react-router-dom";
 import axiosClient from "../axios-client.js";

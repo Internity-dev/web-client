@@ -1,4 +1,4 @@
-import React from "react";
+import PropTypes from "prop-types";
 
 /**
  * A reusable dropdown component to select a company.
@@ -25,6 +25,12 @@ const CompanySelectDropdown = ({ companyDetails, selectedCompanyId, handleCompan
       </select>
     </div>
   );
+};
+
+CompanySelectDropdown.propTypes = {
+  companyDetails: PropTypes.array,
+  selectedCompanyId: PropTypes.string,
+  handleCompanyChange: PropTypes.func,
 };
 
 export default CompanySelectDropdown;

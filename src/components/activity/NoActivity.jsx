@@ -1,4 +1,4 @@
-import React from 'react'
+import PropTypes from "prop-types";
 
 const NoActivity = ({ filterKey }) => {
   return (
@@ -11,5 +11,7 @@ const NoActivity = ({ filterKey }) => {
     </div>
   );
 };
+
+NoActivity.propTypes = { filterKey: PropTypes.string };
 
 export default NoActivity

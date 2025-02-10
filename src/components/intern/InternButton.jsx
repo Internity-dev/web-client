@@ -1,4 +1,4 @@
-import React from "react";
+import PropTypes from "prop-types";
 
 const InternButton = ({ text, left, vacancy, onClick }) => {
 
@@ -24,6 +24,13 @@ const InternButton = ({ text, left, vacancy, onClick }) => {
     className = vacancy.in_pending ? activeRight : normalRight;
   }
   return <button className={className} onClick={handleClick} disabled={text == "Processing" ? true : false}>{text}</button>;
+};
+
+InternButton.propTypes = {
+  text: PropTypes.string,
+  left: PropTypes.bool,
+  vacancy: PropTypes.object,
+  onClick: PropTypes.func,
 };
 
 export default InternButton;

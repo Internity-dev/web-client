@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import PropTypes from "prop-types";
 import { Icon } from '@iconify/react';
 
 const Input = ({ label, icon, showeye, name, innerRef, type }) => {
@@ -49,6 +50,15 @@ const Input = ({ label, icon, showeye, name, innerRef, type }) => {
       </div>
     </div>
   );
+};
+
+Input.propTypes = {
+  label: PropTypes.string.isRequired,
+  icon: PropTypes.string,
+  showeye: PropTypes.bool,
+  name: PropTypes.string,
+  innerRef: PropTypes.object,
+  type: PropTypes.string,
 };
 
 export default Input;

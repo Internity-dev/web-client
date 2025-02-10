@@ -1,4 +1,3 @@
-import React from "react";
 import { useQuery } from "react-query";
 import { Icon } from "@iconify/react";
 import { Link } from "react-router-dom";

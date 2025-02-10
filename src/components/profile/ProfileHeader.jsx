@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-import { useQuery } from "react-query";
+import { useEffect, useState } from "react";
 import { Icon } from "@iconify/react";
 import { NavLink } from "react-router-dom";
 import Modal from "../Modal";

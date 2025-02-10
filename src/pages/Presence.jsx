@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Header, CompanyDropdown, Loading } from "../components";
 import ReactPaginate from "react-paginate";
 import useCompanyDetails from "../hooks/useCompanyDetails";

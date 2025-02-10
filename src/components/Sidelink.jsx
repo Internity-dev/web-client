@@ -1,4 +1,4 @@
-import React from "react";
+import PropTypes from "prop-types";
 import { NavLink } from "react-router-dom";
 import { Icon } from "@iconify/react";
 import { useStateContext } from "../context/ContextProvider";
@@ -22,6 +22,13 @@ const Sidelink = ({ name, icon, handler, to }) => {
       <span className='capitalize'>{name}</span>
     </NavLink>
   );
+};
+
+Sidelink.propTypes = {
+  name: PropTypes.string,
+  icon: PropTypes.string,
+  handler: PropTypes.func,
+  to: PropTypes.string,
 };
 
 export default Sidelink;

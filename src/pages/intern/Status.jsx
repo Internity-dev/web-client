@@ -1,4 +1,3 @@
-import React from "react";
 import { useQuery } from "react-query";
 import { Loading, StatusCard, Title } from "../../components";
 import axiosClient from "../../axios-client";

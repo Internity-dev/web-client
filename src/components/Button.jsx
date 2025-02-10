@@ -1,5 +1,4 @@
-import React from 'react';
-
+import PropTypes from "prop-types";
 import { useStateContext } from '../context/ContextProvider';
 
 const Button = ({ icon, bgColor, color, bgHoverColor, size, text, borderRadius, width }) => {
@@ -15,6 +14,17 @@ const Button = ({ icon, bgColor, color, bgHoverColor, size, text, borderRadius, 
       {icon} {text}
     </button>
   );
+};
+
+Button.propTypes = {
+  icon: PropTypes.string,
+  bgColor: PropTypes.string,
+  color: PropTypes.string,
+  bgHoverColor: PropTypes.string,
+  size: PropTypes.string,
+  text: PropTypes.string,
+  borderRadius: PropTypes.string,
+  width: PropTypes.string,
 };
 
 export default Button;

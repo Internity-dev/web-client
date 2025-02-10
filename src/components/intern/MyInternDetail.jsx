@@ -1,4 +1,5 @@
-import React, { createRef, useEffect, useState } from "react";
+import PropTypes from "prop-types";
+import { createRef, useEffect, useState } from "react";
 import InputDate from "../inputs/InputDate";
 import axiosClient from "../../axios-client";
 import { useMutation } from "react-query";
@@ -215,6 +216,11 @@ const MyInternDetail = ({ vacancy, internDate }) => {
       )}
     </div>
   );
+};
+
+MyInternDetail.propTypes = {
+  vacancy: PropTypes.object.isRequired,
+  internDate: PropTypes.object.isRequired,
 };
 
 export default MyInternDetail;

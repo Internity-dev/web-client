@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { AiOutlineMenu } from "react-icons/ai";
 import { RiNotification3Line } from "react-icons/ri";
-import { MdKeyboardArrowDown } from "react-icons/md";
 import { TooltipComponent } from "@syncfusion/ej2-react-popups";
 import { Notification, Searchbar, UserProfile } from ".";
 import { useStateContext } from "../context/ContextProvider";
@@ -9,6 +8,7 @@ import axiosClient from "../axios-client";
 import { Icon } from "@iconify/react";
 import SearchResult from "./SearchResult";
 import useUser from "../hooks/useUser";
+import PropTypes from "prop-types";
 
 const NavButton = ({ title, customFunc, icon, color, dotColor }) => (
   <TooltipComponent content={title} position='BottomCenter'>
@@ -26,6 +26,14 @@ const NavButton = ({ title, customFunc, icon, color, dotColor }) => (
     </button>
   </TooltipComponent>
 );
+
+NavButton.propTypes = {
+  title: PropTypes.string,
+  customFunc: PropTypes.func,
+  icon: PropTypes.element,
+  color: PropTypes.string,
+  dotColor: PropTypes.string,
+};
 
 const Navbar = ({ mobileSearch, setMobileSearch }) => {
   const { currentColor, activeMenu, setActiveMenu, setScreenSize, screenSize } =
@@ -76,7 +84,7 @@ const Navbar = ({ mobileSearch, setMobileSearch }) => {
     handleResize();
 
     return () => window.removeEventListener("resize", handleResize);
-  }, []);
+  }, [setScreenSize]);
 
   useEffect(() => {
     if (screenSize <= 900) {
@@ -84,7 +92,7 @@ const Navbar = ({ mobileSearch, setMobileSearch }) => {
     } else {
       setActiveMenu(true);
     }
-  }, [screenSize]);
+  }, [screenSize, setActiveMenu]);
 
   const handleActiveMenu = () => setActiveMenu(!activeMenu);
 
@@ -200,6 +208,11 @@ const Navbar = ({ mobileSearch, setMobileSearch }) => {
       </div>
     </nav>
   );
+};
+
+Navbar.propTypes = {
+  mobileSearch: PropTypes.bool,
+  setMobileSearch: PropTypes.func,
 };
 
 export default Navbar;
