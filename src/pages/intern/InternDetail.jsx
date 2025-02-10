@@ -185,7 +185,7 @@ const InternDetail = () => {
         <div className='modal-box'>
           <h3 className='font-bold text-lg'>Warning!</h3>
           <p className='py-4'>
-            Batalkan pendaftaran PKL anda sebelum mendaftar ke tempat PKL lain
+            Batalkan pendaftaran PKL kamu sebelum mendaftar ke tempat PKL lain
           </p>
           <div className='modal-action'>
             <form method='dialog'>

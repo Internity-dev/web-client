@@ -189,15 +189,15 @@ const Home = () => {
             </div>
             <PresenceModal
               id='date'
-              message='Anda belum menentukan tanggal PKL!'
+              message='Kamu belum menentukan tanggal PKL!'
             />
-            <PresenceModal id='absen' message='Anda sudah absen hari ini!' />
+            <PresenceModal id='absen' message='Kamu sudah absen hari ini!' />
             <PresenceModal id='masuk' message='Silakan absen masuk dahulu' />
             <PresenceModal
               id='keluar'
-              message='Anda sudah absen keluar hari ini!'
+              message='Kamu sudah absen keluar hari ini!'
             />
-            <PresenceModal id='overdue' message='Anda sudah melewati periode magang!' />
+            <PresenceModal id='overdue' message='Kamu sudah melewati periode magang!' />
 
             {presenceCam && ( // Conditionally render the camera
               <PresenceCamera

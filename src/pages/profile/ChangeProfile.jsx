@@ -202,7 +202,7 @@ const ChangeProfile = () => {
                 value={gender}
                 onChange={(e) => setGender(e.target.value)}
               >
-                <option disabled>Pilih jenis kelamin anda</option>
+                <option disabled>Pilih jenis kelamin kamu</option>
                 <option value='male'>Laki-Laki</option>
                 <option value='female'>Perempuan</option>
               </select>
