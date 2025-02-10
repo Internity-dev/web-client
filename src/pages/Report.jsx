@@ -92,6 +92,25 @@ const Report = () => {
     document.getElementById("add").showModal();
   };
 
+  const checkInternshipPeriod = () => {
+    const selectedCompany = companyDetails?.find(
+      (company) => company.intern_date.company_id === selectedCompanyId
+    );
+    const endDate = selectedCompany.intern_date.end_date;
+    if (endDate) {
+      return new Date().toISOString().split('T')[0] > endDate;
+    }
+    return false;
+  };
+
+  const handleJournalClick = () => {
+    if (checkInternshipPeriod()) {
+      document.getElementById("overdue").showModal();
+    } else {
+      !activity?.journal ? document.getElementById("journal").showModal() : handleOpenAdd();
+    }
+  }
+
   const handleRowClick = (report) => {
     const reportDate = report?.date;
     if (!reportDate) {
@@ -135,7 +154,11 @@ const Report = () => {
   };
 
   const handleExportClick = () => {
-    document.getElementById("exportModal").showModal();
+    if (checkInternshipPeriod()) {
+      document.getElementById("exportModal").showModal();
+    } else {
+      document.getElementById("export").showModal();
+    }
   };
 
   useEffect(() => {
@@ -181,7 +204,7 @@ const Report = () => {
           </button>
           <button
             className='btn btn-outline btn-info btn-sm text-lightOne font-bold'
-            onClick={() => !activity?.journal ? document.getElementById("journal").showModal() : handleOpenAdd()}
+            onClick={handleJournalClick}
           >
             add journal
           </button>
@@ -266,6 +289,9 @@ const Report = () => {
         id='journal'
         message='Anda sudah membuat journal hari ini!'
       />
+      <PresenceModal id='overdue' message='Anda sudah melewati periode magang!' />
+      <PresenceModal id='export' message='Ekspor hanya bisa dilakukan setelah periode magang selesai.' />
+      
       <dialog id='add' className='modal'>
         <div className='modal-box bg-lightOne dark:bg-dark'>
           <div className='flex justify-between items-center'>
