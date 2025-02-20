@@ -36,7 +36,7 @@ const Login = () => {
     if (errors) {
       const timeoutId = setTimeout(() => {
         setErrors(null);
-      }, 1500);
+      }, 3000);
       return () => clearTimeout(timeoutId);
     }
   }, [errors, setErrors]);

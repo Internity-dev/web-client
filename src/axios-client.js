@@ -13,18 +13,17 @@ axiosClient.interceptors.request.use((config) => {
 });
 
 axiosClient.interceptors.response.use(
-  (response) => {
-    return response;
-  },
+  (response) => response,
   (error) => {
     const { response } = error;
-    if (response.status === 401) {
-      localStorage.removeItem("TOKEN");
-      // window.location.href = "/login";
-    } else if (response.status === 404) {
-      //Show not found
-    }
+    if (response?.status === 401) {
+      localStorage.removeItem("ACCESS_TOKEN");
 
+      // if url isn't login page, redirect to login page
+      if (window.location.pathname !== "/login"){
+        window.location.pathname = "/login";
+      }
+    }
     throw error;
   }
 );
