@@ -1,4 +1,4 @@
-import React from "react";
+import PropTypes from "prop-types";
 
 const LoginBanner = ({ header, text }) => {
   return (
@@ -12,6 +12,11 @@ const LoginBanner = ({ header, text }) => {
       </div>
     </div>
   );
+};
+
+LoginBanner.propTypes = {
+  header: PropTypes.string.isRequired,
+  text: PropTypes.string.isRequired,
 };
 
 export default LoginBanner;

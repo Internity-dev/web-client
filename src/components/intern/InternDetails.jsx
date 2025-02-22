@@ -1,4 +1,4 @@
-import React from "react";
+import PropTypes from "prop-types";
 
 const InternDetails = ({ vacancy }) => {
   const formatDate = (dateString) => {
@@ -54,6 +54,10 @@ const InternDetails = ({ vacancy }) => {
       </div>
     </div>
   );
+};
+
+InternDetails.propTypes = {
+  vacancy: PropTypes.object.isRequired,
 };
 
 export default InternDetails;

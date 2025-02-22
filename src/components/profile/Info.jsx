@@ -1,5 +1,5 @@
 import { Icon } from "@iconify/react";
-import React from "react";
+import PropTypes from "prop-types";
 
 const Info = ({ icon, title }) => {
   return (
@@ -8,6 +8,11 @@ const Info = ({ icon, title }) => {
       <h1 className='ml-5 text-2xl'>{title}</h1>
     </div>
   );
+};
+
+Info.propTypes = {
+  icon: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
 };
 
 export default Info;

@@ -1,4 +1,3 @@
-import React from "react";
 import { useParams } from "react-router-dom";
 import axiosClient from "../../axios-client";
 import { useQuery } from "react-query";

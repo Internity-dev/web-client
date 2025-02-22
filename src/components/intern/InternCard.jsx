@@ -1,5 +1,6 @@
+import PropTypes from "prop-types";
 import { Icon } from "@iconify/react";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useQueryClient } from "react-query";
 import { NavLink } from "react-router-dom";
 import axiosClient from "../../axios-client";
@@ -114,6 +115,11 @@ const InternCard = ({ vacancy, icon }) => {
       </NavLink>
     </>
   );
+};
+
+InternCard.propTypes = {
+  vacancy: PropTypes.object.isRequired,
+  icon: PropTypes.string,
 };
 
 export default InternCard;

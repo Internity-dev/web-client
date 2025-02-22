@@ -1,4 +1,5 @@
-import React, { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState } from "react";
+import PropTypes from "prop-types";
 
 const StateContext = createContext({
   token: null,
@@ -57,6 +58,10 @@ export const ContextProvider = ({ children }) => {
       {children}
     </StateContext.Provider>
   );
+};
+
+ContextProvider.propTypes = {
+  children: PropTypes.node,
 };
 
 export const useStateContext = () => useContext(StateContext);

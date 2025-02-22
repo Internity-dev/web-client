@@ -1,4 +1,4 @@
-import React from "react";
+import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 
 const StatusCard = ({ appliance }) => {
@@ -53,6 +53,10 @@ const StatusCard = ({ appliance }) => {
       </div>
     </Link>
   );
+};
+
+StatusCard.propTypes = {
+  appliance: PropTypes.object,
 };
 
 export default StatusCard;

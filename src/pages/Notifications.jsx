@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Alert, Header } from "../components";
+import { useEffect, useState } from "react";
+import { Alert, Header, Loading } from "../components";
 import { useStateContext } from "../context/ContextProvider";
 import ReactPaginate from "react-paginate";
 import axiosClient from "../axios-client";
@@ -12,6 +12,7 @@ const Notifications = () => {
     data: notifications = [],
     isLoading,
     isError,
+    error,
   } = useQuery("notifications", async () => {
     const response = await axiosClient.get("/notifications");
     return response.data.notifications;
@@ -81,71 +82,81 @@ const Notifications = () => {
           <button
             className='btn btn-outline btn-info btn-sm text-lightOne font-bold'
             onClick={() => onRead()}
+            disabled={isLoading}
           >
             mark all as read
           </button>
         </div>
       </div>
+      {isLoading ? (
+          <Loading />
+      )  : isError ? (
+        <div className="flex justify-center my-5">
+          <p className="text-red-500">Error: {error.message}</p>
+        </div>
+      ) : (
+        <>
+          <div className='overflow-x-auto'>
+            <table className='table'>
+              <tbody>
+                {slicedNotifications.map((notification) => {
+                  const originalDate = new Date(notification.created_at);
+                  const formattedDate = originalDate.toLocaleDateString("en-GB", {
+                    day: "numeric",
+                    month: "long",
+                    year: "numeric",
+                  });
 
-      <div className='overflow-x-auto'>
-        <table className='table'>
-          <tbody>
-            {slicedNotifications.map((notification) => {
-              const originalDate = new Date(notification.created_at);
-              const formattedDate = originalDate.toLocaleDateString("en-GB", {
-                day: "numeric",
-                month: "long",
-                year: "numeric",
-              });
+                  return (
+                    <tr
+                      className={`border-b-dark dark:border-b-lightOne ${
+                        notification.read_at == null &&
+                        "bg-slate-100 dark:bg-slate-600"
+                      }`}
+                      key={notification.id}
+                    >
+                      <th>{formattedDate}</th>
+                      <th>
+                        <div className='flex flex-col '>
+                          <h1 className='text-xl text-dark dark:text-lightOne transition duration-300'>
+                            {notification.title}
+                          </h1>
+                          <p>{notification.body}</p>
+                        </div>
+                      </th>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
 
-              return (
-                <tr
-                  className={`border-b-dark dark:border-b-lightOne ${
-                    notification.read_at == null &&
-                    "bg-slate-100 dark:bg-slate-600"
-                  }`}
-                  key={notification.id}
-                >
-                  <th>{formattedDate}</th>
-                  <th>
-                    <div className='flex flex-col '>
-                      <h1 className='text-xl text-dark dark:text-lightOne transition duration-300'>
-                        {notification.title}
-                      </h1>
-                      <p>{notification.body}</p>
-                    </div>
-                  </th>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
+          <div className='flex flex-col items-start justify-center'>
+            <p>Total Messages: {notifications.length}</p>
+            <p>
+              Page: {currentPage + 1} of {pageCount}
+            </p>
+          </div>
 
-      <div className='flex flex-col items-start justify-center'>
-        <p>Total Messages: {notifications.length}</p>
-        <p>
-          Page: {currentPage + 1} of {pageCount}
-        </p>
-      </div>
-
-      <div className='flex justify-end items-center'>
-        <ReactPaginate
-          previousLabel={"<"}
-          nextLabel={">"}
-          pageCount={pageCount}
-          onPageChange={handlePageClick}
-          containerClassName={"pagination"}
-          previousLinkClassName={"pagination__link"}
-          nextLinkClassName={"pagination__link"}
-          disabledClassName={"pagination__link--disabled"}
-          pageLinkClassName={"pagination__link"}
-          activeLinkClassName={"pagination__link--active"}
-          breakClassName={"pagination__break"}
-          marginPagesDisplayed={1}
-          pageRangeDisplayed={2}
-        />
-      </div>
+          <div className='flex justify-end items-center'>
+            <ReactPaginate
+              previousLabel={"<"}
+              nextLabel={">"}
+              pageCount={pageCount}
+              onPageChange={handlePageClick}
+              containerClassName={"pagination"}
+              previousLinkClassName={"pagination__link"}
+              nextLinkClassName={"pagination__link"}
+              disabledClassName={"pagination__link--disabled"}
+              pageLinkClassName={"pagination__link"}
+              activeLinkClassName={"pagination__link--active"}
+              breakClassName={"pagination__break"}
+              marginPagesDisplayed={1}
+              pageRangeDisplayed={2}
+            />
+          </div>
+        </>
+      )}
 
       {message && <Alert text={message} />}
     </div>

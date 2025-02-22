@@ -1,4 +1,4 @@
-import React from "react";
+import PropTypes from "prop-types";
 
 const InputDate = ({ label, name, innerRef, placeholder, value, onChange }) => {
   return (
@@ -24,6 +24,15 @@ const InputDate = ({ label, name, innerRef, placeholder, value, onChange }) => {
       />
     </div>
   );
+};
+
+InputDate.propTypes = {
+  label: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  innerRef: PropTypes.object,
+  placeholder: PropTypes.string,
+  value: PropTypes.string,
+  onChange: PropTypes.func,
 };
 
 export default InputDate;

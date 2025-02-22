@@ -1,4 +1,4 @@
-import React from "react";
+import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { Icon } from "@iconify/react";
 
@@ -14,6 +14,12 @@ const InternLink = ({ title, icon, to }) => {
       <Icon icon={icon} width={30} />
     </Link>
   );
+};
+
+InternLink.propTypes = {
+  title: PropTypes.string,
+  icon: PropTypes.string,
+  to: PropTypes.string,
 };
 
 export default InternLink;

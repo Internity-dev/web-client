@@ -41,3 +41,4 @@ export { default as SkillsInput } from "./profile/SkillsInput";
 export { default as InputText } from "./profile/InputText";
 export { default as ButtonLoading } from "./report/ButtonLoading";
 export { default as Loading } from "./Loading";
+export { default as ExportModal } from "./report/ExportModal";

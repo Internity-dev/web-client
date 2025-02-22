@@ -1,5 +1,5 @@
+import PropTypes from "prop-types";
 import { Icon } from "@iconify/react";
-import React from "react";
 
 const Alert = ({ error, text, index }) => {
   const topPosition = 16 + index * 80;
@@ -17,6 +17,12 @@ const Alert = ({ error, text, index }) => {
       <p>{text}</p>
     </div>
   );
+};
+
+Alert.propTypes = {
+  error: PropTypes.bool,
+  text: PropTypes.string,
+  index: PropTypes.number,
 };
 
 export default Alert;

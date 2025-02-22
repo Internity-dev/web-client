@@ -1,4 +1,4 @@
-import React, { createRef, useEffect, useState } from "react";
+import { createRef, useEffect, useState } from "react";
 import { Alert, InputDate, InputText, LoginBtn } from "../../components";
 import axiosClient from "../../axios-client";
 import { Icon } from "@iconify/react";
@@ -202,7 +202,7 @@ const ChangeProfile = () => {
                 value={gender}
                 onChange={(e) => setGender(e.target.value)}
               >
-                <option disabled>Pilih jenis kelamin anda</option>
+                <option disabled>Pilih jenis kelamin kamu</option>
                 <option value='male'>Laki-Laki</option>
                 <option value='female'>Perempuan</option>
               </select>

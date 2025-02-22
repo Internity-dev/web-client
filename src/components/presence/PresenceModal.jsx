@@ -1,4 +1,4 @@
-import React from "react";
+import PropTypes from "prop-types";
 
 const PresenceModal = ({ message, id }) => {
   return (
@@ -13,6 +13,11 @@ const PresenceModal = ({ message, id }) => {
       </div>
     </dialog>
   );
+};
+
+PresenceModal.propTypes = {
+  message: PropTypes.string,
+  id: PropTypes.string,
 };
 
 export default PresenceModal;

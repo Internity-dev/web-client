@@ -1,5 +1,5 @@
 import { Icon } from "@iconify/react";
-import React from "react";
+import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 
 const ActivityCard = ({ icon, date, title, bg, color, filterKey, to }) => {
@@ -24,6 +24,16 @@ const ActivityCard = ({ icon, date, title, bg, color, filterKey, to }) => {
       </div>
     </Link>
   );
+};
+
+ActivityCard.propTypes = {
+  icon: PropTypes.string,
+  date: PropTypes.string,
+  title: PropTypes.string,
+  bg: PropTypes.string,
+  color: PropTypes.string,
+  filterKey: PropTypes.string,
+  to: PropTypes.string,
 };
 
 export default ActivityCard;

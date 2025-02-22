@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { ActivityButton, ActivityCard, NoActivity, Title } from "../components";
 import Isotope from "isotope-layout";
 import useCompanyDetails from "../hooks/useCompanyDetails";

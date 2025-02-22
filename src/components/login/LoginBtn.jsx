@@ -1,4 +1,4 @@
-import React from "react";
+import PropTypes from "prop-types";
 
 const LoginBtn = ({ text }) => {
   return (
@@ -7,5 +7,7 @@ const LoginBtn = ({ text }) => {
     </button>
   );
 };
+
+LoginBtn.propTypes = { text: PropTypes.string };
 
 export default LoginBtn;

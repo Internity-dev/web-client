@@ -1,4 +1,3 @@
-import React from "react";
 import { Info, ProfileHeader } from "../../components";
 import { useStateContext } from "../../context/ContextProvider";
 import { Icon } from "@iconify/react";
@@ -8,7 +7,7 @@ import { useQueryClient } from "react-query";
 import useUser from "../../hooks/useUser";
 
 const Profile = () => {
-  const { setToken, setCurrentMode } = useStateContext();
+  const { setToken } = useStateContext();
   const queryClient = useQueryClient();
 
   const { data: user } = useUser();

@@ -1,4 +1,3 @@
-import React from "react";
 import ActivityNotification from "./ActivityNotification";
 import Title from "../Title";
 import useCompanyDetails from "../../hooks/useCompanyDetails";

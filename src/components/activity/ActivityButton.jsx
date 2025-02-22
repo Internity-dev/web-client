@@ -1,4 +1,4 @@
-import React from "react";
+import PropTypes from "prop-types";
 
 const ActivityButton = ({ text, filterKey, setFilterKey, filter }) => {
   const activeLink =
@@ -14,6 +14,13 @@ const ActivityButton = ({ text, filterKey, setFilterKey, filter }) => {
       {text}
     </button>
   );
+};
+
+ActivityButton.propTypes = {
+  text: PropTypes.string,
+  filterKey: PropTypes.string,
+  setFilterKey: PropTypes.func,
+  filter: PropTypes.string,
 };
 
 export default ActivityButton;

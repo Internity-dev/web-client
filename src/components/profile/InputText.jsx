@@ -1,4 +1,4 @@
-import React from "react";
+import PropTypes from "prop-types";
 
 const InputText = ({
   name,
@@ -32,6 +32,16 @@ const InputText = ({
       />
     </div>
   );
+};
+
+InputText.propTypes = {
+  name: PropTypes.string,
+  label: PropTypes.string,
+  placeholder: PropTypes.string,
+  type: PropTypes.string,
+  innerRef: PropTypes.object,
+  value: PropTypes.string,
+  onChange: PropTypes.func,
 };
 
 export default InputText;

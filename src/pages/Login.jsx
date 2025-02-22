@@ -1,4 +1,4 @@
-import { React, createRef, useEffect, useState } from "react";
+import { createRef, useEffect, useState } from "react";
 import { LoginBtn, Input, LoginBanner, Alert } from "../components";
 import axiosClient from "../axios-client.js";
 import { useStateContext } from "../context/ContextProvider.jsx";
@@ -36,7 +36,7 @@ const Login = () => {
     if (errors) {
       const timeoutId = setTimeout(() => {
         setErrors(null);
-      }, 1500);
+      }, 3000);
       return () => clearTimeout(timeoutId);
     }
   }, [errors, setErrors]);
@@ -79,7 +79,7 @@ const Login = () => {
               <LoginBtn text='Sign In' />
               <div className='mt-5'>
                 <p className='text-center'>
-                  Don't have an account?{" "}
+                  Don&apos;t have an account?{" "}
                   <a href='/register' className='text-main underline font-bold'>
                     Sign Up
                   </a>

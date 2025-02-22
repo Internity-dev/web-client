@@ -1,4 +1,3 @@
-import React from "react";
 import { useQuery } from "react-query";
 import axiosClient from "../../axios-client";
 import { Loading, MyInternDetail, Title } from "../../components";

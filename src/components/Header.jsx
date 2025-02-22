@@ -1,4 +1,4 @@
-import React from "react";
+import PropTypes from "prop-types";
 
 const Header = ({ category, title }) => (
   <div className='mb-10'>
@@ -8,5 +8,10 @@ const Header = ({ category, title }) => (
     </p>
   </div>
 );
+
+Header.propTypes = {
+  category: PropTypes.string,
+  title: PropTypes.string,
+};
 
 export default Header;

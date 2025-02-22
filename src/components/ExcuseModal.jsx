@@ -1,4 +1,5 @@
-import React, { createRef, useState } from "react";
+import PropTypes from "prop-types";
+import { createRef, useState } from "react";
 import { Icon } from "@iconify/react";
 
 const ExcuseModal = ({mutation, time, setMessage}) => {
@@ -104,6 +105,12 @@ const ExcuseModal = ({mutation, time, setMessage}) => {
       </form>
     </dialog>
   );
+};
+
+ExcuseModal.propTypes = {
+  mutation: PropTypes.object.isRequired,
+  time: PropTypes.string.isRequired,
+  setMessage: PropTypes.func.isRequired,
 };
 
 export default ExcuseModal;

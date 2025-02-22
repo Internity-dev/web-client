@@ -1,4 +1,5 @@
-import React, { useCallback, useRef, useState } from "react";
+import PropTypes from "prop-types";
+import { useCallback, useRef, useState } from "react";
 import Webcam from "react-webcam";
 import { Icon } from "@iconify/react";
 
@@ -105,6 +106,13 @@ const PresenceCamera = ({ onClose, mutation, time, setMessage }) => {
       </div>
     </dialog>
   );
+};
+
+PresenceCamera.propTypes = {
+  onClose: PropTypes.func.isRequired,
+  mutation: PropTypes.object.isRequired,
+  time: PropTypes.string.isRequired,
+  setMessage: PropTypes.func.isRequired,
 };
 
 export default PresenceCamera;
