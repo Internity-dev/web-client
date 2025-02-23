@@ -142,8 +142,8 @@ const Activity = () => {
               bg='#BADFFF'
               color='#1191FF'
             />
-            <NoActivity filterKey='absensi' />
-            <NoActivity filterKey='laporan' />
+            {/* <NoActivity filterKey='absensi' /> */}
+            {/* <NoActivity filterKey='laporan' /> */}
           </div>
         ) : (
           <NoActivity />

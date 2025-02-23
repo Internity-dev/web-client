@@ -17,7 +17,6 @@ const ExportModal = ({ companyDetails, selectedCompanyId }) => {
   const [isParentSameAsStudent, setIsParentSameAsStudent] = useState(false);
 
   const [studentData, setStudentData] = useState({
-    nis: "",
     nisn: "",
     bloodType: "",
   });
@@ -38,7 +37,6 @@ const ExportModal = ({ companyDetails, selectedCompanyId }) => {
       const response = await axiosClient.post(
         url,
         {
-          nis: studentData.nis,
           nisn: studentData.nisn,
           blood_type: studentData.bloodType,
           parent_name: parentData.parent_name,
@@ -92,28 +90,16 @@ const ExportModal = ({ companyDetails, selectedCompanyId }) => {
       return (
         <>
           <h3 className="font-semibold text-md border-b pb-4">Data Diri</h3>
-          <div className="grid md:grid-cols-2 md:gap-4">
-            <InputText
-              name="nis"
-              label="NIS"
-              placeholder="Masukkan NIS"
-              type="text"
-              value={studentData.nis}
-              onChange={(e) =>
-                setStudentData({ ...studentData, nis: e.target.value })
-              }
-            />
-            <InputText
-              name="nisn"
-              label="NISN"
-              placeholder="Masukkan NISN"
-              type="text"
-              value={studentData.nisn}
-              onChange={(e) =>
-                setStudentData({ ...studentData, nisn: e.target.value })
-              }
-            />
-          </div>
+          <InputText
+            name="nisn"
+            label="NISN"
+            placeholder="Masukkan NISN"
+            type="text"
+            value={studentData.nisn}
+            onChange={(e) =>
+              setStudentData({ ...studentData, nisn: e.target.value })
+            }
+          />
           <InputText
             name="bloodType"
             label="Golongan Darah"

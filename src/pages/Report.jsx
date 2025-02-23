@@ -289,8 +289,8 @@ const Report = () => {
         id='journal'
         message='Kamu sudah membuat journal hari ini!'
       />
-      <PresenceModal id='overdue' message='Kamu sudah melewati periode magang!' />
-      <PresenceModal id='export' message='Ekspor hanya bisa dilakukan setelah periode magang selesai.' />
+      <PresenceModal id='overdue' message='Kamu sudah melewati periode PKL!' />
+      <PresenceModal id='export' message='Ekspor hanya bisa dilakukan setelah periode PKL selesai.' />
       
       <dialog id='add' className='modal'>
         <div className='modal-box bg-lightOne dark:bg-dark'>
