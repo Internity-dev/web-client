@@ -8,9 +8,12 @@ const Login = () => {
   const passwordRef = createRef();
   const { setToken } = useStateContext();
   const [errors, setErrors] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const onSubmit = (ev) => {
     ev.preventDefault();
+
+    setLoading(true);
 
     const payload = {
       email: emailRef.current.value,
@@ -29,6 +32,9 @@ const Login = () => {
         ) {
           setErrors(response.data.message);
         }
+      })
+      .finally(() => {
+        setLoading(false);
       });
   };
 
@@ -43,44 +49,47 @@ const Login = () => {
 
   return (
     <div
-      className='min-h-screen flex items-center justify-center overflow-hidden'
+      className="min-h-screen flex items-center justify-center overflow-hidden"
       style={{ backgroundImage: "linear-gradient(115deg, #1191FF, #F9F9F9)" }}
     >
-      <div className='w-11/12 lg:w-8/12 bg-white rounded-xl shadow-lg overflow-hidden my-5'>
-        <div className='flex flex-col sm:flex-row'>
-          <LoginBanner header='Welcome back!' text='Continue your internship' />
-          <div className='w-full lg:w-1/2 py-5 px-12'>
-            <h2 className='text-xl md:text-2xl mb-1'>Sign In</h2>
-            <p className='mb-5 text-lg'>Sign in to your account</p>
+      <div className="w-11/12 lg:w-8/12 bg-white rounded-xl shadow-lg overflow-hidden my-5">
+        <div className="flex flex-col sm:flex-row">
+          <LoginBanner header="Welcome back!" text="Continue your internship" />
+          <div className="w-full lg:w-1/2 py-5 px-12">
+            <h2 className="text-xl md:text-2xl mb-1">Sign In</h2>
+            <p className="mb-5 text-lg">Sign in to your account</p>
             {errors && <Alert text={errors} error />}
-            <form onSubmit={onSubmit} method='POST'>
+            <form onSubmit={onSubmit} method="POST">
               <Input
                 innerRef={emailRef}
-                name='email'
-                label='Email'
-                icon='tabler:mail'
+                name="email"
+                label="Email"
+                icon="tabler:mail"
               />
               <Input
                 innerRef={passwordRef}
-                name='password'
-                label='Password'
-                icon='mdi:lock-outline'
+                name="password"
+                label="Password"
+                icon="mdi:lock-outline"
                 showeye
               />
-              <div className='mt-5'>
+              <div className="mt-5">
                 <a
-                  href='https://wa.me/6282112631356?text=Halo%20min%2C%20tolong%20reset%20password%20saya%20atas%20nama%20(nama%20anda)'
-                  target='blank'
-                  className='text-dark underline'
+                  href="https://wa.me/6282112631356?text=Halo%20min%2C%20tolong%20reset%20password%20saya%20atas%20nama%20(nama%20anda)"
+                  target="blank"
+                  className="text-dark underline"
                 >
                   Forgot Password?
                 </a>
               </div>
-              <LoginBtn text='Sign In' />
-              <div className='mt-5'>
-                <p className='text-center'>
+              <LoginBtn
+                text={loading ? "Signing In..." : "Sign In"}
+                disabled={loading}
+              />
+              <div className="mt-5">
+                <p className="text-center">
                   Don&apos;t have an account?{" "}
-                  <a href='/register' className='text-main underline font-bold'>
+                  <a href="/register" className="text-main underline font-bold">
                     Sign Up
                   </a>
                 </p>

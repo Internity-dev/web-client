@@ -197,7 +197,7 @@ const Home = () => {
               id='keluar'
               message='Kamu sudah absen keluar hari ini!'
             />
-            <PresenceModal id='overdue' message='Kamu sudah melewati periode magang!' />
+            <PresenceModal id='overdue' message='Kamu sudah melewati periode PKL!' />
 
             {presenceCam && ( // Conditionally render the camera
               <PresenceCamera
