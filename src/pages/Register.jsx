@@ -13,9 +13,12 @@ const Register = () => {
   const courseCodeRef = createRef();
   const { setToken } = useStateContext();
   const [errors, setErrors] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const onSubmit = (ev) => {
     ev.preventDefault();
+
+    setLoading(true);
 
     const payload = {
       name: nameRef.current.value,
@@ -35,6 +38,9 @@ const Register = () => {
         if (response && response.data && response.data.errors) {
           setErrors(response.data.errors);
         }
+      })
+      .finally(() => {
+        setLoading(false);
       });
   };
 
@@ -128,7 +134,7 @@ const Register = () => {
                   <label className='text-main font-semibold'>Conditions</label>
                 </label>
               </div>
-              <LoginBtn text='Sign Up' />
+              <LoginBtn text={loading ? "Sign Up..." : "Sign Up"} />
               <div className='mt-5'>
                 <p className='text-center'>
                   Already have an account?{" "}
