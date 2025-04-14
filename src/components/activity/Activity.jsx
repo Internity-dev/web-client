@@ -3,7 +3,7 @@ import ActivityNotification from "./ActivityNotification";
 import Title from "../Title";
 import useCompanyDetails from "../../hooks/useCompanyDetails";
 import useActivity from "../../hooks/useActivity";
-import { Alert, CompanyDropdown } from "..";
+import { Alert, CompanyDropdown, InputText } from "..";
 import axiosClient from "../../axios-client";
 
 const Activity = () => {
@@ -14,6 +14,9 @@ const Activity = () => {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
+  const [studentData, setStudentData] = useState({
+    no_sertif: "",
+  });
 
   const checkInternshipPeriod = () => {
     const selectedCompany = companyDetails?.find(
@@ -35,7 +38,7 @@ const Activity = () => {
 
       const response = await axiosClient.post(
         `/export-certificate/${selectedCompanyId}`,
-        {},
+        { no_sertif: studentData.no_sertif },
         { responseType: "blob" }
       );
 
@@ -126,6 +129,16 @@ const Activity = () => {
               companyDetails={companyDetails}
               selectedCompanyId={selectedCompanyId}
               handleCompanyChange={(e) => setSelectedCompanyId(e.target.value)}
+            />
+            <InputText
+              name="no_sertif"
+              label="No Sertifikat"
+              placeholder="Masukkan No Sertifikat"
+              type="text"
+              value={studentData.no_sertif}
+              onChange={(e) =>
+                setStudentData({ ...studentData, no_sertif: e.target.value })
+              }
             />
             <div className="mt-4 flex justify-end">
               <button
